@@ -14,7 +14,7 @@ const SEED_DATA = [
   { name: "Paul Mathew Vineyards", note: "Meet the actual winemakers. Husband-and-wife operation in Graton pouring single-vineyard Pinots with old-world soul.", category: "winery", lat: 38.4346, lng: -122.8693, website: "https://www.sonomacounty.com/wine/" },
   { name: "Pax Wine Cellars", note: "Downtown Sebastopol gem for Rhône-variety fanatics. The Syrah here is exceptional — buy a bottle and settle in.", category: "winery", lat: 38.4024, lng: -122.8271, website: "https://www.paxwines.com" },
   { name: "Landmark Vineyards", note: "Historic Kenwood tasting room with estate Chardonnay and Pinot. A reliable, refined stop without the appointment fuss.", category: "winery", lat: 38.4266, lng: -122.5562, website: "https://www.landmarkwine.com" },
-  { name: "Domaine de la Rivière", note: "Relatively new but already collecting accolades. Pinot Noir and Chardonnay with old-world grace and genuine hospitality.", category: "winery", lat: 38.4794, lng: -122.9003, website: "https://www.domaineriviere.com" },
+  { name: "Domaine de la Rivière", note: "Relatively new but already collecting accolades. Pinot Noir and Chardonnay with old-world grace and genuine hospitality.", category: "winery", lat: 38.5297, lng: -122.7999, website: "https://www.domaineriviere.com" },
 
   // ── WINERIES: SONOMA VALLEY ───────────────────────────────────────────────
   { name: "Benziger Family Winery", note: "The essential biodynamic stop in Glen Ellen. The tram tour actually teaches you something, and the setting is gorgeous.", category: "winery", lat: 38.3608, lng: -122.5428, website: "https://www.benziger.com" },
@@ -36,10 +36,10 @@ const SEED_DATA = [
   // ── WINERIES: DRY CREEK VALLEY ───────────────────────────────────────────
   { name: "Ferrari-Carano Vineyards", note: "Villa grandeur in Dry Creek. Stately rose gardens, early tastings, and a Fumé Blanc that earns its reputation.", category: "winery", lat: 38.5647, lng: -122.8669, website: "https://www.ferrari-carano.com" },
   { name: "Mauritson Wines", note: "Sixth-generation family Zinfandel. Honest, direct, and exactly what Dry Creek Valley should taste like.", category: "winery", lat: 38.6504, lng: -122.9120, website: "https://www.mauritsonwines.com" },
-  { name: "Truett Hurst", note: "Biodynamic holistic farm with goats, sheep, chickens, and great Zinfandel. The eco-estate tour is a genuine delight.", category: "winery", lat: 38.6798, lng: -122.9422, website: "https://www.truetthurst.com" },
-  { name: "Preston Farm & Winery", note: "No tour needed — winemaking operations visible in the courtyard. Feels like a European village bodega. Old-school cool.", category: "winery", lat: 38.6281, lng: -122.9094, website: "https://www.prestonvineyards.com" },
+  { name: "Truett Hurst", note: "Biodynamic holistic farm with goats, sheep, chickens, and great Zinfandel. The eco-estate tour is a genuine delight.", category: "winery", lat: 38.6069, lng: -122.8691, website: "https://www.truetthurst.com" },
+  { name: "Preston Farm & Winery", note: "No tour needed — winemaking operations visible in the courtyard. Feels like a European village bodega. Old-school cool.", category: "winery", lat: 38.7030, lng: -122.9674, website: "https://www.prestonfarmandwinery.com" },
   { name: "Quivira Vineyards", note: "Biodynamic Dry Creek estate with certified-organic farming and a standout Zinfandel built on Rhône sensibility.", category: "winery", lat: 38.6562, lng: -122.9375, website: "https://www.quivirawine.com" },
-  { name: "Dry Creek Vineyard", note: "The original Dry Creek label — and it shows. Consistent, honest, and the Fumé Blanc is a perennial benchmark.", category: "winery", lat: 38.5018, lng: -122.8999, website: "https://www.drycreekvineyard.com" },
+  { name: "Dry Creek Vineyard", note: "The original Dry Creek label — and it shows. Consistent, honest, and the Fumé Blanc is a perennial benchmark.", category: "winery", lat: 38.6529, lng: -122.9240, website: "https://www.drycreekvineyard.com" },
   { name: "Mounts Family Winery", note: "Tiny family operation where you might meet the winemaker. Rare varietals, bocce court, local vibes.", category: "winery", lat: 38.6447, lng: -122.9012, website: "https://www.mountswinery.com" },
   { name: "Ridge Lytton Springs", note: "Old-vine Zinfandel from one of California's most respected names. The Lytton Springs site is historic and essential.", category: "winery", lat: 38.6591, lng: -122.8858, website: "https://www.ridgewine.com" },
 
@@ -48,14 +48,14 @@ const SEED_DATA = [
   { name: "Francis Ford Coppola Winery", note: "Part winery, part resort — pools, bocce, Hollywood memorabilia. Great for groups and a genuinely fun afternoon.", category: "winery", lat: 38.6794, lng: -122.8875, website: "https://www.francisfordcoppolawinery.com" },
   { name: "Stonestreet Estate", note: "Mountain estate Cabernet at its Sonoma best. The Alexander Mountain terroir produces power with elegance.", category: "winery", lat: 38.6628, lng: -122.8171, website: "https://www.stonestreetestate.com" },
   { name: "Chalk Hill Estate", note: "1,300-acre estate with stunning views, warm hospitality, and terroir-driven Chardonnay that punches above its price.", category: "winery", lat: 38.5284, lng: -122.8072, website: "https://www.chalkhill.com" },
-  { name: "Medlock Ames", note: "Modern rural-hipster done right. Founded by two college friends in 1998 with organic farming at the center.", category: "winery", lat: 38.7218, lng: -122.8792, website: "https://www.medlockames.com" },
+  { name: "Medlock Ames", note: "Modern rural-hipster done right. Founded by two college friends in 1998 with organic farming at the center.", category: "winery", lat: 38.6088, lng: -122.7691, website: "https://www.medlockames.com" },
   { name: "Banshee Wines", note: "Geyserville estate tasting room in Alexander Valley. Pinot and vinyl — select your record, pour your wine, vibe out.", category: "winery", lat: 38.7217, lng: -122.9014, website: "https://www.bansheewines.com" },
 
   // ── WINERIES: HEALDSBURG ─────────────────────────────────────────────────
-  { name: "Seghesio Family Vineyards", note: "The Healdsburg Zinfandel standard. Multi-generational, Italian-rooted, and pours with the ease of family confidence.", category: "winery", lat: 38.6136, lng: -122.8691, website: "https://www.seghesio.com" },
+  { name: "Seghesio Family Vineyards", note: "The Healdsburg Zinfandel standard. Multi-generational, Italian-rooted, and pours with the ease of family confidence.", category: "winery", lat: 38.6175, lng: -122.8754, website: "https://www.seghesio.com" },
   { name: "Locals Tasting Room", note: "One tasting room, seven small producers. The smartest first stop in Geyserville for scoping what you want to pursue.", category: "winery", lat: 38.7065, lng: -122.9041, website: "https://www.localstastingroom.com" },
   { name: "Bricoleur Vineyards", note: "Stunning RRV estate south of Healdsburg. Picnic wagons, bocce, rose gardens, and consistently elegant wines.", category: "winery", lat: 38.5249, lng: -122.8314, website: "https://www.bricoleurvineyards.com" },
-  { name: "J Vineyards & Winery", note: "Top California sparkling wine producer. The Bubble Room five-course pairing is a legitimate destination dining experience.", category: "winery", lat: 38.5749, lng: -122.8419, website: "https://www.jwine.com" },
+  { name: "J Vineyards & Winery", note: "Top California sparkling wine producer. The Bubble Room five-course pairing is a legitimate destination dining experience.", category: "winery", lat: 38.5729, lng: -122.8424, website: "https://www.jwine.com" },
   { name: "Zina Hyde Cunningham Winery", note: "Sunset patio, fireplace inside, cheese boards, and intimate Sonoma Plaza tastings. The evening wind-down.", category: "winery", lat: 38.2919, lng: -122.4561, website: "https://www.zinawinery.com" },
 
   // ── WINERIES: CARNEROS / PETALUMA ────────────────────────────────────────
