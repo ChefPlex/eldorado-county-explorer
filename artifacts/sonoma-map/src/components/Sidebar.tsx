@@ -29,7 +29,7 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
       <div className="p-6 border-b border-border bg-card">
         <h1 className="font-serif text-2xl font-bold text-foreground mb-2">Sonoma Journal</h1>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          A personal collection of cherished wineries and dining spots in the valley.
+          The places worth knowing. Wineries, kitchens, farms. Yours to map.
         </p>
       </div>
 
@@ -101,7 +101,7 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
               </div>
               <p className="text-sm text-foreground font-medium mb-1">No spots found</p>
               <p className="text-xs text-muted-foreground">
-                Click anywhere on the map to add your first memory.
+                Click anywhere on the map to mark a spot worth remembering.
               </p>
             </div>
           ) : (
@@ -136,7 +136,7 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
       {/* Footer Instructions */}
       <div className="p-4 border-t border-border bg-muted/30 text-center">
         <p className="text-xs text-muted-foreground">
-          Click the map to add a new spot
+          Click the map to mark a spot · Ask Sonoma Chef below
         </p>
       </div>
     </div>

@@ -91,6 +91,26 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
 
+### `lib/integrations-openai-ai-server` (`@workspace/integrations-openai-ai-server`)
+
+Server-side OpenAI integration (Replit-managed, no API key needed). Provides:
+- `openai` — pre-configured OpenAI SDK client via `AI_INTEGRATIONS_OPENAI_BASE_URL` and `AI_INTEGRATIONS_OPENAI_API_KEY`
+- `generateImageBuffer`, `editImages` — image generation
+- `voiceChatStream`, `textToSpeech`, `speechToText` — audio helpers
+- `batchProcess`, `batchProcessWithSSE` — rate-limited batch processing
+
+### `lib/integrations-openai-ai-react` (`@workspace/integrations-openai-ai-react`)
+
+React client-side hooks for voice chat (`useVoiceRecorder`, `useVoiceStream`, `useAudioPlayback`).
+
+### `artifacts/sonoma-map` (`@workspace/sonoma-map`)
+
+React + Vite frontend. Leaflet.js interactive map of Sonoma County. Features:
+- Custom winery/restaurant map markers with earthy terracotta/sage palette (Playfair Display + Plus Jakarta Sans)
+- Sidebar with stats, filtering, and spot list
+- Click-to-add markers with name, notes, category
+- **Sonoma Chef AI assistant** — floating chat panel powered by GPT, uses the full Sonoma Chef persona (culinary authority, Slow Food values, ingredient-forward, seasonal awareness). Embedded at bottom-right of the map.
+
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.

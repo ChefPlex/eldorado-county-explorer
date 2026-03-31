@@ -179,8 +179,8 @@ export function MapComponent({ activeFilter }: { activeFilter: string }) {
           >
             <form onSubmit={handleSubmit} className="p-1 space-y-4">
               <div className="mb-2">
-                <h3 className="font-serif text-lg font-bold text-foreground">Save this spot</h3>
-                <p className="text-xs text-muted-foreground">Add to your personal journal</p>
+                <h3 className="font-serif text-lg font-bold text-foreground">Mark this spot</h3>
+                <p className="text-xs text-muted-foreground">Name it. Note what made it worth stopping.</p>
               </div>
               
               <div className="space-y-3">

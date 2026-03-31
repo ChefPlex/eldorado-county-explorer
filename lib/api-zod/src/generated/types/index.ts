@@ -8,9 +8,15 @@
 
 export * from "./createMarkerInput";
 export * from "./createMarkerInputCategory";
+export * from "./createOpenaiConversationBody";
 export * from "./healthStatus";
 export * from "./marker";
 export * from "./markerCategory";
 export * from "./markerStats";
+export * from "./openaiConversation";
+export * from "./openaiConversationWithMessages";
+export * from "./openaiError";
+export * from "./openaiMessage";
+export * from "./sendOpenaiMessageBody";
 export * from "./updateMarkerInput";
 export * from "./updateMarkerInputCategory";
