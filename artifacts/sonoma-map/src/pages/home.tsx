@@ -4,7 +4,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { SonomaChef } from "@/components/SonomaChef";
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState<"all" | "winery" | "restaurant">("all");
+  const [activeFilter, setActiveFilter] = useState<"all" | "winery" | "restaurant" | "farmstand">("all");
 
   return (
     <div className="flex h-[100dvh] w-full overflow-hidden bg-background font-sans">

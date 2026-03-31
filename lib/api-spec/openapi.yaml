@@ -386,7 +386,7 @@ components:
           type: string
         category:
           type: string
-          enum: [winery, restaurant]
+          enum: [winery, restaurant, farmstand]
     MarkerStats:
       type: object
       properties:
@@ -396,7 +396,10 @@ components:
           type: integer
         restaurants:
           type: integer
+        farmstands:
+          type: integer
       required:
         - total
         - wineries
         - restaurants
+        - farmstands

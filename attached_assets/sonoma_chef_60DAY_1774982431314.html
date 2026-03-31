@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonoma Chef | Foodie Events — Next 60 Days</title>
+<style>
+  :root {
+    --bg: #f7f1e8; --paper: #fffdf9; --ink: #2b2118; --muted: #6c5a48;
+    --olive: #6f7d3c; --wine: #7a2f3b; --gold: #c48a3a; --line: #e8ddcf;
+    --shadow: 0 12px 30px rgba(69,43,22,0.10); --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(196,138,58,0.08), transparent 28%),
+      radial-gradient(circle at top right, rgba(122,47,59,0.08), transparent 24%),
+      var(--bg);
+    line-height: 1.58;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 20px 56px; }
+  .hero {
+    background: linear-gradient(135deg, rgba(122,47,59,0.97), rgba(111,125,60,0.94));
+    color: white; border-radius: 28px; padding: 34px 30px; box-shadow: var(--shadow);
+  }
+  .eyebrow {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 999px;
+    padding: 8px 14px; font-size: 13px; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  h1 { margin: 0 0 10px; font-size: clamp(32px,4.8vw,56px); line-height: 1.05; }
+  .hero p { font-size: 20px; max-width: 900px; margin: 0; }
+  .note {
+    margin-top: 18px; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 18px;
+    padding: 14px 16px; font-size: 15px;
+  }
+  .section-title { margin: 34px 0 14px; font-size: 28px; }
+  .subnote { margin: 0 0 18px; color: var(--muted); font-size: 17px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr)); gap: 18px; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .card h3 { margin: 0 0 10px; font-size: 25px; line-height: 1.15; }
+  .card p, .card li { font-size: 16.8px; }
+  .meta { color: var(--muted); font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+  .tag { display: inline-block; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; margin: 0 8px 10px 0; background: #f3eadf; color: var(--wine); border: 1px solid #ead7c0; }
+  .must    { background: #fbf4cf; color: #6a4d00; border: 1px solid #efd978; }
+  .newtag  { background: #eef4fb; color: #365a7d; border: 1px solid #cfdeef; }
+  .needtag { background: #eef6ef; color: #3e653d; border: 1px solid #d3e3d2; }
+  .why { background: #f7f8ef; border-left: 5px solid var(--olive); border-radius: 14px; padding: 12px 14px; margin: 14px 0; }
+  .why strong { display: block; margin-bottom: 6px; }
+  ul { padding-left: 22px; margin: 10px 0 14px; }
+  li { margin: 6px 0; }
+  a { color: var(--wine); font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .button-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .button { display: inline-block; background: var(--wine); color: white; text-decoration: none; padding: 11px 16px; border-radius: 12px; font-size: 15px; }
+  .button.secondary { background: var(--olive); }
+  .fact-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 14px; }
+  .fact { flex: 1 1 auto; background: #faf6f1; border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; font-size: 14.6px; font-weight: 700; line-height: 1.45; }
+  .fact-label { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .simple-box { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 18px 20px; box-shadow: var(--shadow); margin-top: 22px; }
+  .simple-box h3 { margin-top: 0; font-size: 22px; }
+  .simple-box p  { font-size: 17px; }
+  .legend-box { margin-top: 22px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin: 12px 0 10px; }
+  .legend-item { background: #f8f3ec; border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .legend-item strong { display: block; font-size: 25px; line-height: 1; color: var(--wine); margin-bottom: 6px; }
+  .legend-item span   { display: block; font-size: 15px; color: var(--ink); font-weight: 700; }
+  .footer { margin-top: 30px; color: var(--muted); font-size: 14px; }
+  .tiny   { font-size: 14px; color: var(--muted); }
+  @media (max-width: 640px) {
+    .hero { padding: 24px 20px; } .hero p { font-size: 18px; }
+    .card h3 { font-size: 22px; } .section-title { font-size: 24px; }
+    .card p, .card li, .simple-box p { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Sonoma Chef | Next 60 Days — March 30 to May 29, 2026</div>
+    <h1>Foodie Events — Next 60 Days</h1>
+    <p>Your Sonoma Chef cheat sheet for the next 60 days — Healdsburg, Sebastopol, Windsor, Santa Rosa, Cloverdale, Point Reyes, and northern Sonoma County.</p>
+    <div class="note">The filter: Does this event taste like Sonoma? Real producers. Spring farms you can walk. Wine from people who know the block it came from. Cheese that started as milk this season. That's what made the cut.</div>
+  </section>
+  <div class="simple-box legend-box">
+    <h3>Price guide</h3>
+    <div class="legend-grid">
+      <div class="legend-item"><strong>$</strong><span>Under $50</span></div>
+      <div class="legend-item"><strong>$$</strong><span>$50 to $100</span></div>
+      <div class="legend-item"><strong>$$$</strong><span>$100 to $200</span></div>
+      <div class="legend-item"><strong>$$$$</strong><span>$201 or more</span></div>
+    </div>
+    <p class="tiny">Price is per person for a typical meal, or the posted ticket price for special dinners. Some cards show both.</p>
+  </div>
+  <h2 class="section-title">The short list</h2>
+  <p class="subnote">Gold badge = don't miss it. Start here if your calendar is filling up.</p>
+  <div class="grid">
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Windsor + Santa Rosa</span>
+      <h3>Pliny the Younger — Final 3 Days</h3>
+      <div class="meta">Through April 2, 2026 · Russian River Brewing</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$ per pour + food</div></div>
+      <p>Closes Thursday April 2. Both pubs, walk in, no reservations. Last chance this year.</p><div class="why"><strong>Why go:</strong> You have three days. Go now.</div>
+      <div class="button-row"><a class="button" href="https://www.russianriverbrewing.com/pliny-the-younger-release/" target="_blank" rel="noopener">Open release info</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Alexander Valley</span>
+      <h3>TASTE Alexander Valley — All of April</h3>
+      <div class="meta">April 1–30, 2026 · Alexander Valley wineries</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>Free tastings + 10% off wine</div></div>
+      <p>The entire month of April. 25+ wineries, complimentary tastings, 10% off wine. No ticket counters. Build your own tasting day at your own pace.</p><div class="why"><strong>Why go:</strong> The right way to taste a wine region.</div>
+      <div class="button-row"><a class="button" href="https://alexandervalley.org/taste-alexander-valley/" target="_blank" rel="noopener">Open event</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Sebastopol</span>
+      <h3>Apple Blossom Parade &amp; Festival — 80th Annual</h3>
+      <div class="meta">April 25–26, 2026 · Downtown Sebastopol + Ives Park</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$ festival · Free parade</div></div>
+      <p>The 80th annual, theme Blossoms of Oz. Saturday 10 AM parade down Main Street. Festival at Ives Park Saturday 11 AM–6 PM and Sunday 11 AM–5 PM. Art show at Sebastopol Center for the Arts both days. Live music, food, local wine and cider, artisan vendors.</p><ul><li>Parade: Saturday April 25, 10 AM · Main Street</li><li>Festival: Saturday–Sunday at Ives Park</li></ul><div class="why"><strong>Why go:</strong> Old Sebastopol. Orchard roots. Community energy that doesn't try to be anything else.</div>
+      <div class="button-row"><a class="button" href="https://www.appleblossomfest.com/" target="_blank" rel="noopener">Open festival</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Healdsburg</span><span class="tag ">Dry Creek Valley</span>
+      <h3>Passport to Dry Creek Valley — 35th Anniversary</h3>
+      <div class="meta">April 24–26, 2026 · Dry Creek Valley, Healdsburg</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$$$ weekend passport · $$ single-day</div></div>
+      <p>Three days, 50+ wineries, celebrity chefs, live music and DJ. Friday Twilight Welcome Party at Bacchus Landing with Chef Kevin O'Connor open-fire cooking — denim on denim dress code. Saturday Toast &amp; Taste 9:30–11 AM. New this year: single-day passes.</p><ul><li>Friday night Welcome Party: open-fire cooking + 20+ winery pours</li><li>Saturday Toast &amp; Taste: Bacchus Landing, 9:30–11 AM</li><li>35th anniversary — the biggest year yet</li></ul><div class="why"><strong>Why go:</strong> Three days inside Dry Creek Valley. The Friday fire-cook alone is worth coming early for.</div>
+      <div class="button-row"><a class="button" href="https://www.drycreekvalley.org/dcv-passport/" target="_blank" rel="noopener">Open event</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Countywide</span><span class="tag needtag">Most Sonoma Chef</span>
+      <h3>Farm Trails Spring Tour — Blossoms, Bees &amp; Barnyard Babies</h3>
+      <div class="meta">May 2–3, 2026 · Dozens of farms countywide</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>Free — register at farmtrails.org</div></div>
+      <p>Two days, dozens of Sonoma County farms open their gates. Spring fields, newborn animals, tastings, workshops, farm stands, and farm-to-table snacks. Free registration required — gives you access to the insider guide and interactive map. Not all farms open both days.</p><ul><li>Free registration required at farmtrails.org/experience/spring-tour-2</li><li>Some stops have additional fees or require advance RSVP</li><li>Best done with kids or anyone who wants to meet the people behind the food</li></ul><div class="why"><strong>Why go:</strong> You can taste terroir in a tasting room. Out here you can see it, smell it, and shake the hand of the person who grew it.</div>
+      <div class="button-row"><a class="button" href="https://www.farmtrails.org/experience/spring-tour-2/" target="_blank" rel="noopener">Open event</a><a class="button secondary" href="https://www.eventbrite.com/e/sonoma-county-farm-trails-spring-farm-tour-may-2-3-tickets-1982302700740" target="_blank" rel="noopener">Register free</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Healdsburg</span><span class="tag ">Wine + Food</span>
+      <h3>Healdsburg Wine &amp; Food Experience</h3>
+      <div class="meta">May 14–17, 2026 · Healdsburg</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$$ – $$$$ by session</div></div>
+      <p>Four days: farmers, growers, winemakers, and chefs from Sonoma County and beyond at The Matheson, The Madrona, and Montage Healdsburg. Vineyard tours, chef demos, wine seminars, grand tasting, winemaker dinners. Proceeds benefit the FFA Healdsburg Chapter and Fundaci&oacute;n de la Voz de los Vi&ntilde;edos. Saturday Grand Tasting is the centerpiece — 150+ wine producers, nationally recognized chefs.</p><ul><li>Saturday Grand Tasting: 12–4 PM (VIP early entry 11 AM)</li><li>Venues: The Matheson, The Madrona, Montage Healdsburg</li><li>Proceeds support vineyard workers' scholarship fund</li></ul><div class="why"><strong>Why go:</strong> If you do one wine-and-food splurge in this 60-day window, this is the one.</div>
+      <div class="button-row"><a class="button" href="https://www.healdsburgwineandfood.com/" target="_blank" rel="noopener">Open event</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Point Reyes</span><span class="tag needtag">Field trip</span>
+      <h3>Food &amp; Farm Tours — Point Reyes / West Marin</h3>
+      <div class="meta">Saturdays &amp; Sundays · West Marin · Book ahead</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$$ guided tour + farm lunch</div></div>
+      <p>Small-group guided tours: oyster farm, meadery, organic vegetable farm, cheese producer, farm-to-table lunch. 4–8 guests per tour.</p><div class="why"><strong>Why go:</strong> The coastal version of what farm-to-table actually means.</div>
+      <div class="button-row"><a class="button" href="https://foodandfarmtours.com/" target="_blank" rel="noopener">Open &amp; book</a></div>
+    </article>
+  </div>
+  <h2 class="section-title">City-by-city picks</h2>
+  <p class="subnote">Scan by town. Click through before you go.</p>
+  <div class="grid">
+    <article class="card">
+      <span class="tag ">Sebastopol</span><span class="tag needtag">Weekly anchor</span>
+      <h3>Sebastopol Farmers Market</h3>
+      <div class="meta">Every Sunday · Downtown Sebastopol</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>Free — pay for what you buy</div></div>
+      <p>Spring into early May: asparagus, strawberries, snap peas. Show up early. Buy what looks alive.</p>
+      <div class="button-row"><a class="button" href="https://www.sebastopolfarmersmarket.org/" target="_blank" rel="noopener">Open market</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Point Reyes</span><span class="tag ">Reservation only</span>
+      <h3>The Fork — Point Reyes Farmstead Cheese Co.</h3>
+      <div class="meta">Saturdays &amp; Sundays · Point Reyes Station</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$ tasting · $$ tasting + lunch</div></div>
+      <p>Hosted cheeseboard and seasonal chef's lunch at The Fork overlooking Tomales Bay. Reservation required.</p>
+      <div class="button-row"><a class="button" href="https://pointreyescheese.com/pages/tastings-at-the-farm" target="_blank" rel="noopener">Open tasting</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Point Reyes + Marshall</span><span class="tag needtag">Coast day</span>
+      <h3>Hog Island Oyster Bar</h3>
+      <div class="meta">Fri–Mon · Marshall, Tomales Bay · Reservation required</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$$</div></div>
+      <p>Outdoor oyster bar on Tomales Bay. Raw, BBQ, chowder. Friday through Monday.</p>
+      <div class="button-row"><a class="button" href="https://hogislandoysters.com/restaurants/the-boat/" target="_blank" rel="noopener">Open oyster bar</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Cloverdale</span><span class="tag needtag">Sleeper pick</span>
+      <h3>J. Rickards Winery — Weekend Tasting</h3>
+      <div class="meta">Saturday–Sunday · 24505 Chianti Rd, Cloverdale</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$</div></div>
+      <p>Independent producer. Good Zinfandel, Cabernet, Petite Sirah. No crowds, no ticket fees.</p>
+      <div class="button-row"><a class="button" href="https://www.jrickardswinery.com/" target="_blank" rel="noopener">Open winery</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Santa Rosa</span><span class="tag newtag">Seasonal</span>
+      <h3>Bees N Blooms Spring Plant Sale</h3>
+      <div class="meta">Fridays–Sundays through May 18 · Santa Rosa</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>Free entry — pay for plants</div></div>
+      <p>Edible plants, flowers, pollinators at a working Santa Rosa farm. More working farm than formal festival.</p><div class="why"><strong>Why go:</strong> You leave with something to plant. That's always a good souvenir.</div>
+      <div class="button-row"><a class="button" href="https://www.farmtrails.org/event/spring-plant-sale-at-bees-n-blooms/2026-04-12/" target="_blank" rel="noopener">Open event</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Guerneville</span><span class="tag ">River country</span>
+      <h3>Boon Eat + Drink — Guerneville</h3>
+      <div class="meta">Ongoing · 16248 Main St, Guerneville</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$$ dinner</div></div>
+      <p>Approachable, farm-sourced, river-town energy. The casual end of the Russian River corridor. Good for a low-key dinner after a day at the wineries or the river.</p>
+      <div class="button-row"><a class="button" href="https://www.booneatanddrink.com/" target="_blank" rel="noopener">Open restaurant</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Healdsburg</span><span class="tag newtag">Opening soon</span>
+      <h3>Healdsburg Farmers Market</h3>
+      <div class="meta">Saturdays starting May · Downtown Healdsburg plaza</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>Free — pay for what you buy</div></div>
+      <p>Opens for its Saturday season in May. Local growers, cheese, bread, cut flowers, prepared food vendors. One of the stronger northern Sonoma County markets once it hits its stride.</p>
+      <div class="button-row"><a class="button" href="https://www.healdsburgfarmersmarket.org/" target="_blank" rel="noopener">Open market</a></div>
+    </article>
+  </div>
+
+  <div class="simple-box"><h3>Sonoma Chef's best use of three weekends</h3><p><strong>Weekend 1 (April 24–26):</strong> Apple Blossom Parade and Festival in Sebastopol + Passport to Dry Creek Valley in Healdsburg. Friday night open-fire cook in Healdsburg at the Passport Twilight Welcome Party. Saturday parade in Sebastopol at 10 AM. Saturday afternoon and Sunday back in Dry Creek Valley.</p><p><strong>Weekend 2 (May 2–3):</strong> Farm Trails Spring Tour countywide — walk the farms Saturday, Sebastopol Farmers Market Sunday as the debrief. The contrast between the festival energy of the previous weekend and the quiet farm-gate morning is the point.</p><p><strong>Weekend 3 (May 14–17):</strong> Healdsburg Wine &amp; Food Experience. By mid-May the spring produce season is fully awake. The menus and the pairings will show it.</p><p><em>Three weekends, three completely different registers — community parade and orchard energy, farm-gate quiet, and big-tent food and wine culture. All inside 60 days of the same spring season.</em></p></div>
+  <div class="simple-box"><h3>How this list was chosen</h3><p>All major events have been verified with current URLs. Apple Blossom Festival is confirmed April 25–26, 2026 as the 80th annual from the official Sebastopol Chamber site. Passport to Dry Creek Valley is confirmed April 24–26 from the official DCV Winegrowers site. Farm Trails Spring Tour is confirmed May 2–3. Healdsburg Wine &amp; Food Experience is confirmed May 14–17.</p><p>Point Reyes and West Marin events stretch outside Sonoma County proper but belong here — same ecosystem, same agricultural values. The fog, the coast, the estuary — one continuous food landscape.</p></div>
+  <div class="simple-box">
+    <h3>Check these sources directly</h3>
+    <p>
+      <a href="https://www.sonomacounty.com/events/" target="_blank" rel="noopener">sonomacounty.com/events</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.wineroad.com/events/" target="_blank" rel="noopener">wineroad.com/events</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.exploretock.com/city/sonoma-county/" target="_blank" rel="noopener">exploretock.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.farmtrails.org/events/" target="_blank" rel="noopener">farmtrails.org/events</a> &nbsp;&middot;&nbsp;
+      <a href="https://thesonomalocal.com/events-calendar/" target="_blank" rel="noopener">thesonomalocal.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.drycreekvalley.org/" target="_blank" rel="noopener">drycreekvalley.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://alexandervalley.org/" target="_blank" rel="noopener">alexandervalley.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.russianriverbrewing.com/" target="_blank" rel="noopener">russianriverbrewing.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.appleblossomfest.com/" target="_blank" rel="noopener">appleblossomfest.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.healdsburgwineandfood.com/" target="_blank" rel="noopener">healdsburgwineandfood.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://foodandfarmtours.com/" target="_blank" rel="noopener">foodandfarmtours.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.visitmarin.org/event-calendar/" target="_blank" rel="noopener">visitmarin.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://bohemian.com/events-calendar/" target="_blank" rel="noopener">bohemian.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.sebastopolfarmersmarket.org/" target="_blank" rel="noopener">sebastopolfarmersmarket.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://golocal.coop/calendar/" target="_blank" rel="noopener">golocal.coop</a>
+    </p>
+    <p class="tiny">Always click through before you go. Dates, ticketing, and availability can change.</p>
+  </div>
+  <p class="footer">Prepared in the voice of Sonoma Chef — next 60 days from March 30, 2026. Always click through before you go — dates, ticketing, and availability can change.</p>
+</div>
+</body>
+</html>

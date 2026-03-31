@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Loader2, Trash2, MapPin, Wine, Utensils } from "lucide-react";
+import { Loader2, Trash2, MapPin, Wine, Utensils, Leaf } from "lucide-react";
 import { format } from "date-fns";
 
 // Fix Leaflet default icon issues
@@ -25,11 +25,14 @@ L.Icon.Default.mergeOptions({
 });
 
 // Create custom icons
-const createCustomIcon = (type: "winery" | "restaurant") => {
-  const isWinery = type === "winery";
-  const bgColor = isWinery ? "bg-primary" : "bg-secondary";
-  const iconSvg = isWinery 
+const createCustomIcon = (type: "winery" | "restaurant" | "farmstand" | string) => {
+  const bgColor = type === "winery" ? "bg-primary" 
+    : type === "farmstand" ? "bg-[#6f7d3c]"
+    : "bg-secondary";
+  const iconSvg = type === "winery"
     ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg>`
+    : type === "farmstand"
+    ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`
     : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`;
     
   return new L.DivIcon({
@@ -73,7 +76,7 @@ export function MapComponent({ activeFilter }: { activeFilter: string }) {
   const deleteMarker = useDeleteMarker();
   
   const [draftMarker, setDraftMarker] = useState<L.LatLng | null>(null);
-  const [formData, setFormData] = useState({ name: "", note: "", category: "winery" as "winery" | "restaurant" });
+  const [formData, setFormData] = useState({ name: "", note: "", category: "winery" as "winery" | "restaurant" | "farmstand" });
   
   const handleMapClick = useCallback((latlng: L.LatLng) => {
     setDraftMarker(latlng);
@@ -138,7 +141,9 @@ export function MapComponent({ activeFilter }: { activeFilter: string }) {
             <div className="p-1">
               <div className="flex items-center justify-between mb-2">
                 <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium bg-muted text-muted-foreground uppercase tracking-wider">
-                  {marker.category === "winery" ? <Wine className="w-3 h-3" /> : <Utensils className="w-3 h-3" />}
+                  {marker.category === "winery" ? <Wine className="w-3 h-3" /> 
+                  : marker.category === "farmstand" ? <Leaf className="w-3 h-3" />
+                  : <Utensils className="w-3 h-3" />}
                   {marker.category}
                 </span>
                 <span className="text-[10px] text-muted-foreground font-mono">
@@ -209,11 +214,11 @@ export function MapComponent({ activeFilter }: { activeFilter: string }) {
 
                 <div className="space-y-2 pt-1">
                   <Label className="text-xs font-medium text-foreground">Category</Label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-3 gap-2">
                     <button
                       type="button"
                       onClick={() => setFormData(p => ({ ...p, category: "winery" }))}
-                      className={`flex items-center justify-center gap-2 py-2 px-3 rounded-md border text-sm font-medium transition-colors
+                      className={`flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-md border text-xs font-medium transition-colors
                         ${formData.category === "winery" 
                           ? "bg-primary text-primary-foreground border-primary" 
                           : "bg-background text-muted-foreground border-border hover:bg-muted"}`}
@@ -224,13 +229,24 @@ export function MapComponent({ activeFilter }: { activeFilter: string }) {
                     <button
                       type="button"
                       onClick={() => setFormData(p => ({ ...p, category: "restaurant" }))}
-                      className={`flex items-center justify-center gap-2 py-2 px-3 rounded-md border text-sm font-medium transition-colors
+                      className={`flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-md border text-xs font-medium transition-colors
                         ${formData.category === "restaurant" 
                           ? "bg-secondary text-secondary-foreground border-secondary" 
                           : "bg-background text-muted-foreground border-border hover:bg-muted"}`}
                     >
                       <Utensils className="w-4 h-4" />
                       Dining
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData(p => ({ ...p, category: "farmstand" }))}
+                      className={`flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-md border text-xs font-medium transition-colors
+                        ${formData.category === "farmstand" 
+                          ? "bg-[#6f7d3c] text-white border-[#6f7d3c]" 
+                          : "bg-background text-muted-foreground border-border hover:bg-muted"}`}
+                    >
+                      <Leaf className="w-4 h-4" />
+                      Farm
                     </button>
                   </div>
                 </div>

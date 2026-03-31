@@ -1,12 +1,12 @@
 import { useGetMarkerStats, useGetMarkers, getGetMarkersQueryKey, getGetMarkerStatsQueryKey } from "@workspace/api-client-react";
-import { Wine, Utensils, MapPin, Loader2 } from "lucide-react";
+import { Wine, Utensils, MapPin, Loader2, Leaf } from "lucide-react";
 import { format } from "date-fns";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
-  activeFilter: "all" | "winery" | "restaurant";
-  setActiveFilter: (filter: "all" | "winery" | "restaurant") => void;
+  activeFilter: "all" | "winery" | "restaurant" | "farmstand";
+  setActiveFilter: (filter: "all" | "winery" | "restaurant" | "farmstand") => void;
 }
 
 export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
@@ -23,6 +23,8 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
     return marker.category === activeFilter;
   });
 
+  const farmstands = (stats as any)?.farmstands ?? 0;
+
   return (
     <div className="w-80 h-full bg-card border-r border-border shadow-xl flex flex-col z-10 relative">
       {/* Header */}
@@ -34,8 +36,8 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
       </div>
 
       {/* Stats & Filters */}
-      <div className="p-6 border-b border-border bg-card/50">
-        <div className="grid grid-cols-3 gap-2 mb-6">
+      <div className="p-4 border-b border-border bg-card/50">
+        <div className="grid grid-cols-2 gap-2 mb-2">
           <button 
             onClick={() => setActiveFilter("all")}
             className={cn(
@@ -67,7 +69,9 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
             </span>
             <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Wineries</span>
           </button>
+        </div>
 
+        <div className="grid grid-cols-2 gap-2">
           <button 
             onClick={() => setActiveFilter("restaurant")}
             className={cn(
@@ -82,6 +86,22 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
               {statsLoading ? "-" : (stats?.restaurants || 0)}
             </span>
             <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Dining</span>
+          </button>
+
+          <button 
+            onClick={() => setActiveFilter("farmstand")}
+            className={cn(
+              "flex flex-col items-center justify-center p-3 rounded-xl border transition-all",
+              activeFilter === "farmstand" 
+                ? "bg-background border-olive/20 shadow-sm ring-1 ring-olive/30" 
+                : "bg-transparent border-transparent hover:bg-muted"
+            )}
+          >
+            <Leaf className={cn("w-5 h-5 mb-1.5", activeFilter === "farmstand" ? "text-[#6f7d3c]" : "text-muted-foreground")} />
+            <span className="text-xl font-serif font-medium leading-none mb-1 text-foreground">
+              {statsLoading ? "-" : farmstands}
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Farms</span>
           </button>
         </div>
       </div>
@@ -113,10 +133,14 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="font-serif font-semibold text-foreground text-lg leading-tight">{marker.name}</h3>
                   <div className={cn(
-                    "p-1.5 rounded-full",
-                    marker.category === "winery" ? "bg-primary/10 text-primary" : "bg-secondary/10 text-secondary"
+                    "p-1.5 rounded-full shrink-0 ml-2",
+                    marker.category === "winery" ? "bg-primary/10 text-primary" 
+                    : marker.category === "farmstand" ? "bg-[#6f7d3c]/10 text-[#6f7d3c]"
+                    : "bg-secondary/10 text-secondary"
                   )}>
-                    {marker.category === "winery" ? <Wine className="w-3.5 h-3.5" /> : <Utensils className="w-3.5 h-3.5" />}
+                    {marker.category === "winery" ? <Wine className="w-3.5 h-3.5" /> 
+                    : marker.category === "farmstand" ? <Leaf className="w-3.5 h-3.5" />
+                    : <Utensils className="w-3.5 h-3.5" />}
                   </div>
                 </div>
                 {marker.note && (

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonoma Chef | Foodie Events — This Weekend</title>
+<style>
+  :root {
+    --bg: #f7f1e8; --paper: #fffdf9; --ink: #2b2118; --muted: #6c5a48;
+    --olive: #6f7d3c; --wine: #7a2f3b; --gold: #c48a3a; --line: #e8ddcf;
+    --shadow: 0 12px 30px rgba(69,43,22,0.10); --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(196,138,58,0.08), transparent 28%),
+      radial-gradient(circle at top right, rgba(122,47,59,0.08), transparent 24%),
+      var(--bg);
+    line-height: 1.58;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 20px 56px; }
+  .hero {
+    background: linear-gradient(135deg, rgba(122,47,59,0.97), rgba(111,125,60,0.94));
+    color: white; border-radius: 28px; padding: 34px 30px; box-shadow: var(--shadow);
+  }
+  .eyebrow {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 999px;
+    padding: 8px 14px; font-size: 13px; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  h1 { margin: 0 0 10px; font-size: clamp(32px,4.8vw,56px); line-height: 1.05; }
+  .hero p { font-size: 20px; max-width: 900px; margin: 0; }
+  .note {
+    margin-top: 18px; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 18px;
+    padding: 14px 16px; font-size: 15px;
+  }
+  .section-title { margin: 34px 0 14px; font-size: 28px; }
+  .subnote { margin: 0 0 18px; color: var(--muted); font-size: 17px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr)); gap: 18px; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .card h3 { margin: 0 0 10px; font-size: 25px; line-height: 1.15; }
+  .card p, .card li { font-size: 16.8px; }
+  .meta { color: var(--muted); font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+  .tag { display: inline-block; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; margin: 0 8px 10px 0; background: #f3eadf; color: var(--wine); border: 1px solid #ead7c0; }
+  .must    { background: #fbf4cf; color: #6a4d00; border: 1px solid #efd978; }
+  .newtag  { background: #eef4fb; color: #365a7d; border: 1px solid #cfdeef; }
+  .needtag { background: #eef6ef; color: #3e653d; border: 1px solid #d3e3d2; }
+  .why { background: #f7f8ef; border-left: 5px solid var(--olive); border-radius: 14px; padding: 12px 14px; margin: 14px 0; }
+  .why strong { display: block; margin-bottom: 6px; }
+  ul { padding-left: 22px; margin: 10px 0 14px; }
+  li { margin: 6px 0; }
+  a { color: var(--wine); font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .button-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .button { display: inline-block; background: var(--wine); color: white; text-decoration: none; padding: 11px 16px; border-radius: 12px; font-size: 15px; }
+  .button.secondary { background: var(--olive); }
+  .fact-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 14px; }
+  .fact { flex: 1 1 auto; background: #faf6f1; border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; font-size: 14.6px; font-weight: 700; line-height: 1.45; }
+  .fact-label { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .simple-box { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 18px 20px; box-shadow: var(--shadow); margin-top: 22px; }
+  .simple-box h3 { margin-top: 0; font-size: 22px; }
+  .simple-box p  { font-size: 17px; }
+  .legend-box { margin-top: 22px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin: 12px 0 10px; }
+  .legend-item { background: #f8f3ec; border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .legend-item strong { display: block; font-size: 25px; line-height: 1; color: var(--wine); margin-bottom: 6px; }
+  .legend-item span   { display: block; font-size: 15px; color: var(--ink); font-weight: 700; }
+  .footer { margin-top: 30px; color: var(--muted); font-size: 14px; }
+  .tiny   { font-size: 14px; color: var(--muted); }
+  @media (max-width: 640px) {
+    .hero { padding: 24px 20px; } .hero p { font-size: 18px; }
+    .card h3 { font-size: 22px; } .section-title { font-size: 24px; }
+    .card p, .card li, .simple-box p { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Sonoma Chef | Next Weekend — March 29 to 30, 2026</div>
+    <h1>Foodie Events — This Weekend</h1>
+    <p>Your Sonoma Chef cut for Saturday March 29 and Sunday March 30 — Windsor, Santa Rosa, Sebastopol, Point Reyes, and West Marin.</p>
+    <div class="note">This is a quiet weekend on the Sonoma County calendar — no major food festivals, which is not a bad thing. The big events of March have wrapped. The spring festival season starts in late April. This weekend is for the standbys: Pliny the Younger's final days, the farmers market, a coastal farm tour, and a long quiet drive up Alexander Valley with no agenda.</div>
+  </section>
+  <div class="simple-box legend-box">
+    <h3>Price guide</h3>
+    <div class="legend-grid">
+      <div class="legend-item"><strong>$</strong><span>Under $50</span></div>
+      <div class="legend-item"><strong>$$</strong><span>$50 to $100</span></div>
+      <div class="legend-item"><strong>$$$</strong><span>$100 to $200</span></div>
+      <div class="legend-item"><strong>$$$$</strong><span>$201 or more</span></div>
+    </div>
+    <p class="tiny">Price is per person for a typical meal, or the posted ticket price for special dinners. Some cards show both.</p>
+  </div>
+  <h2 class="section-title">This weekend's short list</h2>
+  <p class="subnote">Everything here is confirmed for Saturday March 29 or Sunday March 30. Gold badge = the clearest yes.</p>
+  <div class="grid">
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Windsor + Santa Rosa</span><span class="tag ">Beer</span>
+      <h3>Pliny the Younger — Last Days on Tap</h3>
+      <div class="meta">Through April 2, 2026 · Russian River Brewing — Windsor &amp; Santa Rosa</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$ per pour + food</div></div>
+      <p>The annual triple IPA release closes out this week. If you haven't gone yet, this weekend is your last easy shot before it wraps April 2. Windsor moves faster on Saturday mornings; Santa Rosa has more seats. Both are worth it.</p><ul><li>Windsor: 700 Mitchell Lane, Windsor</li><li>Santa Rosa: 725 4th St, Santa Rosa</li><li>No reservations — walk in, order at the bar</li></ul><div class="why"><strong>Why go:</strong> The most talked-about triple IPA in the country. On tap for exactly two weeks a year. This is the last weekend.</div>
+      <div class="button-row"><a class="button" href="https://www.russianriverbrewing.com/pliny-the-younger-release/" target="_blank" rel="noopener">Open release info</a><a class="button secondary" href="https://www.russianriverbrewing.com/" target="_blank" rel="noopener">Open brewery site</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Point Reyes</span><span class="tag needtag">Field trip</span>
+      <h3>Food &amp; Farm Tours — Point Reyes / West Marin</h3>
+      <div class="meta">Saturdays &amp; Sundays · West Marin · Book ahead</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$$ guided tour + farm lunch</div></div>
+      <p>Behind-the-scenes guided tours through West Marin stopping at a working oyster farm, meadery, organic vegetable farm, and cheese producer — ending with a farm-to-table lunch on site. Public tours are capped at 6–8 guests. Private and custom group tours also available.</p><ul><li>Oyster farm, meadery, organic veggies, cheese, farm lunch — one day</li><li>Public minimum: 4 guests · book early, fills fast</li></ul><div class="why"><strong>Why go:</strong> Fog, salt air, raw oysters, spring vegetables. This is what farm-to-table actually means — not a menu descriptor.</div>
+      <div class="button-row"><a class="button" href="https://foodandfarmtours.com/" target="_blank" rel="noopener">Open &amp; book</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Sebastopol</span><span class="tag needtag">Weekly anchor</span>
+      <h3>Sebastopol Farmers Market</h3>
+      <div class="meta">Sunday March 30 · Downtown Sebastopol · Every Sunday year-round</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>Free — pay for what you buy</div></div>
+      <p>Late March means asparagus at its spring peak, the first strawberries of the season just beginning, snap peas, spring onions, fresh chevre from the dairies. Show up early. Buy what looks alive.</p><div class="why"><strong>Why go:</strong> For ingredient people, this is a weekly non-negotiable. Not a backup plan.</div>
+      <div class="button-row"><a class="button" href="https://www.sebastopolfarmersmarket.org/" target="_blank" rel="noopener">Open market</a></div>
+    </article>
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag ">Point Reyes</span><span class="tag ">Reservation only</span>
+      <h3>Cheese Lovers Tasting + Chef's Lunch at The Fork</h3>
+      <div class="meta">Saturdays &amp; Sundays · Point Reyes Farmstead Cheese Co.</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$ tasting · $$ tasting + seasonal lunch</div></div>
+      <p>A hosted cheeseboard with farm context, then a seasonal chef's lunch at The Fork — a glass-and-timber room overlooking Tomales Bay. Quiet. No crowds. The kind of meal that doesn't try to be more than it is, and doesn't need to.</p><ul><li>Reservation required — book in advance</li><li>Lunch menu changes with the season and what's on the farm</li></ul><div class="why"><strong>Why go:</strong> Point Reyes Farmstead has been doing this longer than most farm-table restaurants have existed. It shows.</div>
+      <div class="button-row"><a class="button" href="https://pointreyescheese.com/pages/tastings-at-the-farm" target="_blank" rel="noopener">Open tasting page</a></div>
+    </article>
+  </div>
+  <h2 class="section-title">More picks for Saturday and Sunday</h2>
+  <p class="subnote">All happening this weekend. Click through to confirm hours.</p>
+  <div class="grid">
+    <article class="card">
+      <span class="tag ">Point Reyes + Marshall</span><span class="tag needtag">Coast day</span>
+      <h3>Hog Island Oyster Bar — Tomales Bay</h3>
+      <div class="meta">Friday–Monday · Marshall, CA · Reservation required</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$$</div></div>
+      <p>Outdoor oyster bar on Tomales Bay. Raw oysters, BBQ oysters, clam chowder, seasonal specials. Friday through Monday only — book ahead, it fills by midweek.</p><ul><li>Book through exploretock.com or hogislandoysters.com</li><li>Marshall is 45 min from Healdsburg, 1 hr from Santa Rosa</li></ul><div class="why"><strong>Why go:</strong> Simplest possible argument for this coast. Oyster, shell, salt air.</div>
+      <div class="button-row"><a class="button" href="https://hogislandoysters.com/restaurants/the-boat/" target="_blank" rel="noopener">Open oyster bar</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Alexander Valley</span><span class="tag ">Quiet weekend tasting</span>
+      <h3>Alexander Valley Wineries — Open Tasting</h3>
+      <div class="meta">Saturday–Sunday · Cloverdale to Healdsburg corridor</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$ – $$</div></div>
+      <p>The post-festival lull makes this the right weekend for a quiet drive up the Alexander Valley. Geyserville, Cloverdale, and the Gauer Ranch area wineries are less crowded the last weekend of March than at any point in spring or summer. Pick two or three, take your time.</p><ul><li>Alexander Valley Winegrowers site lists all open tasting rooms</li><li>Cloverdale end is the quietest and most underrated</li></ul>
+      <div class="button-row"><a class="button" href="https://alexandervalley.org/" target="_blank" rel="noopener">Open AVW</a></div>
+    </article>
+    <article class="card">
+      <span class="tag ">Santa Rosa + Windsor</span><span class="tag ">Beer</span>
+      <h3>Russian River Brewing — Regular Taproom</h3>
+      <div class="meta">Daily · Windsor (700 Mitchell Lane) &amp; Santa Rosa (725 4th St)</div>
+      <div class="fact-row"><div class="fact"><span class="fact-label">Price</span>$ – $$</div></div>
+      <p>Even outside the Pliny the Younger window, Russian River is one of the best breweries in the country. The permanent menu — Blind Pig IPA, Pliny the Elder, Supplication, Perdition — is outstanding. Food is solid.</p>
+      <div class="button-row"><a class="button" href="https://www.russianriverbrewing.com/" target="_blank" rel="noopener">Open brewery</a></div>
+    </article>
+  </div>
+
+  <div class="simple-box"><h3>Sonoma Chef's tightest weekend plan</h3><p><strong>Saturday:</strong> Russian River Brewing Windsor for Pliny the Younger before it closes April 2 — go early, the line is shorter at opening. Then drive west through Sebastopol toward the coast. Hog Island oyster bar on Tomales Bay if you have a reservation. If not, The Fork at Point Reyes Farmstead for a cheese tasting.</p><p><strong>Sunday:</strong> Sebastopol Farmers Market first thing — last week of March asparagus, first strawberries. Then The Fork at Point Reyes Farmstead if you didn't go Saturday, or a quiet drive up Alexander Valley with two or three winery stops.</p><p><em>No headline event this weekend. That's fine. The quiet weekends are when the tasting rooms are actually worth visiting.</em></p></div>
+  <div class="simple-box"><h3>How this list was chosen</h3><p>The big March events — Pigs &amp; Pinot, California Artisan Cheese Festival, Sonoma International Film Festival — all wrapped last week. This weekend has no major headline food events confirmed. Rather than pad the list with speculative or unverified events, this guide shows what is reliably open, worth going to, and actually happening on these two specific days.</p><p>Every URL here links to a real page with real information. Pliny the Younger's closing window is the only time-sensitive item. Everything else is reliable weekend infrastructure.</p></div>
+  <div class="simple-box">
+    <h3>Check these sources directly</h3>
+    <p>
+      <a href="https://www.sonomacounty.com/events/" target="_blank" rel="noopener">sonomacounty.com/events</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.wineroad.com/events/" target="_blank" rel="noopener">wineroad.com/events</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.exploretock.com/city/sonoma-county/" target="_blank" rel="noopener">exploretock.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.farmtrails.org/events/" target="_blank" rel="noopener">farmtrails.org/events</a> &nbsp;&middot;&nbsp;
+      <a href="https://thesonomalocal.com/events-calendar/" target="_blank" rel="noopener">thesonomalocal.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.drycreekvalley.org/" target="_blank" rel="noopener">drycreekvalley.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://alexandervalley.org/" target="_blank" rel="noopener">alexandervalley.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.russianriverbrewing.com/" target="_blank" rel="noopener">russianriverbrewing.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.appleblossomfest.com/" target="_blank" rel="noopener">appleblossomfest.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.healdsburgwineandfood.com/" target="_blank" rel="noopener">healdsburgwineandfood.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://foodandfarmtours.com/" target="_blank" rel="noopener">foodandfarmtours.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.visitmarin.org/event-calendar/" target="_blank" rel="noopener">visitmarin.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://bohemian.com/events-calendar/" target="_blank" rel="noopener">bohemian.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.sebastopolfarmersmarket.org/" target="_blank" rel="noopener">sebastopolfarmersmarket.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://golocal.coop/calendar/" target="_blank" rel="noopener">golocal.coop</a>
+    </p>
+    <p class="tiny">Always click through before you go. Dates, ticketing, and availability can change.</p>
+  </div>
+  <p class="footer">Prepared in the voice of Sonoma Chef — weekend of March 29–30, 2026. Always click through before you go — dates, ticketing, and availability can change.</p>
+</div>
+</body>
+</html>
