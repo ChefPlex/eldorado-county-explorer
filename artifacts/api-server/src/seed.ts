@@ -76,6 +76,8 @@ const SEED_DATA = [
   { name: "Baci Café & Wine Bar", note: "The one reliable dinner in downtown Healdsburg on a Monday. Italian classics, good pasta, a wine list full of Sonoma County names, and neighborhood ease when nothing else is open.", category: "restaurant", lat: 38.6097, lng: -122.8701, website: "https://www.bacicafeandwinebar.com" },
   { name: "Acorn Cafe", note: "Breakfast and brunch anchor on the Healdsburg Plaza — the right start for any Healdsburg food day. After hours Thu–Sun it becomes Juju's French-Moroccan pop-up.", category: "restaurant", lat: 38.6104, lng: -122.8687, website: null },
   { name: "Dry Creek Kitchen", note: "Charlie Palmer's flagship Healdsburg restaurant anchoring Hotel Healdsburg — Sonoma sourcing, wine-country ambience, and one of the most reliable kitchens on the plaza.", category: "restaurant", lat: 38.6103, lng: -122.8700, website: "https://www.charliepalmer.com/dry-creek-kitchen" },
+  { name: "Willi's Seafood & Raw Bar", note: "Mark and Terri Stark's lively raw bar on North Healdsburg Ave — oysters, crudo, ceviches, and tapas-style seafood plates in a room that never loses energy. The oyster happy hour is one of the best value stops in the county.", category: "restaurant", lat: 38.6145, lng: -122.8701, website: "https://www.starkrestaurants.com/willis-seafood" },
+  { name: "Bravas Bar de Tapas", note: "The Stark group's Spanish tapas room on Center St — patatas bravas, croquetas, razor clams, and a sherry list that doesn't apologize for itself. The ideal pre- or post-winery hang in Healdsburg.", category: "restaurant", lat: 38.6148, lng: -122.8676, website: "https://www.starkrestaurants.com/bravas" },
 
   // ── RESTAURANTS: ALEXANDER VALLEY / GEYSERVILLE ───────────────────────────
   { name: "Jimtown Store", note: "The historic 1895 country store tucked into the Alexander Valley vines on Highway 128. Fresh-prepared food, homebaked goods, famous chocolate pudding, and the perfect anchor for any Alexander Valley wine day. Open Mondays — rare on this corridor.", category: "restaurant", lat: 38.6585, lng: -122.8197, website: "https://www.jimtown.com" },
@@ -113,6 +115,7 @@ const SEED_DATA = [
   { name: "Bird & The Bottle", note: "The Santa Rosa table for shareable plates, a busy bar, and wood-fired cooking. Best with a group that wants to order widely and pass everything around the table. One of Santa Rosa's most reliable rooms. Open Mondays.", category: "restaurant", lat: 38.4418, lng: -122.7091, website: "https://www.starkrestaurants.com/bird-the-bottle" },
   { name: "Stark's Steak & Seafood", note: "The Santa Rosa anchor for serious steak — Beeman Ranch beef, a wine list that leans Sonoma, and a happy hour that regulars treat as a standing appointment. The $6 martini on Tuesdays is the local secret.", category: "restaurant", lat: 38.4364, lng: -122.7198, website: "https://www.starkrestaurants.com/starks" },
   { name: "Grata Italian Eatery", note: "Chef-owner Eric Foster's Italian kitchen — one of the most underappreciated rooms in north Sonoma County. House-made gnudi, burrata with preserved lemon honey, caramelized pear and endive bruschetta. Open Mondays.", category: "restaurant", lat: 38.5478, lng: -122.8131, website: null },
+  { name: "Willi's Wine Bar", note: "The Stark group's original and arguably their most beloved — 40-plus wines by the glass, a small-plates menu built for grazing, and a warm room that rewards repeat visits. The anchor of the Old Redwood Hwy food corridor north of Santa Rosa.", category: "restaurant", lat: 38.5158, lng: -122.7841, website: "https://www.starkrestaurants.com/willis-wine-bar" },
 
   // ── RESTAURANTS: FORESTVILLE / RUSSIAN RIVER ──────────────────────────────
   { name: "BaSo Annex (Bazaar Sonoma)", note: "After fire hit the original Bazaar Sonoma, chef Sean Quan and Jenny Phan opened an interim café with their best dishes — zhong dumplings with house chili crisp, Taiwan braised pork rice, mapo tofu. Prices $9–$24. One of the most interesting kitchens in the county at the most honest price point.", category: "restaurant", lat: 38.4736, lng: -122.8991, website: null },
@@ -153,14 +156,23 @@ export async function seedIfEmpty() {
     const [row] = await db.select({ count: count() }).from(markersTable);
     const existing = Number(row?.count ?? 0);
 
-    if (existing > 0) {
-      logger.info({ existing }, "Database already seeded — skipping");
+    if (existing === 0) {
+      logger.info("Database is empty — seeding initial data...");
+      const result = await db.insert(markersTable).values(SEED_DATA).returning({ name: markersTable.name });
+      logger.info({ count: result.length }, "Seed complete");
       return;
     }
 
-    logger.info("Database is empty — seeding initial data...");
-    const result = await db.insert(markersTable).values(SEED_DATA).returning({ name: markersTable.name });
-    logger.info({ count: result.length }, "Seed complete");
+    // Insert any new seed entries not yet in the database
+    const rows = await db.select({ name: markersTable.name }).from(markersTable);
+    const existingNames = new Set(rows.map((r) => r.name));
+    const missing = SEED_DATA.filter((s) => !existingNames.has(s.name));
+    if (missing.length > 0) {
+      const result = await db.insert(markersTable).values(missing).returning({ name: markersTable.name });
+      logger.info({ count: result.length, names: result.map((r) => r.name) }, "Inserted new seed entries");
+    } else {
+      logger.info({ existing }, "Database already seeded — skipping");
+    }
   } catch (err) {
     logger.error({ err }, "Seed failed — continuing without seeding");
   }
