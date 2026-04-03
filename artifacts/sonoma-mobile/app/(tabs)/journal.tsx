@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import {
   View,
   Text,
@@ -30,9 +30,9 @@ const FILTERS: { key: FilterType; label: string; icon: IoniconsName }[] = [
 // Central 38.35–38.55: Santa Rosa, Sebastopol, Russian River Valley, West County, Windsor, Glen Ellen
 // Southern < 38.35: Sonoma town, Petaluma, Carneros, Coast, Point Reyes
 const REGIONS = [
-  { key: "north", label: "North Sonoma" },
-  { key: "central", label: "Central Sonoma" },
-  { key: "south", label: "Southern Sonoma" },
+  { key: "north", label: "North", fullLabel: "North Sonoma" },
+  { key: "central", label: "Central", fullLabel: "Central Sonoma" },
+  { key: "south", label: "Southern", fullLabel: "Southern Sonoma" },
 ] as const;
 
 type RegionKey = typeof REGIONS[number]["key"];
@@ -112,59 +112,11 @@ function SectionHeader({ title, count, colors }: { title: string; count: number;
   );
 }
 
-interface ScrollableFiltersProps {
-  filters: { key: FilterType; label: string; icon: IoniconsName }[];
-  activeFilter: FilterType;
-  onSelect: (f: FilterType) => void;
-  getCount: (f: FilterType) => number;
-  colors: ReturnType<typeof useColors>;
-}
-
-function ScrollableFilters({ filters, activeFilter, onSelect, getCount, colors }: ScrollableFiltersProps) {
-  return (
-    <View style={styles.filtersRow}>
-      {filters.map((f) => {
-        const active = f.key === activeFilter;
-        const cnt = getCount(f.key);
-        return (
-          <TouchableOpacity
-            key={f.key}
-            style={[
-              styles.filterChip,
-              {
-                backgroundColor: active ? colors.primary : colors.background,
-                borderColor: active ? colors.primary : colors.border,
-              },
-            ]}
-            onPress={() => onSelect(f.key)}
-            testID={`filter-${f.key}`}
-          >
-            <Ionicons
-              name={f.icon}
-              size={14}
-              color={active ? colors.primaryForeground : colors.mutedForeground}
-            />
-            <Text style={[styles.filterLabel, { color: active ? colors.primaryForeground : colors.foreground }]}>
-              {f.label}
-            </Text>
-            {cnt > 0 && (
-              <View style={[styles.filterCount, { backgroundColor: active ? "rgba(255,255,255,0.25)" : colors.muted }]}>
-                <Text style={[styles.filterCountText, { color: active ? colors.primaryForeground : colors.mutedForeground }]}>
-                  {cnt}
-                </Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-}
-
 export default function JournalScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const listRef = useRef<SectionList<Marker>>(null);
 
   const { data: markers = [], isLoading } = useGetMarkers();
   const { data: stats } = useGetMarkerStats();
@@ -194,13 +146,32 @@ export default function JournalScreen() {
     return REGIONS
       .map((r) => ({
         key: r.key,
-        title: r.label,
+        title: r.fullLabel,
         data: byRegion[r.key].sort((a, b) => a.name.localeCompare(b.name)),
       }))
       .filter((s) => s.data.length > 0);
   }, [markers, activeFilter]);
 
   const totalVisible = sections.reduce((sum, s) => sum + s.data.length, 0);
+
+  function jumpToRegion(regionKey: RegionKey) {
+    const sectionIndex = sections.findIndex((s) => s.key === regionKey);
+    if (sectionIndex === -1) return;
+    listRef.current?.scrollToLocation({
+      sectionIndex,
+      itemIndex: 0,
+      animated: true,
+      viewOffset: 0,
+    });
+  }
+
+  const regionCounts: Record<RegionKey, number> = useMemo(() => {
+    const counts: Record<RegionKey, number> = { north: 0, central: 0, south: 0 };
+    for (const s of sections) {
+      counts[s.key as RegionKey] = s.data.length;
+    }
+    return counts;
+  }, [sections]);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]} testID="journal-screen">
@@ -210,13 +181,66 @@ export default function JournalScreen() {
           The places worth knowing
         </Text>
 
-        <ScrollableFilters
-          filters={FILTERS}
-          activeFilter={activeFilter}
-          onSelect={setActiveFilter}
-          getCount={getCount}
-          colors={colors}
-        />
+        {/* Category filter chips */}
+        <View style={styles.filtersRow}>
+          {FILTERS.map((f) => {
+            const active = f.key === activeFilter;
+            const cnt = getCount(f.key);
+            return (
+              <TouchableOpacity
+                key={f.key}
+                style={[
+                  styles.filterChip,
+                  {
+                    backgroundColor: active ? colors.primary : colors.background,
+                    borderColor: active ? colors.primary : colors.border,
+                  },
+                ]}
+                onPress={() => setActiveFilter(f.key)}
+                testID={`filter-${f.key}`}
+              >
+                <Ionicons
+                  name={f.icon}
+                  size={14}
+                  color={active ? colors.primaryForeground : colors.mutedForeground}
+                />
+                <Text style={[styles.filterLabel, { color: active ? colors.primaryForeground : colors.foreground }]}>
+                  {f.label}
+                </Text>
+                {cnt > 0 && (
+                  <View style={[styles.filterCount, { backgroundColor: active ? "rgba(255,255,255,0.25)" : colors.muted }]}>
+                    <Text style={[styles.filterCountText, { color: active ? colors.primaryForeground : colors.mutedForeground }]}>
+                      {cnt}
+                    </Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* Region jump bar */}
+        {!isLoading && totalVisible > 0 && (
+          <View style={[styles.regionBar, { borderTopColor: colors.border }]}>
+            {REGIONS.map((r) => {
+              const cnt = regionCounts[r.key];
+              if (cnt === 0) return null;
+              return (
+                <TouchableOpacity
+                  key={r.key}
+                  style={[styles.regionBtn, { borderColor: colors.border }]}
+                  onPress={() => jumpToRegion(r.key)}
+                  testID={`region-jump-${r.key}`}
+                >
+                  <Text style={[styles.regionBtnLabel, { color: colors.foreground }]}>{r.label}</Text>
+                  <View style={[styles.regionBtnCount, { backgroundColor: colors.muted }]}>
+                    <Text style={[styles.regionBtnCountText, { color: colors.mutedForeground }]}>{cnt}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
       </View>
 
       {isLoading ? (
@@ -234,6 +258,7 @@ export default function JournalScreen() {
         </View>
       ) : (
         <SectionList
+          ref={listRef}
           sections={sections}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <SpotRow item={item} />}
@@ -265,7 +290,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 16,
-    paddingBottom: 12,
+    paddingBottom: 0,
     borderBottomWidth: 1,
   },
   headerTitle: {
@@ -282,6 +307,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     flexWrap: "wrap",
+    marginBottom: 12,
   },
   filterChip: {
     flexDirection: "row",
@@ -305,6 +331,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   filterCountText: {
+    fontSize: 11,
+    fontFamily: "Inter_700Bold",
+  },
+  regionBar: {
+    flexDirection: "row",
+    borderTopWidth: 1,
+    marginTop: 4,
+  },
+  regionBtn: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    paddingVertical: 10,
+    borderRightWidth: 0,
+  },
+  regionBtnLabel: {
+    fontSize: 12,
+    fontFamily: "Inter_600SemiBold",
+    letterSpacing: 0.3,
+  },
+  regionBtnCount: {
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 4,
+  },
+  regionBtnCountText: {
     fontSize: 11,
     fontFamily: "Inter_700Bold",
   },
