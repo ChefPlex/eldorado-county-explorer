@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -229,6 +229,7 @@ export default function JournalScreen() {
   const isTablet = useIsTablet();
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   const listRef = useRef<SectionList<Marker>>(null);
+  const pendingRegionRef = useRef<RegionKey | null>(null);
 
   const { data: markers = [], isLoading } = useGetMarkers();
   const { data: stats } = useGetMarkerStats();
@@ -266,16 +267,21 @@ export default function JournalScreen() {
 
   const totalVisible = sections.reduce((sum, s) => sum + s.data.length, 0);
 
-  function jumpToRegion(regionKey: RegionKey) {
+  const jumpToRegion = useCallback((regionKey: RegionKey) => {
     const sectionIndex = sections.findIndex((s) => s.key === regionKey);
     if (sectionIndex === -1) return;
-    listRef.current?.scrollToLocation({
-      sectionIndex,
-      itemIndex: 0,
-      animated: true,
-      viewOffset: 0,
-    });
-  }
+    pendingRegionRef.current = regionKey;
+    try {
+      listRef.current?.scrollToLocation({
+        sectionIndex,
+        itemIndex: 0,
+        animated: true,
+        viewOffset: 0,
+      });
+    } catch {
+      // onScrollToIndexFailed will handle retry
+    }
+  }, [sections]);
 
   const regionCounts: Record<RegionKey, number> = useMemo(() => {
     const counts: Record<RegionKey, number> = { north: 0, central: 0, south: 0 };
@@ -319,6 +325,23 @@ export default function JournalScreen() {
       stickySectionHeadersEnabled
       showsVerticalScrollIndicator={false}
       testID="journal-list"
+      onScrollToIndexFailed={() => {
+        const region = pendingRegionRef.current;
+        if (!region) return;
+        setTimeout(() => {
+          const sectionIndex = sections.findIndex((s) => s.key === region);
+          if (sectionIndex === -1) return;
+          try {
+            listRef.current?.scrollToLocation({
+              sectionIndex,
+              itemIndex: 0,
+              animated: true,
+              viewOffset: 0,
+            });
+          } catch { /* ignore */ }
+          pendingRegionRef.current = null;
+        }, 300);
+      }}
       ItemSeparatorComponent={() => <View style={{ height: isTablet ? 12 : 10 }} />}
       SectionSeparatorComponent={() => <View style={{ height: 4 }} />}
     />
