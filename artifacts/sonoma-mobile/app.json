@@ -14,10 +14,14 @@
       "backgroundColor": "#6B2D3E"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Used to show your location on the Sonoma map and find nearby spots."
+      }
     },
     "android": {
-      "package": "com.sonomachefapp.sonoma"
+      "package": "com.sonomachefapp.sonoma",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
     },
     "web": {
       "favicon": "./assets/images/icon.png"
@@ -30,7 +34,13 @@
         }
       ],
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Used to show your location on the Sonoma map and find nearby spots."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

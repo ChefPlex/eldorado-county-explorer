@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -11,9 +11,11 @@ import {
   Alert,
   Platform,
   Linking,
+  Share,
   useWindowDimensions,
 } from "react-native";
 import MapView, { Marker, LongPressEvent } from "react-native-maps";
+import * as Location from "expo-location";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
@@ -68,6 +70,18 @@ interface SpotSheetProps {
   onClose: () => void;
 }
 
+function buildShareMessage(spot: MarkerType) {
+  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : "Farm Stand";
+  const parts: string[] = [
+    `${spot.name} — ${catLabel} in Sonoma County`,
+    "",
+  ];
+  if (spot.note) parts.push(spot.note, "");
+  if (spot.website) parts.push(spot.website);
+  parts.push("", "Shared via the Sonoma Chef app");
+  return parts.join("\n");
+}
+
 function SpotDetailModal({ spot, onClose }: SpotSheetProps) {
   const colors = useColors();
   if (!spot) return null;
@@ -75,6 +89,13 @@ function SpotDetailModal({ spot, onClose }: SpotSheetProps) {
   const catColor = getCategoryColor(spot.category as Category, colors);
   const catIcon = getCategoryIcon(spot.category as Category);
   const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : "Farm";
+
+  const handleShare = async () => {
+    try {
+      await Haptics.selectionAsync();
+      await Share.share({ message: buildShareMessage(spot) });
+    } catch {}
+  };
 
   return (
     <Modal
@@ -90,9 +111,14 @@ function SpotDetailModal({ spot, onClose }: SpotSheetProps) {
             <Ionicons name={catIcon} size={14} color={catColor} />
             <Text style={[styles.categoryLabel, { color: catColor }]}>{catLabel}</Text>
           </View>
-          <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-            <Ionicons name="close" size={22} color={colors.mutedForeground} />
-          </TouchableOpacity>
+          <View style={styles.sheetHeaderActions}>
+            <TouchableOpacity onPress={handleShare} style={styles.closeBtn} testID="share-btn">
+              <Ionicons name="share-outline" size={22} color={colors.mutedForeground} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
+              <Ionicons name="close" size={22} color={colors.mutedForeground} />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <Text style={[styles.spotName, { color: colors.foreground }]}>{spot.name}</Text>
@@ -125,6 +151,13 @@ function SpotDetailPanel({ spot, onClose }: SpotSheetProps) {
   const catIcon = getCategoryIcon(spot.category as Category);
   const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : "Farm";
 
+  const handleShare = async () => {
+    try {
+      await Haptics.selectionAsync();
+      await Share.share({ message: buildShareMessage(spot) });
+    } catch {}
+  };
+
   return (
     <View style={[styles.tabletPanel, { backgroundColor: colors.card, borderLeftColor: colors.border }]}>
       <View style={styles.sheetHeader}>
@@ -132,9 +165,14 @@ function SpotDetailPanel({ spot, onClose }: SpotSheetProps) {
           <Ionicons name={catIcon} size={14} color={catColor} />
           <Text style={[styles.categoryLabel, { color: catColor }]}>{catLabel}</Text>
         </View>
-        <TouchableOpacity onPress={onClose} style={styles.closeBtn} testID="close-panel">
-          <Ionicons name="close" size={22} color={colors.mutedForeground} />
-        </TouchableOpacity>
+        <View style={styles.sheetHeaderActions}>
+          <TouchableOpacity onPress={handleShare} style={styles.closeBtn} testID="share-btn">
+            <Ionicons name="share-outline" size={22} color={colors.mutedForeground} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onClose} style={styles.closeBtn} testID="close-panel">
+            <Ionicons name="close" size={22} color={colors.mutedForeground} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <Text style={[styles.spotName, { color: colors.foreground }]}>{spot.name}</Text>
@@ -369,6 +407,9 @@ export default function MapScreen() {
   const { data: markers = [], isLoading } = useGetMarkers();
   const createMarker = useCreateMarker();
 
+  const mapRef = useRef<MapView>(null);
+  const [locationLoading, setLocationLoading] = useState(false);
+
   const [selectedSpot, setSelectedSpot] = useState<MarkerType | null>(null);
   const [addCoord, setAddCoord] = useState<{ latitude: number; longitude: number } | null>(null);
   const [mapFilter, setMapFilter] = useState<MapFilter>("all");
@@ -422,6 +463,43 @@ export default function MapScreen() {
     },
     [addCoord, createMarker, queryClient]
   );
+
+  const handleNearMe = useCallback(async () => {
+    try {
+      setLocationLoading(true);
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Location access needed",
+          "Enable location in Settings to find spots near you.",
+          [{ text: "OK" }]
+        );
+        return;
+      }
+
+      const loc = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
+
+      mapRef.current?.animateToRegion(
+        {
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+          latitudeDelta: 0.06,
+          longitudeDelta: 0.06,
+        },
+        800
+      );
+
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch {
+      Alert.alert("Location error", "Couldn't get your location. Please try again.");
+    } finally {
+      setLocationLoading(false);
+    }
+  }, []);
 
   const topInset = Platform.OS === "web" ? 67 : insets.top;
   const bottomInset = Platform.OS === "web" ? 84 : insets.bottom;
@@ -497,6 +575,7 @@ export default function MapScreen() {
     <View style={styles.container} testID="map-screen">
       {/* Map fills the full screen */}
       <MapView
+        ref={mapRef}
         style={StyleSheet.absoluteFill}
         initialRegion={{
           latitude: 38.5,
@@ -566,6 +645,28 @@ export default function MapScreen() {
           isTablet={isTablet}
         />
       </View>
+
+      {/* Near Me button — bottom right */}
+      <TouchableOpacity
+        style={[
+          styles.nearMeBtn,
+          {
+            bottom: bottomInset + (isTablet ? 20 : 60),
+            right: 16,
+            backgroundColor: colors.card,
+            shadowColor: "#000",
+          },
+        ]}
+        onPress={handleNearMe}
+        disabled={locationLoading}
+        testID="near-me-btn"
+      >
+        {locationLoading ? (
+          <ActivityIndicator size="small" color={colors.primary} />
+        ) : (
+          <Ionicons name="locate" size={20} color={colors.primary} />
+        )}
+      </TouchableOpacity>
 
       {/* Hint — only on phone (tablet users are more exploratory) */}
       {!isTablet && (
@@ -943,5 +1044,25 @@ const styles = StyleSheet.create({
   panelNoteScroll: {
     flex: 1,
     marginBottom: 16,
+  },
+  // ── Near Me button ───────────────────────────────────────────────────────────
+  nearMeBtn: {
+    position: "absolute",
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  // ── Sheet header actions ─────────────────────────────────────────────────────
+  sheetHeaderActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
 });
