@@ -168,7 +168,7 @@ function SpotDetailModal({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
         {
           text: "Remove",
           style: "destructive",
-          onPress: () => { onDelete(spot.id); onClose(); },
+          onPress: () => onDelete(spot.id),
         },
       ]
     );
@@ -266,7 +266,7 @@ function SpotDetailPanel({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
         {
           text: "Remove",
           style: "destructive",
-          onPress: () => { onDelete(spot.id); onClose(); },
+          onPress: () => onDelete(spot.id),
         },
       ]
     );
@@ -582,7 +582,11 @@ export default function MapScreen() {
           queryClient.invalidateQueries({ queryKey: getGetMarkersQueryKey() });
           queryClient.invalidateQueries({ queryKey: getGetMarkerStatsQueryKey() });
           removeFromList(id);
+          setSelectedSpot(null);
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        },
+        onError: () => {
+          Alert.alert("Could not remove spot", "Something went wrong. Please try again.");
         },
       }
     );
