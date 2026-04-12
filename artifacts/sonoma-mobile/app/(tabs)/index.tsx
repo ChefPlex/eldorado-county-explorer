@@ -332,6 +332,105 @@ function SpotDetailPanel({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
   );
 }
 
+// ── Welcome splash modal ──────────────────────────────────────────────────────
+const WELCOME_KEY = "sonoma-welcome-seen-mobile";
+
+const PIN_LEGEND = [
+  {
+    category: "winery" as Category,
+    label: "Wineries",
+    description: "Curated estates and tasting rooms",
+  },
+  {
+    category: "restaurant" as Category,
+    label: "Restaurants & Bars",
+    description: "Chef-vetted tables worth the drive",
+  },
+  {
+    category: "farmstand" as Category,
+    label: "Farm Stands & Markets",
+    description: "Where the real ingredients come from",
+  },
+];
+
+function WelcomeSplashModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const colors = useColors();
+  return (
+    <Modal
+      visible={visible}
+      animationType="fade"
+      transparent
+      statusBarTranslucent
+      onRequestClose={onClose}
+    >
+      <View style={styles.welcomeOverlay}>
+        <View style={[styles.welcomeCard, { backgroundColor: colors.card }]}>
+          {/* Header */}
+          <View style={[styles.welcomeHeader, { borderBottomColor: colors.border }]}>
+            <TouchableOpacity onPress={onClose} style={styles.welcomeCloseBtn} testID="welcome-close">
+              <Ionicons name="close" size={16} color={colors.mutedForeground} />
+            </TouchableOpacity>
+            <Text style={[styles.welcomeEyebrow, { color: colors.mutedForeground }]}>
+              A CHEF'S GUIDE
+            </Text>
+            <Text style={[styles.welcomeTitle, { color: colors.foreground }]}>
+              Sonoma County
+            </Text>
+            <Text style={[styles.welcomeSubtitle, { color: colors.mutedForeground }]}>
+              137 personally curated spots — wineries, restaurants, and farm stands — verified by a professional chef who actually goes to all of them.
+            </Text>
+          </View>
+
+          {/* Pin legend */}
+          <View style={styles.welcomeSection}>
+            <Text style={[styles.welcomeSectionLabel, { color: colors.mutedForeground }]}>MAP KEY</Text>
+            {PIN_LEGEND.map(({ category, label, description }) => {
+              const catColor = getCategoryColor(category, colors);
+              const catIcon = getCategoryIcon(category);
+              return (
+                <View key={category} style={styles.welcomeLegendRow}>
+                  <View style={[styles.welcomeLegendDot, { backgroundColor: catColor }]}>
+                    <Ionicons name={catIcon} size={13} color="#fff" />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.welcomeLegendLabel, { color: colors.foreground }]}>{label}</Text>
+                    <Text style={[styles.welcomeLegendDesc, { color: colors.mutedForeground }]}>{description}</Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+
+          {/* Tips */}
+          <View style={[styles.welcomeTipsBox, { backgroundColor: colors.muted + "80" }]}>
+            <Text style={[styles.welcomeTip, { color: colors.mutedForeground }]}>
+              <Text style={[styles.welcomeTipBold, { color: colors.foreground }]}>Tap any pin</Text>
+              {" "}to read the chef's notes and visit the website.
+            </Text>
+            <Text style={[styles.welcomeTip, { color: colors.mutedForeground }]}>
+              <Text style={[styles.welcomeTipBold, { color: colors.foreground }]}>Long press</Text>
+              {" "}anywhere on the map to add your own spot.
+            </Text>
+            <Text style={[styles.welcomeTip, { color: colors.mutedForeground }]}>
+              <Text style={[styles.welcomeTipBold, { color: colors.foreground }]}>Bookmark spots</Text>
+              {" "}to build your personal list for the day.
+            </Text>
+          </View>
+
+          {/* CTA */}
+          <TouchableOpacity
+            style={[styles.welcomeBtn, { backgroundColor: colors.primary }]}
+            onPress={onClose}
+            testID="welcome-start"
+          >
+            <Text style={[styles.welcomeBtnText, { color: colors.primaryForeground }]}>Start Exploring</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 // ── Add-spot sheet ────────────────────────────────────────────────────────────
 interface AddSpotSheetProps {
   coordinate: { latitude: number; longitude: number } | null;
@@ -552,6 +651,18 @@ export default function MapScreen() {
   const [addCoord, setAddCoord] = useState<{ latitude: number; longitude: number } | null>(null);
   const [mapFilter, setMapFilter] = useState<MapFilter>("all");
   const [showMyList, setShowMyList] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    AsyncStorage.getItem(WELCOME_KEY).then((v) => {
+      if (!v) setShowWelcome(true);
+    });
+  }, []);
+
+  const handleCloseWelcome = useCallback(() => {
+    setShowWelcome(false);
+    AsyncStorage.setItem(WELCOME_KEY, "1");
+  }, []);
 
   const filteredMarkers = mapFilter === "all"
     ? markers
@@ -803,6 +914,18 @@ export default function MapScreen() {
         />
       </View>
 
+      {/* ? Help button — to the left of My List button */}
+      <TouchableOpacity
+        style={[
+          styles.helpBtn,
+          { top: topInset + 56, backgroundColor: colors.card, shadowColor: "#000" },
+        ]}
+        onPress={() => setShowWelcome(true)}
+        testID="help-btn"
+      >
+        <Text style={[styles.helpBtnText, { color: colors.mutedForeground }]}>?</Text>
+      </TouchableOpacity>
+
       {/* My List button — top right, same level as filter bar */}
       <TouchableOpacity
         style={[
@@ -960,6 +1083,8 @@ export default function MapScreen() {
         onSave={handleSaveSpot}
         saving={createMarker.isPending}
       />
+
+      <WelcomeSplashModal visible={showWelcome} onClose={handleCloseWelcome} />
     </View>
   );
 }
@@ -1413,5 +1538,138 @@ const styles = StyleSheet.create({
   myListItemCat: {
     fontSize: 12,
     marginTop: 2,
+  },
+  // ── ? Help button ─────────────────────────────────────────────────────────────
+  helpBtn: {
+    position: "absolute",
+    right: 64,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 10,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  helpBtnText: {
+    fontSize: 16,
+    fontWeight: "700",
+    lineHeight: 20,
+  },
+  // ── Welcome splash modal ──────────────────────────────────────────────────────
+  welcomeOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  welcomeCard: {
+    width: "100%",
+    maxWidth: 400,
+    borderRadius: 20,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 24,
+    elevation: 12,
+  },
+  welcomeHeader: {
+    paddingHorizontal: 24,
+    paddingTop: 28,
+    paddingBottom: 20,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  welcomeCloseBtn: {
+    position: "absolute",
+    top: 14,
+    right: 14,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  welcomeEyebrow: {
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 1.5,
+    marginBottom: 6,
+  },
+  welcomeTitle: {
+    fontSize: 26,
+    fontWeight: "700",
+    marginBottom: 8,
+    letterSpacing: -0.5,
+  },
+  welcomeSubtitle: {
+    fontSize: 13,
+    lineHeight: 19,
+  },
+  welcomeSection: {
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    paddingBottom: 4,
+    gap: 12,
+  },
+  welcomeSectionLabel: {
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 1.5,
+    marginBottom: 4,
+  },
+  welcomeLegendRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  welcomeLegendDot: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+  welcomeLegendLabel: {
+    fontSize: 13,
+    fontWeight: "500",
+    lineHeight: 17,
+  },
+  welcomeLegendDesc: {
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  welcomeTipsBox: {
+    marginHorizontal: 20,
+    marginTop: 16,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 6,
+  },
+  welcomeTip: {
+    fontSize: 12,
+    lineHeight: 18,
+  },
+  welcomeTipBold: {
+    fontWeight: "600",
+  },
+  welcomeBtn: {
+    margin: 20,
+    marginTop: 16,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  welcomeBtnText: {
+    fontSize: 15,
+    fontWeight: "600",
+    letterSpacing: 0.2,
   },
 });
