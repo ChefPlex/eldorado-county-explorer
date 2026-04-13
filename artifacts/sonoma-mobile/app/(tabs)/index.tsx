@@ -914,11 +914,16 @@ export default function MapScreen() {
         />
       </View>
 
-      {/* ? Help button — top right, filter bar row */}
+      {/* ? Help button — bottom right, above My List button */}
       <TouchableOpacity
         style={[
           styles.helpBtn,
-          { top: topInset + 56, right: 16, backgroundColor: colors.card, shadowColor: "#000" },
+          {
+            bottom: bottomInset + (isTablet ? 120 : 160),
+            right: 16,
+            backgroundColor: colors.card,
+            shadowColor: "#000",
+          },
         ]}
         onPress={() => setShowWelcome(true)}
         testID="help-btn"
