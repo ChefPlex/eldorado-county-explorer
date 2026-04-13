@@ -1,11 +1,14 @@
 import { db, markersTable } from "@workspace/db";
-import { count, eq, inArray } from "drizzle-orm";
+import { count, eq, inArray, sql } from "drizzle-orm";
 import { logger } from "./lib/logger";
 
 // Entries removed from the curated list — deleted from DB on every boot
 const REMOVED_FROM_SEED = [
   "Juju's — French-Moroccan Pop-Up at Acorn Cafe",
   "Sceales Cellars",
+  "Ridge Lytton Springs",
+  "Balletto Winery",
+  "Mikes Truck Garden",
 ];
 
 const SEED_DATA = [
@@ -219,6 +222,21 @@ export async function correctCoordinates() {
       if (deleted.length > 0) {
         logger.info({ names: deleted.map((r) => r.name) }, "Removed entries deleted from DB");
       }
+    }
+
+    // Remove duplicate entries — keep the highest ID for each name
+    const deduped = await db.execute(sql`
+      DELETE FROM ${markersTable}
+      WHERE id IN (
+        SELECT id FROM (
+          SELECT id, ROW_NUMBER() OVER (PARTITION BY name ORDER BY id DESC) AS rn
+          FROM ${markersTable}
+        ) sub WHERE rn > 1
+      )
+      RETURNING name
+    `);
+    if (deduped.rows.length > 0) {
+      logger.info({ count: deduped.rows.length }, "Duplicate entries removed");
     }
 
     logger.info("Correcting marker data to verified values...");
