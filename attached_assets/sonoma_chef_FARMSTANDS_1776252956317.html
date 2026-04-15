@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonoma Chef | Farmstands &amp; Direct-to-Consumer Food Sources — Sonoma County</title>
+<style>
+  :root {
+    --bg: #f7f1e8; --paper: #fffdf9; --ink: #2b2118; --muted: #6c5a48;
+    --olive: #6f7d3c; --wine: #7a2f3b; --gold: #c48a3a; --line: #e8ddcf;
+    --shadow: 0 12px 30px rgba(69,43,22,0.10); --radius: 22px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(196,138,58,0.08), transparent 28%),
+      radial-gradient(circle at top right, rgba(111,125,60,0.08), transparent 24%),
+      var(--bg);
+    line-height: 1.58;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 20px 56px; }
+  .hero {
+    background: linear-gradient(135deg, rgba(111,125,60,0.97), rgba(122,47,59,0.90));
+    color: white; border-radius: 28px; padding: 34px 30px; box-shadow: var(--shadow);
+  }
+  .eyebrow {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 999px;
+    padding: 8px 14px; font-size: 13px; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  h1 { margin: 0 0 10px; font-size: clamp(32px,4.8vw,56px); line-height: 1.05; }
+  .hero p { font-size: 20px; max-width: 900px; margin: 0; }
+  .note {
+    margin-top: 18px; background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 18px;
+    padding: 14px 16px; font-size: 15px;
+  }
+  .section-title { margin: 34px 0 14px; font-size: 28px; }
+  .subnote { margin: 0 0 18px; color: var(--muted); font-size: 17px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr)); gap: 18px; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .card h3 { margin: 0 0 10px; font-size: 25px; line-height: 1.15; }
+  .card p, .card li { font-size: 16.8px; }
+  .meta { color: var(--muted); font-weight: 700; font-size: 15px; margin-bottom: 10px; }
+  .tag { display: inline-block; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; margin: 0 8px 10px 0; background: #f3eadf; color: var(--wine); border: 1px solid #ead7c0; }
+  .must    { background: #fbf4cf; color: #6a4d00; border: 1px solid #efd978; }
+  .newtag  { background: #eef4fb; color: #365a7d; border: 1px solid #cfdeef; }
+  .needtag { background: #eef6ef; color: #3e653d; border: 1px solid #d3e3d2; }
+  .why { background: #f7f8ef; border-left: 5px solid var(--olive); border-radius: 14px; padding: 12px 14px; margin: 14px 0; }
+  .why strong { display: block; margin-bottom: 6px; }
+  ul { padding-left: 22px; margin: 10px 0 14px; }
+  li { margin: 6px 0; }
+  a { color: var(--wine); font-weight: 700; text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .button-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .button { display: inline-block; background: var(--wine); color: white; text-decoration: none; padding: 11px 16px; border-radius: 12px; font-size: 15px; }
+  .button.secondary { background: var(--olive); }
+  .fact-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 14px; }
+  .fact { flex: 1 1 auto; background: #faf6f1; border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; font-size: 14.6px; font-weight: 700; line-height: 1.45; }
+  .fact-label { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .simple-box { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 18px 20px; box-shadow: var(--shadow); margin-top: 22px; }
+  .simple-box h3 { margin-top: 0; font-size: 22px; }
+  .simple-box p  { font-size: 17px; }
+  .legend-box { margin-top: 22px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin: 12px 0 10px; }
+  .legend-item { background: #f8f3ec; border: 1px solid var(--line); border-radius: 18px; padding: 12px 14px; }
+  .legend-item strong { display: block; font-size: 25px; line-height: 1; color: var(--wine); margin-bottom: 6px; }
+  .legend-item span   { display: block; font-size: 15px; color: var(--ink); font-weight: 700; }
+  .footer { margin-top: 30px; color: var(--muted); font-size: 14px; }
+  .tiny   { font-size: 14px; color: var(--muted); }
+  @media (max-width: 640px) {
+    .hero { padding: 24px 20px; } .hero p { font-size: 18px; }
+    .card h3 { font-size: 22px; } .section-title { font-size: 24px; }
+    .card p, .card li, .simple-box p { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Sonoma Chef | Farmstands &amp; Direct-to-Consumer Sources</div>
+    <h1>Meet Your Farmers</h1>
+    <p>Direct farmstands, certified markets, and farm-gate sources across Cloverdale, Healdsburg, Windsor, Santa Rosa, Sebastopol, Forestville, Guerneville, Occidental, and the coast. Slow Food values, Sonoma County soil.</p>
+    <div class="note">Week of April 6–12, 2026. Spring is open. The Healdsburg market starts its season this Saturday. Cloverdale opens Sunday. Redwood Hill Farm spring tours are running now through May 9 — baby goat season. Tierra Vegetables and the Santa Rosa markets are year-round. Most others are opening or about to. Always click through before you drive.</div>
+  </section>
+
+  <div class="simple-box legend-box">
+    <h3>Monday open?</h3>
+    <p>Each card notes whether the source is open on Mondays — the one day most restaurants close and the best day for unhurried farm visits. Call ahead when in doubt.</p>
+    <p class="tiny">Seasonal schedules shift without notice. Confirm directly before visiting, especially for farm stores and honor stands.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Cloverdale &amp; Alexander Valley</h2>
+  <p class="subnote">The northernmost tip of the coverage area — one certified Sunday market at the edge of Alexander Valley wine country.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag">Cloverdale</span><span class="tag needtag">Hyperlocal</span>
+      <h3>Cloverdale Certified Farmers Market</h3>
+      <div class="meta">Sundays April–November · 122 N. Cloverdale Blvd, Downtown Plaza</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Sunday</span>9:30 am – 1 pm</div>
+        <div class="fact"><span class="fact-label">Season</span>Apr 12 – Nov 22, 2026</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>A community-built certified market at the heart of Alexander Valley wine country. Local farmers, food purveyors, and craftspeople who share a love of this corner of the county. CalFresh and Market Match EBT accepted up to $15 per day.</p>
+      <div class="why"><strong>Why go:</strong> The most local market in the coverage area. If you live in Cloverdale or Geyserville, this is yours — and the Alexander Valley scenery makes it worth the drive from anywhere north of Santa Rosa.</div>
+      <div class="button-row"><a class="button" href="https://www.sonomacounty.com/farms-farmers-markets/cloverdale-farmers-market/" target="_blank" rel="noopener">Open market info</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Healdsburg &amp; Dry Creek Valley</h2>
+  <p class="subnote">The heart of northern Sonoma County's food and wine corridor. Two certified market days, a Michelin farm store, the county's last organic peach orchard, and a u-pick flower farm on the Russian River.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag must">Anchor market</span><span class="tag">Healdsburg</span><span class="tag needtag">Est. 1978</span>
+      <h3>Healdsburg Certified Farmers Market</h3>
+      <div class="meta">Saturdays Apr–Dec · Tuesdays May–Sep · Foley Family Community Pavilion, downtown Healdsburg</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Saturday</span>8:30 am – 12 pm</div>
+        <div class="fact"><span class="fact-label">Tuesday</span>9 am – 12:30 pm</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>One of California's original 22 certified markets, running since 1978. Most produce grown within 10 miles of the plaza. Wild fish, pasture-finished meat, heirloom vegetables, eggs, honey, olive oil, baked goods, and handmade craft each week. CalFresh/Market Match accepted up to $20/day.</p>
+      <ul>
+        <li>Saturday market at West Plaza Parking Lot (North &amp; Vine)</li>
+        <li>Tuesday market on the Plaza in downtown Healdsburg</li>
+        <li>Annual Zucchini Races and Pumpkin Festival each season</li>
+        <li>Cooking demos and live music through the season</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> The best single weekly source for produce grown within the Sonoma Chef coverage area. The Saturday market is the one.</div>
+      <div class="button-row"><a class="button" href="https://www.healdsburgfarmersmarket.org" target="_blank" rel="noopener">Open market site</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag">Healdsburg</span><span class="tag">Dry Creek Valley</span>
+      <h3>Dry Creek Peach &amp; Produce</h3>
+      <div class="meta">July – early September · 2179 Yoakim Bridge Rd, Healdsburg</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Hours</span>Wed, Fri, Sat, Sun 12–5 pm</div>
+        <div class="fact"><span class="fact-label">Season</span>Jul – early Sep only</div>
+        <div class="fact"><span class="fact-label">Price</span>$ market rate</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>The last dedicated organic peach orchard in Dry Creek Valley. Thirty-plus varieties of white and yellow peaches — tree-ripened, hand-picked, hand-packed. Alice Waters named one of their varieties her last-supper pick. Charlie Palmer calls them the best in the world. Phone: 707-433-8121.</p>
+      <ul>
+        <li>Also at Healdsburg Saturday Farmers Market in summer</li>
+        <li>Peach jam, cobbler mix, and antique kitchenware at the stand</li>
+        <li>Join the email list for variety updates and exact open days</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> One of the great Sonoma County seasonal rituals. Opening week in July has real energy. The drive into Dry Creek Valley alone is worth it.</div>
+      <div class="button-row"><a class="button" href="https://www.drycreekpeach.com" target="_blank" rel="noopener">Open farm site</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag newtag">Michelin-adjacent</span><span class="tag">Healdsburg</span><span class="tag">Dry Creek Valley</span>
+      <h3>SingleThread Farm Store</h3>
+      <div class="meta">Seasonal · 2836 Dry Creek Rd, Healdsburg</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Thu–Sun</span>12 – 4 pm</div>
+        <div class="fact"><span class="fact-label">Season</span>Year-round</div>
+        <div class="fact"><span class="fact-label">Price</span>$ – $$ produce market</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>Kyle and Katina Connaughton's working farm behind the 3-Michelin-star restaurant. The farmstand sells the same produce, flowers, and pantry items grown for the restaurant kitchen — available to the public when in season. Specialty greens, flowers cut that morning, rooftop herbs, pantry items (Farm La-Yu, Ponzu), pottery and artisan goods. Open year-round.</p>
+      <div class="why"><strong>Why go:</strong> The only place in the county where you can buy what a 3-Michelin-star kitchen grows. Rare public access to a world-class culinary farm.</div>
+      <div class="button-row"><a class="button" href="https://singlethreadfarms.com/farm/store/" target="_blank" rel="noopener">Open farm store</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag">Healdsburg</span><span class="tag needtag">U-pick events</span>
+      <h3>Front Porch Farm</h3>
+      <div class="meta">Seasonal U-Pick Saturdays · 2550 Rio Lindo Ave, Healdsburg</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">U-Pick</span>Sat 9 am–2 pm · seasonal</div>
+        <div class="fact"><span class="fact-label">Price</span>$ per event</div>
+        <div class="fact"><span class="fact-label">Phone</span>707-433-8683</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>Organic flower and vegetable farm along the Russian River. Sixty-plus flower varieties. U-pick days include river picnic access with all materials provided. Floral workshops through the season. Founded 2010, focused on conservation alongside production.</p>
+      <ul>
+        <li>Flowers, fruit, and vegetables available to pick</li>
+        <li>Floral workshop calendar on the website</li>
+        <li>Bring a hat, sunscreen, and a water bottle</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> The prettiest u-pick in northern Sonoma County. River air, seasonal color, and a farm that smells right.</div>
+      <div class="button-row"><a class="button" href="https://www.fpfarm.com" target="_blank" rel="noopener">Open farm site</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Windsor</h2>
+  <p class="subnote">Town Green energy, two market days a week in season, seasonal produce festivals, and one of the most unusual farmstands in the state.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag must">Anchor market</span><span class="tag">Windsor</span><span class="tag needtag">Family-friendly</span>
+      <h3>Windsor Certified Farmers Market</h3>
+      <div class="meta">Sundays Apr–Dec · Thursdays Jun–Aug · Windsor Town Green, Old Downtown Windsor</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Sunday</span>9:30 am – 12:30 pm</div>
+        <div class="fact"><span class="fact-label">Thursday</span>5–8 pm (Summer Nights)</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>50-plus vendors on the Town Green. Certified organic produce, artisan bakeries, cheeses, olive oils, eggs, honey, jams, and prepared foods. Seasonal produce festivals: Zucchini Festival, Tomato &amp; Art Fest, Pumpkin Jamboree. Sunday brunch, BBQ, and live music every week. The Thursday Summer Nights market runs June through August alongside the Windsor concert series.</p>
+      <ul>
+        <li>Kidz Dig It cooking classes for under-12s all season</li>
+        <li>Mimosas and Bloody Marys twice a month on Sundays</li>
+        <li>Private guided tastings available — call 707-246-6741</li>
+        <li>CalFresh/Market Match accepted</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> The most energetic market in northern Sonoma County. Redwood picnic tables, live music, and a reason to linger past noon.</div>
+      <div class="button-row"><a class="button" href="https://windsorfarmersmarket.com" target="_blank" rel="noopener">Open market site</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag newtag">One of a kind</span><span class="tag">Windsor</span>
+      <h3>Wise Acre Farm — Egg Vending Machine</h3>
+      <div class="meta">631 Arata Ln, Windsor · Vending 24/7</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Vending</span>24/7 — stocked daily</div>
+        <div class="fact"><span class="fact-label">Price</span>$ per dozen</div>
+        <div class="fact"><span class="fact-label">Monday</span>Vending open</div>
+      </div>
+      <p>Tiffany Holbrook's free-range egg farm stocks California's first farm egg vending machine daily with a rainbow of varieties — Grade AA and CA SEFS compliant. Buddy the Great Pyrenees keeps watch. Farm tours offered seasonally. Also find Wise Acre eggs at the Healdsburg Saturday Market.</p>
+      <div class="why"><strong>Why go:</strong> A functioning egg vending machine at a working Sonoma County farm. The answer is obvious.</div>
+      <div class="button-row"><a class="button" href="https://www.wiseacrewindsor.com" target="_blank" rel="noopener">Open farm site</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Santa Rosa</h2>
+  <p class="subnote">The county seat runs two separate year-round certified market operations — that's four market days per week between them — plus Tierra Vegetables, the county's most distinctive farmstand.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag must">Largest in county</span><span class="tag">Santa Rosa</span><span class="tag needtag">Est. 1967</span>
+      <h3>Santa Rosa Original Certified Farmers Market</h3>
+      <div class="meta">Wednesdays &amp; Saturdays year-round · Luther Burbank Center for the Arts, 50 Mark West Springs Rd</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Wednesday</span>8:30 am – 1 pm · year-round</div>
+        <div class="fact"><span class="fact-label">Saturday</span>8:30 am – 1 pm · year-round</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>The oldest and largest farmers market in Sonoma County, running continuously since 1967. Sixty-five-plus local farmers, ranchers, and food producers every Saturday. Fresh produce, pasture-raised meats, locally caught fish, artisan cheeses, garden starts, flowers, baked goods, specialty foods, artisans, and hot coffee. Voted Best Farmers Market in Sonoma County year after year. Recipient of the Slow Food Snail of Approval. CalFresh/Market Match up to $20/day.</p>
+      <ul>
+        <li>Saturday is the flagship — 65+ vendors, ample free parking</li>
+        <li>Wednesday is smaller and more relaxed — great midweek pantry run</li>
+        <li>Also operates the Guerneville Certified Farmers Market (see below)</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> The county's most comprehensive weekly market. If you only go to one in Santa Rosa, this is the one.</div>
+      <div class="button-row"><a class="button" href="https://thesantarosafarmersmarket.com" target="_blank" rel="noopener">Open market site</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag">Santa Rosa</span><span class="tag needtag">Year-round</span>
+      <h3>Santa Rosa Community Farmers Market</h3>
+      <div class="meta">Wednesdays &amp; Saturdays year-round · 1501 Farmers Lane, Santa Rosa</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Wednesday</span>9 am – 1 pm · year-round</div>
+        <div class="fact"><span class="fact-label">Saturday</span>8:30 am – 1 pm · year-round</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>A second year-round certified market in Santa Rosa at Farmers Lane Plaza. Consistent certified produce, eggs, honey, baked goods, and specialty foods. Strong neighborhood following, more relaxed feel than the Luther Burbank market. CalFresh/Market Match accepted up to $20/day. A reliable option for central and east Santa Rosa.</p>
+      <div class="why"><strong>Why go:</strong> Two certified market days a week means you're never more than a few days from fresh local produce in Santa Rosa. Use this one when Luther Burbank is too far.</div>
+      <div class="button-row"><a class="button" href="https://www.ourfarmersmarkets.org/locations-santa-rosa/" target="_blank" rel="noopener">Open market info</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag must">Year-round anchor</span><span class="tag">Santa Rosa</span><span class="tag">Heirloom</span>
+      <h3>Tierra Vegetables Farmstand</h3>
+      <div class="meta">Thursday–Saturday, year-round · 651 Airport Blvd, Santa Rosa (Big White Barn)</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Thu–Fri</span>10 am – 6 pm</div>
+        <div class="fact"><span class="fact-label">Saturday</span>10 am – 5 pm</div>
+        <div class="fact"><span class="fact-label">Price</span>$ farmstand rates</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>Wayne and Lee James have farmed this suburban Santa Rosa plot since 1980 and sell only what they grow: 30-plus varieties of heirloom dried beans, masa from heirloom corn, polenta, fresh and dried chiles, asparagus to zucchini in season, and pantry staples made in their on-site commercial kitchen. Phone: 707-544-6141.</p>
+      <ul>
+        <li>CSA pickup available — weekly boxes, multiple Santa Rosa pickup sites</li>
+        <li>Self-guided farm tours during stand hours</li>
+        <li>Also at Windsor and Santa Rosa Farmers Markets on Saturdays</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> The heirloom bean selection alone is worth a special trip. One of the most unique farmstands in California.</div>
+      <div class="button-row"><a class="button" href="https://www.tierravegetables.com" target="_blank" rel="noopener">Open farm site</a><a class="button secondary" href="https://www.tierravegetables.com/farmstand" target="_blank" rel="noopener">Farmstand info</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Sebastopol &amp; West County</h2>
+  <p class="subnote">Goat cheese, heritage apples, Afro-Indigenous permaculture, and the best Sunday morning market in West County.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag">Sebastopol</span><span class="tag needtag">Weekly anchor</span>
+      <h3>Sebastopol Certified Farmers Market</h3>
+      <div class="meta">Sundays year-round · Downtown Sebastopol</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Sunday</span>9 am – 1:30 pm</div>
+        <div class="fact"><span class="fact-label">Season</span>Year-round</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>Runs every Sunday regardless of season or competing events. First strawberries, snap peas, and asparagus start arriving in March. Sits on the West County Regional Trail connecting Forestville to Graton and Sebastopol. Supports Farm to Pantry — farmers donate surplus produce to local food banks.</p>
+      <div class="why"><strong>Why go:</strong> Best Sunday morning ritual in West County. Produce arrives fast and the crowd thins by 11.</div>
+      <div class="button-row"><a class="button" href="https://www.sebastopolfarmersmarket.org/" target="_blank" rel="noopener">Open market site</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag">Sebastopol</span><span class="tag needtag">Cheese + tours</span>
+      <h3>Redwood Hill Farm / Capracopia</h3>
+      <div class="meta">Spring baby goat season · 5480 Thomas Rd, Sebastopol</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Tours</span>Spring season — call ahead</div>
+        <div class="fact"><span class="fact-label">Stand</span>Olive oil, soaps, flowers</div>
+        <div class="fact"><span class="fact-label">Price</span>$ tour fee</div>
+        <div class="fact"><span class="fact-label">Monday</span>Call ahead</div>
+      </div>
+      <p>Regenerative goat dairy with hands-on farm tours covering cheesemaking and sustainable practices. Spring is baby goat season — the best time to visit. Small farmstand carries olive oil, goat milk soaps, and cut flowers. Award-winning cheeses also at regional grocers.</p>
+      <div class="why"><strong>Why go:</strong> The cheesemaking education is genuine and the spring tours are legitimately joyful. Hard to find a better farm visit in the county.</div>
+      <div class="button-row"><a class="button" href="https://www.redwoodhillfarm.org" target="_blank" rel="noopener">Open farm site</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag">Sebastopol</span><span class="tag">Heritage apples</span>
+      <h3>Gold Ridge Organic Farms</h3>
+      <div class="meta">Seasonal · 3387 Canfield Rd, Sebastopol</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Fri–Sat</span>10 am – 4 pm · year-round</div>
+        <div class="fact"><span class="fact-label">Tastings</span>Reserve via website</div>
+        <div class="fact"><span class="fact-label">Phone</span>707-823-3110</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>Heritage apple varieties direct from the orchard, plus fresh-pressed olive oil in fall — watch it flow from the press on-site in October. Annual Apple Blossom Festival in spring. Classic West County family farm, one of the last heritage apple operations in the region.</p>
+      <div class="why"><strong>Why go:</strong> The olive oil pressing in October is one of the best farm experiences in Sonoma County. Fall visit is the right one.</div>
+      <div class="button-row"><a class="button" href="https://www.goldridgeorganicfarms.com" target="_blank" rel="noopener">Open farm site</a></div>
+    </article>
+
+    <article class="card">
+      <span class="tag newtag">Afro-Indigenous permaculture</span><span class="tag">Sebastopol</span>
+      <h3>EARTHseed Farm</h3>
+      <div class="meta">Seasonal · 3175 Sullivan Rd, Sebastopol</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Events</span>U-pick, tours, farm stays</div>
+        <div class="fact"><span class="fact-label">Price</span>$ – $$ depending on event</div>
+        <div class="fact"><span class="fact-label">Phone</span>707-829-0617</div>
+        <div class="fact"><span class="fact-label">Monday</span>Check calendar</div>
+      </div>
+      <p>California's first Afro-Indigenous permaculture farm, founded by Pandora Thomas. U-pick open to the public July–November (closed 2025 season; resuming August 2026). Guided farm tours for groups of 15+; occasional public open tour days available. Farm stays and overnight retreats also offered. Celebrates African agricultural traditions through regenerative practices rooted in indigenous land knowledge.</p>
+      <div class="why"><strong>Why go:</strong> Unlike any other farm experience in the county. Educational, grounding, and genuinely important.</div>
+      <div class="button-row"><a class="button" href="https://www.earthseedfarm.org" target="_blank" rel="noopener">Open farm site</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Forestville &amp; Russian River Valley</h2>
+  <p class="subnote">A summer Tuesday evening market under the oaks in downtown Forestville, right on the West County Regional Trail — one of the county's most charming community markets.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag">Forestville</span><span class="tag needtag">Summer evenings</span>
+      <h3>Forestville Certified Farmers Market</h3>
+      <div class="meta">Tuesdays June–late August · 6990 Front St, Forestville Downtown Oaks Park</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Tuesday</span>4:30 – 7:30 pm</div>
+        <div class="fact"><span class="fact-label">Opens</span>June 2, 2026</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>An evening market held under the oak trees in the heart of downtown Forestville, alongside the West County Regional Trail. Live music, wine, cold beer, farm-fresh produce, and artisan crafts. Vendors include local farms like Hidden Lake Farm, Ortiz Family Farm, and Neufield Farm, plus rotating food vendors — pizza, curry, baked goods, and vegan options. Relaxed, community-rooted, and unhurried. CalFresh/Market Match accepted.</p>
+      <ul>
+        <li>Live music most Tuesdays; trail access directly from the park</li>
+        <li>Trail connects to Sebastopol and the Graton corridor</li>
+        <li>Chamber beer and wine booth in season</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> Tuesday evenings in summer under the oaks. One of the most atmospheric markets in the county — small, community-rooted, and worth planning around.</div>
+      <div class="button-row"><a class="button" href="https://www.ourfarmersmarkets.org/locations-forestville/" target="_blank" rel="noopener">Open market info</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Guerneville &amp; Lower Russian River</h2>
+  <p class="subnote">A Thursday summer market at the river town's center, carrying the Slow Food Snail of Approval and operated by the same group as the Santa Rosa Original market.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag">Guerneville</span><span class="tag needtag">Summer anchor</span>
+      <h3>Guerneville Certified Farmers Market</h3>
+      <div class="meta">Thursdays June–August · Corner of 4th &amp; Church St, behind St. Hubert's Hall, Guerneville</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Thursday</span>3 – 7 pm</div>
+        <div class="fact"><span class="fact-label">Season</span>June – August</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>Operated by the same group as the Santa Rosa Original Certified Farmers Market and recipient of the same Slow Food Snail of Approval. Every product is grown or made in California, most from Sonoma County farms and ranches. Smaller than the Santa Rosa flagship but carries the same certified commitment to quality and provenance. Local farmers, food producers, artisans, and rotating food vendors. CalFresh/Market Match accepted up to $15/day.</p>
+      <ul>
+        <li>River Theater Radio Station has broadcast live from the market</li>
+        <li>Food vendors rotate — pizza, curry, baked goods typical</li>
+        <li>Community gathering point for the Russian River corridor</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> The Russian River crowd is its own thing. A summer Thursday here has a completely different energy from any other market in the county.</div>
+      <div class="button-row"><a class="button" href="https://thesantarosafarmersmarket.com/locations/" target="_blank" rel="noopener">Open market info</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <h2 class="section-title">Occidental &amp; Bohemian Highway</h2>
+  <p class="subnote">A Thursday evening market deep in the coastal redwood hills — widely described as the most atmospheric market in all of Sonoma County.</p>
+  <div class="grid">
+
+    <article class="card">
+      <span class="tag must">Top pick</span><span class="tag">Occidental</span><span class="tag needtag">Summer evenings</span>
+      <h3>Occidental Community Farmers Market</h3>
+      <div class="meta">Thursdays May–October · 3920 Bohemian Hwy, Occidental (Main St between 1st &amp; 3rd)</div>
+      <div class="fact-row">
+        <div class="fact"><span class="fact-label">Thursday</span>4 – 8 pm</div>
+        <div class="fact"><span class="fact-label">Season</span>May – October</div>
+        <div class="fact"><span class="fact-label">Price</span>Free entry</div>
+        <div class="fact"><span class="fact-label">Monday</span>Closed</div>
+      </div>
+      <p>Held on Main Street in this tiny historical hamlet tucked into the coastal redwood hills. Fresh produce, prepared foods, crafts, and live music in a setting unlike any other market in the region. Walking-scale town — dinner at one of Occidental's storied Italian restaurants pairs perfectly with an evening here. CalFresh/Market Match accepted up to $15/day.</p>
+      <ul>
+        <li>Great mix of local produce, artisan food, and handmade craft</li>
+        <li>Live music most Thursday evenings</li>
+        <li>Pair with dinner at Occidental's Union Hotel or Negri's</li>
+      </ul>
+      <div class="why"><strong>Why go:</strong> There is no better Thursday evening in West County. The drive on Bohemian Highway through the redwoods is part of the experience.</div>
+      <div class="button-row"><a class="button" href="https://www.ourfarmersmarkets.org/locations-occidental/" target="_blank" rel="noopener">Open market info</a></div>
+    </article>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <div class="simple-box">
+    <h3>Sonoma Chef's recommended weekly farm circuit</h3>
+    <p><strong>Wednesday:</strong> Santa Rosa Original Certified Farmers Market at Luther Burbank Center — the county's best midweek pantry run, year-round. Or Santa Rosa Community Farmers Market at Farmers Lane for a neighborhood feel. Tierra Vegetables farmstand is open until 6 pm.</p>
+    <p><strong>Thursday:</strong> Occidental Community Farmers Market (May–Oct) for the most atmospheric evening in West County. In summer, Guerneville Certified Farmers Market (Jun–Aug) for the river-town alternative. Tierra Vegetables stays open until 6 pm — combine both on a single north-county Thursday.</p>
+    <p><strong>Friday:</strong> Tierra Vegetables farmstand through 6 pm. Best uncrowded day at Dry Creek Peach (Jul–Sep) before the weekend. SingleThread Farm Store if open.</p>
+    <p><strong>Saturday:</strong> Healdsburg Certified Farmers Market (Apr–Dec) for produce from within 10 miles. Windsor Certified Farmers Market (Apr–Dec) for the most festive morning. Santa Rosa Original at Luther Burbank (year-round) for the county's largest selection.</p>
+    <p><strong>Sunday:</strong> Sebastopol Certified Farmers Market (year-round) for West County. Windsor Certified Farmers Market (Apr–Dec) for north county. Cloverdale Certified Farmers Market (Apr–Nov) for the Alexander Valley.</p>
+    <p><strong>Tuesday:</strong> Healdsburg Plaza market (May–Sep) for a quick in-town run. Forestville Certified Farmers Market (Jun–Aug, evenings) under the oaks on the West County Trail.</p>
+    <p class="tiny">In fall, add Gold Ridge for apple pressing and Redwood Hill Farm for goat cheese. The circuit covers every day of the week from May through September.</p>
+  </div>
+
+  <div class="simple-box">
+    <h3>How to use Farm Trails</h3>
+    <p>The Sonoma County Farm Trails network maintains the most complete map of member farms currently open to the public — organized by product type and searchable by location. When in doubt about what is open right now, start here before driving anywhere.</p>
+    <div class="button-row"><a class="button" href="https://www.farmtrails.org" target="_blank" rel="noopener">Open Farm Trails map</a><a class="button secondary" href="https://www.farmtrails.org/events/" target="_blank" rel="noopener">Farm events calendar</a></div>
+  </div>
+
+  <div class="simple-box">
+    <h3>Check these sources directly</h3>
+    <p>
+      <a href="https://www.farmtrails.org" target="_blank" rel="noopener">farmtrails.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://sonomacounty.gov/natural-resources/agriculture-weights-and-measures/programs-and-services/farmers-markets-and-direct-marketing/certified-farmers-markets" target="_blank" rel="noopener">sonomacounty.gov certified markets</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.ourfarmersmarkets.org" target="_blank" rel="noopener">ourfarmersmarkets.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://thesantarosafarmersmarket.com" target="_blank" rel="noopener">thesantarosafarmersmarket.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.healdsburgfarmersmarket.org" target="_blank" rel="noopener">healdsburgfarmersmarket.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://windsorfarmersmarket.com" target="_blank" rel="noopener">windsorfarmersmarket.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.sebastopolfarmersmarket.org" target="_blank" rel="noopener">sebastopolfarmersmarket.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.tierravegetables.com" target="_blank" rel="noopener">tierravegetables.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.drycreekpeach.com" target="_blank" rel="noopener">drycreekpeach.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://singlethreadfarms.com/farm/store/" target="_blank" rel="noopener">singlethreadfarms.com/farm</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.redwoodhillfarm.org" target="_blank" rel="noopener">redwoodhillfarm.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.goldridgeorganicfarms.com" target="_blank" rel="noopener">goldridgeorganicfarms.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.fpfarm.com" target="_blank" rel="noopener">fpfarm.com</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.earthseedfarm.org" target="_blank" rel="noopener">earthseedfarm.org</a> &nbsp;&middot;&nbsp;
+      <a href="https://www.sonomacounty.com/food-wine/farms-farmers-markets/" target="_blank" rel="noopener">sonomacounty.com/farms</a>
+    </p>
+    <p class="tiny">Hours and seasons change without notice. Always click through before you drive. Seasonal stands especially — one phone call saves the trip.</p>
+  </div>
+
+  <p class="footer">Prepared in the voice of Sonoma Chef — direct-to-consumer farm sources, Sonoma County. Slow Food principles. Always click through before you go.</p>
+
+</div>
+</body>
+</html>

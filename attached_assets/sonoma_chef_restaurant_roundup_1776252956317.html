@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonoma Chef | Restaurants Worth Booking in Sonoma County</title>
+<style>
+  :root {
+    --bg:#f7f1e8;--paper:#fffdf9;--ink:#2b2118;--muted:#6c5a48;
+    --olive:#6f7d3c;--wine:#7a2f3b;--gold:#c48a3a;
+    --line:#e8ddcf;--shadow:0 12px 30px rgba(69,43,22,.10);--radius:22px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);
+    background:radial-gradient(circle at top left,rgba(196,138,58,.08),transparent 28%),
+    radial-gradient(circle at top right,rgba(122,47,59,.08),transparent 24%),var(--bg);
+    line-height:1.58;}
+  .wrap{max-width:1200px;margin:0 auto;padding:32px 20px 56px;}
+  .hero{background:linear-gradient(135deg,rgba(122,47,59,.97),rgba(111,125,60,.94));
+    color:white;border-radius:28px;padding:34px 30px;box-shadow:var(--shadow);}
+  .eyebrow{display:inline-block;background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.25);border-radius:999px;
+    padding:8px 14px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+  h1{margin:0 0 10px;font-size:clamp(32px,4.8vw,56px);line-height:1.05;}
+  .hero p{font-size:20px;max-width:900px;margin:0;}
+  .note{margin-top:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+    border-radius:18px;padding:14px 16px;font-size:15px;}
+  .section-title{margin:34px 0 14px;font-size:28px;}
+  .subnote{margin:0 0 18px;color:var(--muted);font-size:17px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;}
+  .card{background:var(--paper);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+  .card h3{margin:0 0 10px;font-size:25px;line-height:1.15;}
+  .card p,.card li{font-size:16.8px;}
+  .meta{color:var(--muted);font-weight:700;font-size:15px;margin-bottom:10px;}
+  .tag{display:inline-block;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:700;
+    margin:0 8px 10px 0;background:#f3eadf;color:var(--wine);border:1px solid #ead7c0;}
+  .must{background:#fbf4cf;color:#6a4d00;border:1px solid #efd978;}
+  .newtag{background:#eef4fb;color:#365a7d;border:1px solid #cfdeef;}
+  .needtag{background:#eef6ef;color:#3e653d;border:1px solid #d3e3d2;}
+  .why{background:#f7f8ef;border-left:5px solid var(--olive);border-radius:14px;
+    padding:12px 14px;margin:14px 0;}
+  .why strong{display:block;margin-bottom:6px;}
+  ul{padding-left:22px;margin:10px 0 14px;}
+  li{margin:6px 0;}
+  a{color:var(--wine);font-weight:700;text-decoration-thickness:2px;text-underline-offset:2px;}
+  .button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .button{display:inline-block;background:var(--wine);color:white;text-decoration:none;
+    padding:11px 16px;border-radius:12px;font-size:15px;}
+  .button.secondary{background:var(--olive);}
+  .simple-box{background:var(--paper);border:1px solid var(--line);
+    border-radius:22px;padding:18px 20px;box-shadow:var(--shadow);margin-top:22px;}
+  .simple-box h3{margin-top:0;font-size:22px;}
+  .simple-box p{font-size:17px;}
+  .footer{margin-top:30px;color:var(--muted);font-size:14px;}
+  .tiny{font-size:14px;color:var(--muted);}
+  .fact-row{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 14px;}
+  .fact{flex:1 1 220px;background:#faf6f1;border:1px solid var(--line);
+    border-radius:16px;padding:10px 12px;font-size:14.6px;font-weight:700;line-height:1.45;}
+  .fact.open{background:#eef6ef;border-color:#d3e3d2;}
+  .fact.closed{background:#fbefef;border-color:#efd3d3;}
+  .fact.special{background:#eef4fb;border-color:#cfdeef;}
+  .fact-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:4px;}
+  .legend-box{margin-top:22px;}
+  .legend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:12px;margin:12px 0 10px;}
+  .legend-item{background:#f8f3ec;border:1px solid var(--line);border-radius:18px;padding:12px 14px;}
+  .legend-item strong{display:block;font-size:25px;line-height:1;color:var(--wine);margin-bottom:6px;}
+  .legend-item span{display:block;font-size:15px;color:var(--ink);font-weight:700;}
+  @media(max-width:640px){
+    .hero{padding:24px 20px;}.hero p{font-size:18px;}
+    .card h3{font-size:22px;}.section-title{font-size:24px;}
+    .card p,.card li,.simple-box p{font-size:16px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Sonoma Chef • April 13 to May 18, 2026</div>
+  <h1>Restaurants You Should Book in the Next 60 Days</h1>
+  <p>Full county coverage — from Cloverdale and the Alexander Valley south through Petaluma, east to Kenwood and Sonoma town, and west to Valley Ford and Bodega Bay.</p>
+  <div class="note">Spring has arrived. The asparagus is up, the strawberries are two weeks out, and the restaurant calendar is as full as it has ever been. This is the most geographically complete edition of the Sonoma Chef roundup, covering all ten zones of the county — with fresh research on what's new, what's open on Mondays, and what's worth the drive right now. Everything has a link. Click through before you go.</div>
+</section>
+
+<!-- LEGEND -->
+<div class="simple-box legend-box">
+  <h3>Price guide + Monday guide</h3>
+  <div class="legend-grid">
+    <div class="legend-item"><strong>$</strong><span>Under $50</span></div>
+    <div class="legend-item"><strong>$$</strong><span>$50 to $100</span></div>
+    <div class="legend-item"><strong>$$$</strong><span>$100 to $200</span></div>
+    <div class="legend-item"><strong>$$$$</strong><span>$201 or more</span></div>
+  </div>
+  <p class="tiny">Price is based on one person's usual dinner, or the posted ticket price when the card is mostly about a special event. Monday status reflects current posted hours — always click through before you drive.</p>
+</div>
+
+<!-- SHORT LIST -->
+<h2 class="section-title">The short list</h2>
+<p class="subnote">Time-sensitive picks and the highest-urgency yeses in the next 60 days. Start here.</p>
+<div class="grid">
+
+  <!-- JUJU'S pop-up — new this week -->
+  <article class="card">
+    <span class="tag must">Top pick — pop-up now running</span><span class="tag">Healdsburg</span><span class="tag newtag">New March 2026</span>
+    <h3>Juju's — French-Moroccan Pop-up at Acorn Cafe</h3>
+    <div class="meta">Thu–Sun dinner • 124 Matheson St, Healdsburg Plaza • after Acorn closes</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed Mon–Wed. Thu–Sun evenings only.</div>
+    </div>
+    <p>Chef Jason Pringle — formerly of Healdsburg's Montage — is running a French-Moroccan dinner pop-up in the Acorn Cafe space right on the plaza, Thursday through Sunday after the cafe closes. The menu draws from his grandmother Juju's recipes, shaped by Morocco under the French protectorate: lamb shank tagine with ras el hanout, apricots and almonds; poulet rôti with harissa potatoes and petit pois; cheese cappelletti with beet, mint and Meyer lemon; a grilled Caesar with grated mimolette; and creative cocktails including a Marrakech Garden and Atlas Spritz. Covered by The Press Democrat the week it opened.</p>
+    <ul>
+      <li>No reservations listed — walk in or check Instagram for booking details</li>
+      <li>Patio dining on Healdsburg Plaza with a full Moroccan-spiced menu — nothing else like it in the county right now</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> A Michelin-kitchen chef cooking from his 97-year-old grandmother's recipes in a borrowed café on the Healdsburg Plaza. That story alone earns a Thursday night.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.acornhealdsburg.com/popups" target="_blank" rel="noopener">Open Juju's on Instagram</a>
+      <a class="button secondary" href="https://www.acornhealdsburg.com/" target="_blank" rel="noopener">Open Acorn Cafe</a>
+    </div>
+  </article>
+
+  <!-- Folia short list anchor — replaces Starling which closed March 30 -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Healdsburg</span><span class="tag newtag">Opened 2025</span>
+    <h3>Folia Bar &amp; Kitchen — Appellation Healdsburg</h3>
+    <div class="meta">Dinner nightly except Monday • three-course prix fixe • Appellation Healdsburg resort</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Breakfast, lunch, and bar only. No Monday dinner.</div>
+    </div>
+    <p>Reed Palmer runs the kitchen at Appellation Healdsburg with a three-course prix fixe leaning hard on Sonoma sourcing — Mt. Lassen trout, Mary's chicken, estate garden vegetables, seasonal pastas. One of the most striking new resort properties in Wine Country, and the kitchen is earning its place in the county's top tier. The Healdsburg Wine &amp; Food Experience uses this venue May 14–17 — a good way to see the space at its most charged.</p>
+    <ul>
+      <li>Good for a special-occasion dinner that doesn't feel stiff or formal</li>
+      <li>The rooftop bar program and panoramic plaza views are strong on their own</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> A new major resort table already earning its place in the county's top tier. Spring is when the kitchen is at its best.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.foliabarandkitchen.com/" target="_blank" rel="noopener">Open Folia</a>
+      <a class="button secondary" href="https://www.appellationhotels.com/hotels/california-healdsburg/dining/" target="_blank" rel="noopener">Open Appellation</a>
+    </div>
+  </article>
+
+  <!-- Folia / Appellation -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Healdsburg</span><span class="tag newtag">Opened 2025</span>
+    <h3>Folia Bar &amp; Kitchen — Appellation Healdsburg</h3>
+    <div class="meta">Dinner nightly except Monday • three-course prix fixe • Appellation Healdsburg resort</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Breakfast, lunch, and bar only. No Monday dinner.</div>
+    </div>
+    <p>Reed Palmer runs the kitchen at Appellation Healdsburg with a three-course prix fixe leaning hard on Sonoma sourcing — Mt. Lassen trout, Mary's chicken, estate garden vegetables, seasonal pastas. Pigs &amp; Pinot used Appellation as its venue for the 2026 edition (March 20–21), confirming the property's arrival as a major Healdsburg destination. The resort itself is one of the most striking new properties in Wine Country and the kitchen is earning its place in the top tier.</p>
+    <ul>
+      <li>Good pick for a special-occasion dinner that doesn't feel stiff</li>
+      <li>The bar program and panoramic views are strong on their own</li>
+      <li>Note: Pigs &amp; Pinot used this venue — the next big event here is the Healdsburg Wine &amp; Food Experience May 14–17</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> A new major resort table already earning its place in the county's top tier. The spring kitchen is at its best right now.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.foliabarandkitchen.com/" target="_blank" rel="noopener">Open Folia</a>
+      <a class="button secondary" href="https://www.appellationhotels.com/hotels/california-healdsburg/dining/" target="_blank" rel="noopener">Open Appellation</a>
+    </div>
+  </article>
+
+  <!-- Jordan Spring Dinner -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Alexander Valley</span><span class="tag">Estate dinners</span>
+    <h3>Jordan Winery — Spring &amp; Summer Events</h3>
+    <div class="meta">Multiple dates April–August 2026 • Jordan Chateau, Alexander Valley</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$$</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Winery open by appointment on Mondays.</div>
+    </div>
+    <p>The March 27 Spring Collaboration Dinner has passed, but Jordan's event calendar runs strong through summer — Spring Yoga and Breakfast in the Vines (April), Afternoon Tea in the remodeled dining room (May 8 and 9), and Sunset Supper at Vista Point (June 20). Restrained, seasonal food, Jordan wine poured correctly, one of the most beautiful properties in the Alexander Valley. Upcoming events are for Jordan Estate Rewards members; tickets go fast.</p>
+    <ul>
+      <li>Afternoon Tea May 8–9 is the next accessible entry point — elegant but not stiff</li>
+      <li>Sunset Supper at Vista Point (June 20) is a bucket-list Alexander Valley evening</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The chateau, the food, the Alexander Valley at golden hour. There is no comparable experience in northern Sonoma County.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.jordanwinery.com/events/events-calendar/" target="_blank" rel="noopener">Open events calendar</a>
+      <a class="button secondary" href="https://www.jordanwinery.com/" target="_blank" rel="noopener">Open winery</a>
+    </div>
+  </article>
+
+  <!-- Acre Pizza Healdsburg — just opened -->
+  <article class="card">
+    <span class="tag must">Top pick — just opened</span><span class="tag">Healdsburg</span><span class="tag newtag">Opened April 2026</span>
+    <h3>Acre Pizza — Healdsburg</h3>
+    <div class="meta">Just opened • 44 Mill St, Suite C • next to Quail &amp; Condor bakery</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Verify hours — check acrepizza.com</div>
+    </div>
+    <p>The fourth Acre Pizza — Sebastopol, Petaluma, and Cotati came first — has landed in Healdsburg at 44 Mill St, just off the downtown square and right next to Quail &amp; Condor's new bakery café. New York- and Detroit-style pies, honest prices, and easy parking in a town where both of those things are rare. This is the "affordable casual" option Healdsburg has been missing at street level for years.</p>
+    <ul>
+      <li>Next-door to Quail &amp; Condor — the natural Healdsburg morning-into-afternoon combo</li>
+      <li>Detroit-style square pie is the move on a first visit</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Healdsburg needed a spot where you could eat well for under $25 without a reservation. It now has one. Go this week while the opening energy is still fresh.</div>
+    <div class="button-row">
+      <a class="button" href="https://acrepizza.com/" target="_blank" rel="noopener">Open Acre Pizza</a>
+    </div>
+  </article>
+
+  <!-- Bricoleur spring season -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Windsor area</span><span class="tag">Estate dinners</span>
+    <h3>Bricoleur Vineyards — Spring &amp; Summer Dinners</h3>
+    <div class="meta">Multiple dates April–July 2026 • Bricoleur Vineyards Estate</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$ dinners + estate wine pairings</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Open by appointment.</div>
+    </div>
+    <p>The April 4 Savoring Spring Dinner is sold out and past, but Bricoleur runs a full calendar of dinners, wine pairings, garden classes, and estate events through summer. Executive Chef Todd Knoll and one of the most beautiful properties in northern Sonoma County. Check the events calendar for upcoming dinner dates — they fill fast.</p>
+    <ul>
+      <li>Family Nights 2026, garden classes, and future tasting dinners all on the calendar</li>
+      <li>Estate also bookable for private dinners and overnight stays</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The estate at golden hour is worth the ticket on its own. Get on the mailing list and book the next available dinner before it sells out too.</div>
+    <div class="button-row">
+      <a class="button" href="https://bricoleurvineyards.com/blogs/events" target="_blank" rel="noopener">Open events</a>
+      <a class="button secondary" href="https://bricoleurvineyards.com/" target="_blank" rel="noopener">Open property</a>
+    </div>
+  </article>
+
+  <!-- Matheson Winemaker Dinner -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Healdsburg</span><span class="tag">Special dinner</span>
+    <h3>The Matheson — Taste of Alexander Valley Dinner</h3>
+    <div class="meta">April 18, 2026 • 40-seat dinner, The Matheson rooftop</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$ regular dinner • $$$$ April 18 dinner</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>Four courses. Five Alexander Valley winemakers. Forty guests. Dustin Valette cooks in his rooftop kitchen with one of the best views in Healdsburg. The easiest book-it-now card on this list.</p>
+    <ul>
+      <li>Forty seats means you actually talk to the winemakers — that is the whole point</li>
+      <li>Roof 106 rooftop bar is a strong add-on before or after</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Intimate, serious, and very Healdsburg in the best way.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.sonomacounty.com/events/taste-alexander-valley-winemaker-dinner-with-the-matheson/" target="_blank" rel="noopener">Open event</a>
+      <a class="button secondary" href="https://www.thematheson.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- Passport to DCV -->
+  <article class="card">
+    <span class="tag must">Top pick — 11 days away</span><span class="tag">Dry Creek Valley</span><span class="tag">35th anniversary</span>
+    <h3>Passport to Dry Creek Valley</h3>
+    <div class="meta">April 24–26, 2026 • 35th anniversary • Dry Creek Valley AVA</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$57.95 non-drinker • $125 single-day • $202.85 weekend</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Weekend event. "Twice as Nice" 2-for-1 tastings at 15+ wineries runs Apr 6–June 1.</div>
+    </div>
+    <p>The 35th annual Passport to Dry Creek Valley — 50-plus wineries, 30-plus grape varieties, live music, and a food program that has gotten seriously good. New this year: Friday Twilight Welcome Party at Bacchus Landing with Chef Kevin O'Connor's live-fire cooking and DJ Saint Rose Disco. Saturday morning adds Toast &amp; Taste at Bacchus Landing (9:30–11 AM, free for 2-day ticket holders). Non-drinker tickets and glassware included for the first time. Eleven days away.</p>
+    <ul>
+      <li>Tickets: $57.95 non-drinker / $125 single-day / $202.85 weekend — buy now, no door sales</li>
+      <li>"Twice as Nice" extended 2-for-1 tastings at 15+ wineries runs April 6 through June 1 — worth doing this week even before the main event</li>
+      <li>Preferred hotels: Hotel Trio (save $100+/night, book.passkey.com/go/passport2026) or Appellation Healdsburg</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The valley in bloom, Zinfandel in the glass, live fire on the grill, and 35 years of institutional knowledge about how to throw a good wine weekend. Eleven days. Buy now.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.drycreekvalley.org/dcv-passport/" target="_blank" rel="noopener">Open event + tickets</a>
+    </div>
+  </article>
+
+  <!-- Barndiva Pink Party -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Healdsburg</span><span class="tag">Garden event</span>
+    <h3>Barndiva Pink Party</h3>
+    <div class="meta">May 3, 2026 • Barndiva garden, downtown Healdsburg</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$ Pink Party ticket • $$ dinner service</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open. Thu–Mon dinner service.</div>
+    </div>
+    <p>Every spring, Barndiva opens its garden for rosé, small bites, live music, and flowers. The food has always earned the setting — this is not a backdrop restaurant. One of the most reliably fun spring evenings in Healdsburg.</p>
+    <ul>
+      <li>Good for birthdays, anniversaries, or a great spring Saturday</li>
+      <li>The garden is the best outdoor dining room in Healdsburg</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Pretty, lively, and very Healdsburg in the best possible way.</div>
+    <div class="button-row">
+      <a class="button" href="https://shop.barndiva.com/events" target="_blank" rel="noopener">Open Pink Party tickets</a>
+      <a class="button secondary" href="https://www.barndiva.com/dine-with-us" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- Mother's Day -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Santa Rosa</span><span class="tag">Special brunch</span>
+    <h3>John Ash at Vinarosa — Mother's Day Brunch</h3>
+    <div class="meta">May 10, 2026 • Vinarosa Resort, Santa Rosa</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$ regular dining • $$$ Mother's Day brunch</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>Vineyard views, seasonal seafood, prime rib, and a dessert spread that holds its own. The clean, polished answer for Mother's Day in Sonoma County. Book now — this fills by mid-April.</p>
+    <ul>
+      <li>Book early — this fills well ahead of the day</li>
+      <li>The vineyard setting makes everything feel right</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> A straightforward win for a special Sunday. Hard to improve on.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.opentable.com/r/john-ash" target="_blank" rel="noopener">Reserve on OpenTable</a>
+      <a class="button secondary" href="https://vinarosaresort.com/dining/john-ash/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- Healdsburg Wine & Food Experience -->
+  <article class="card">
+    <span class="tag must">Top pick</span><span class="tag">Healdsburg</span><span class="tag">Major festival</span>
+    <h3>Healdsburg Wine &amp; Food Experience</h3>
+    <div class="meta">May 14–17, 2026 • Healdsburg (multiple venues)</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$ à la carte events • $$$$ full weekend packages</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Festival ends Sunday. Most venues open Mondays separately.</div>
+    </div>
+    <p>The fifth annual Healdsburg Wine &amp; Food Experience runs four days — Welcome Reception at Appellation Healdsburg with chefs Maneet Chauhan and Duskie Estes, a Beringer 150-year anniversary seminar, and Sunday's Pizza &amp; Pinot Party at Copain Wines with Joe Sasto and Ari Weiswasser. Over 150 wines poured, Sonoma County at peak spring. Tickets on sale now.</p>
+    <ul>
+      <li>Reserve Lounge at The Matheson Rooftop runs all weekend</li>
+      <li>Individual events sell out weeks before — buy early</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Sonoma County's biggest and best spring food-and-wine weekend. Plan lodging in Healdsburg for Thursday through Sunday.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.healdsburgwineandfood.com/" target="_blank" rel="noopener">Open festival</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- CITY BY CITY -->
+<h2 class="section-title">City-by-city picks</h2>
+<p class="subnote">All ten zones of the county — from the Alexander Valley to the Sonoma Coast, Kenwood to Guerneville.</p>
+<div class="grid">
+
+  <!-- HEALDSBURG -->
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag newtag">Opened 2025</span><span class="tag needtag">Need to go</span>
+    <h3>Bistro Lagniappe</h3>
+    <div class="meta">Open now • Wed–Sun from 4 PM • wood-fired French farmhouse</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>Chef Jacob Harth took over the embattled Campo Fina/Molti Amici space and turned it into one of Healdsburg's best new rooms of 2025. Wood-fired farmhouse cooking on Sonoma County ingredients — pasture-raised meats, line-caught fish, regenerative farm produce. McFarland Springs trout, lamb cassoulet, roast chicken. The bocce patio is still there.</p>
+    <ul>
+      <li>Rockfish dumplings in concentrated lobster bisque are already a signature</li>
+      <li>Book ahead on weekends — the heated patio fills fast</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The best thing to happen to that address in years. The chef has a clear point of view and the kitchen delivers it.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.lagniappehealdsburg.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag">Breakfast + brunch</span><span class="tag newtag">Opened 2024</span>
+    <h3>Acorn Cafe</h3>
+    <div class="meta">Daily 8 AM–3 PM • Thu–Sun stays open for dinner • 124 Matheson St, Healdsburg Plaza</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open 8 AM–3 PM. Best morning option right on the plaza.</div>
+    </div>
+    <p>Chef Beryl Adler opened this all-day breakfast and lunch cafe in the old Oakville Grocery space right on the Healdsburg Plaza in 2024 and filled a genuine void. The tiramisu French toast with whipped mascarpone and coffee ice cream is the headliner. Huevos rancheros, a banh mi-inspired fried chicken sandwich, shakshuka with eggplant and pistachio tapenade, rosé on tap in the afternoon. First come, first served — the dog-friendly patio fills fast but the indoor room is large. Note: Thu–Sun evenings the space transforms into Juju's, the French-Moroccan pop-up from chef Jason Pringle.</p>
+    <ul>
+      <li>Tiramisu French toast is the order — unambiguously the right call on a first visit</li>
+      <li>Open Mondays — one of the best breakfast options on the plaza any day of the week</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Healdsburg finally has a real breakfast place. Warm brioche, quality ingredients, a patio on the plaza, and open every day. Come early on weekends.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.acornhealdsburg.com/" target="_blank" rel="noopener">Open Acorn Cafe</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag needtag">Need to go</span><span class="tag">Michelin-listed</span>
+    <h3>Troubadour / Le Dîner</h3>
+    <div class="meta">Bakery daily 9 AM–3 PM • Le Dîner dinner Thu–Sun 5:30 PM • 381 Healdsburg Ave</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$ bakery / $$$ Le Dîner ($125 pp prepaid)</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Bakery open 9 AM–3 PM. No Monday dinner.</div>
+    </div>
+    <p>By day, Troubadour is a sourdough bakery and sandwich counter — the bread comes from the same team behind Quail &amp; Condor, and the sandwiches are exactly as good as you'd expect. By night, Thursday through Sunday, the space transforms into Le Dîner: a 20-seat French-California tasting menu restaurant run by ex-SingleThread chef de cuisine Sean McGaughey and pastry chef Melissa Yanc. Michelin-listed. Seven-course prix fixe in the main room, 11-course Chef's Table in a private study stocked with vintage cookbooks and a record player. Menu changes with the season and is built around Sonoma County farms. Prepaid reservation through Tock only — $125 per person.</p>
+    <ul>
+      <li>The Chef's Table (11 courses, private study) is one of the most singular dinner experiences in the county</li>
+      <li>Bakery sandwiches are excellent and require no reservation — a daytime walk-in worth making on any day</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> A Michelin-listed tasting menu in a 20-seat bakery, Thursday through Sunday. The intimacy is the point — 20 seats means the chef is cooking for you specifically.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.troubadourhbg.com/lediner" target="_blank" rel="noopener">Open Le Dîner</a>
+      <a class="button secondary" href="https://www.exploretock.com/troubador-bread--bistro-healdsburg" target="_blank" rel="noopener">Reserve on Tock</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag newtag">Opened 2025</span>
+    <h3>Folia Bar &amp; Kitchen — Appellation Healdsburg</h3>
+    <div class="meta">Dinner nightly except Monday • three-course prix fixe</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Breakfast, lunch, and bar only. No Monday dinner.</div>
+    </div>
+    <p>Reed Palmer's three-course prix fixe at Appellation Healdsburg — Mt. Lassen trout, Mary's chicken, seasonal pastas, estate garden sourcing. One of the most striking new resort tables in Wine Country. See the Short List card above for full detail.</p>
+    <div class="button-row">
+      <a class="button" href="https://www.foliabarandkitchen.com/" target="_blank" rel="noopener">Open Folia</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag">Anchor table</span>
+    <h3>Valette</h3>
+    <div class="meta">Open now • dinner Wed–Sun • estate farm sourcing</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>Ten years in and still the most reliably excellent dinner table in Healdsburg. The tasting menu rotates around an estate farm plot 100 yards from the restaurant. Spring means asparagus, fava beans, and early stone fruit on this menu. The scallops en croute in Champagne beurre blanc has been a signature dish for a decade for a reason.</p>
+    <ul>
+      <li>Groups of seven or more commit to the five-course chef's tasting</li>
+      <li>Spring is the right first-visit season — the farm drives the best dishes</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> This is what a decade of commitment to a place looks like on a plate.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.valettehealdsburg.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag">Big splurge</span>
+    <h3>SingleThread</h3>
+    <div class="meta">Book ahead — reservations open 1st of each month</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>Three Michelin stars, five consecutive years. The full tasting journey built around SingleThread Farm's estate gardens. Spring — asparagus, fava beans, early garden herbs — drives some of the kitchen's most beautiful work of the year. There is no other room in Sonoma County where you feel this much intentionality in every single course.</p>
+    <ul>
+      <li>April reservations open April 1 — May reservations open May 1</li>
+      <li>Set a calendar reminder and move quickly when the window opens</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Calm, beautiful, world-class. Worth every penny once a season.</div>
+    <div class="button-row">
+      <a class="button" href="https://singlethreadfarms.com/restaurant/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag">Year-round favorite</span>
+    <h3>Baci Cafe &amp; Wine Bar</h3>
+    <div class="meta">Open Mon–Sun • warm, chef-driven dinner year-round</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open. One of very few real dinner options in downtown Healdsburg on a Monday.</div>
+    </div>
+    <p>The warm, pretty Healdsburg table that does not get enough attention. Rotating seasonal menu, a wine list leaning on small Sonoma producers, and a room that feels like a celebration before the first bite. Spring means asparagus, spring onions, and fresh chèvre doing serious work here.</p>
+    <ul>
+      <li>Good for a date night, small celebration, or solo bar dinner</li>
+      <li>The best Monday dinner answer in downtown Healdsburg</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Consistently good and consistently underestimated.</div>
+    <div class="button-row">
+      <a class="button" href="https://bacicafeandwinebar.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Healdsburg</span><span class="tag">Plant-based + music</span>
+    <h3>Little Saint</h3>
+    <div class="meta">Open now • live music and events through spring</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>100% plant-based restaurant, coffee bar, cocktail lounge, and live performance venue in one downtown building. Spring menus built on early citrus, strawberries, and Sonoma County farm produce. Works for groups that mix omnivores and plant-eaters without drama — the cocktail program is strong enough that nobody feels like a second-class citizen.</p>
+    <ul>
+      <li>Check the spring lineup before you go — events book fast</li>
+      <li>Open Mondays when most of Healdsburg is dark</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Good food, good room, the best music calendar in Healdsburg, and open Mondays.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.littlesainthealdsburg.com/" target="_blank" rel="noopener">Open restaurant</a>
+      <a class="button secondary" href="https://www.littlesainthealdsburg.com/lineup" target="_blank" rel="noopener">Open lineup</a>
+    </div>
+  </article>
+
+  <!-- ALEXANDER VALLEY -->
+  <article class="card">
+    <span class="tag">Alexander Valley</span><span class="tag">Essential stop</span>
+    <h3>Jimtown Store</h3>
+    <div class="meta">Open now • 6706 Hwy 128 • Mon, Thu–Sun 8 AM–3 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open Mon 8 AM–3 PM. Closed Tue–Wed.</div>
+    </div>
+    <p>The historic 1895 country store and deli tucked into the vines of Alexander Valley on Highway 128. Fresh-prepared food, homebaked goods, great coffee, local products, and the famous chocolate pudding that people drive out of their way for. Not a restaurant — an institution. The perfect anchor for any Alexander Valley wine day.</p>
+    <ul>
+      <li>Open Mondays — one of the only quality food stops in the valley on Mondays</li>
+      <li>Pack a sandwich and eat among the vines on the way to or from a tasting</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> This is what the Alexander Valley tastes like when it isn't trying to impress you. Go before it gets too crowded.</div>
+    <div class="button-row">
+      <a class="button" href="https://jimtown.com/" target="_blank" rel="noopener">Open store</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Cloverdale</span><span class="tag newtag">Opened April 11, 2026</span><span class="tag needtag">Need to go</span>
+    <h3>Cloverdale Supper Club</h3>
+    <div class="meta">Grand opening April 11 • 240 N. Cloverdale Blvd • steaks, seafood, martinis</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Verify — just opened. Check Instagram for current hours.</div>
+    </div>
+    <p>Cloverdale finally has a dinner destination worth driving to. The Supper Club opened April 11 with a Sinatra-era atmosphere — steaks, seafood, and classic martinis at the north end of the county. This is the room that Cloverdale has needed for years: an adult dinner with a proper bar in a town that usually gets overlooked between Geyserville and the Mendocino County line. Worth adding to any Alexander Valley wine day that pushes north.</p>
+    <ul>
+      <li>Just opened — worth going now while the kitchen is at its most motivated</li>
+      <li>Natural pairing with Passport to Dry Creek Valley weekend April 24–26 — northern anchor dinner</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The north county finally has its own dinner room. Cloverdale deserves this and the timing is right.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.instagram.com/supperclubcloverdale/" target="_blank" rel="noopener">Open on Instagram</a>
+    </div>
+  </article>
+
+  <!-- SONOMA VALLEY CORRIDOR -->
+  <article class="card">
+    <span class="tag">Kenwood</span><span class="tag newtag">Opened 2025</span><span class="tag needtag">Need to go</span>
+    <h3>Stella</h3>
+    <div class="meta">Open now • 9049 Sonoma Hwy • dinner nightly 4:30 PM • lunch Fri–Sun</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open Mon–Sun, dinner from 4:30 PM. Lunch Fri–Sun.</div>
+    </div>
+    <p>Ari Weiswasser (Glen Ellen Star) and chef de cuisine Bryant Minuche opened this Italian-California room in the old Cafe Citti space on Highway 12 in March 2025. The pasta program is the reason to go — Roman tonnarelli, lumache with spring pea pesto and morels, rigatoncini Bolognese, all made daily. The wood-fired hearth handles whole fish, chicken, and steak. The mozzarella bar (burrata with brown butter walnuts and 12-year aged balsamic) is its own argument for going. The Baked Gelaska is one of the great spring desserts in the county.</p>
+    <ul>
+      <li>Open every night of the week including Mondays — exceptional on the Sonoma Valley corridor</li>
+      <li>Pork chop Milanese with Meyer lemon-caper sauce is the meat order</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The best new room on the Sonoma Valley corridor, open Mondays. That combination is almost unheard of in this part of the county.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.stellakenwood.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Glen Ellen</span><span class="tag newtag">Opened 2025</span><span class="tag needtag">Need to go</span>
+    <h3>Poppy</h3>
+    <div class="meta">Open now • 13690 Arnold Drive • Wed–Sun from 5 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed Mon and Tue.</div>
+    </div>
+    <p>The Girl &amp; The Fig's Sondra Bernstein and John Toulze transformed the old Fig Café into this French countryside room in May 2025 — one of the year's best openings. Crispy poulet rôti with vin jaune jus, Coquilles Saint-Jacques with pork rillons and pastis, asparagus salad with local strawberries and lemon curd, and a bread service with duck liver mousse. Family-style prix fixe dinners Wednesday through Friday include wine in the price.</p>
+    <ul>
+      <li>The asparagus salad with Sonoma strawberries is spring on a plate right now</li>
+      <li>Wed–Fri prix fixe includes wine — good value</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Simple, ingredient-driven French food from people who spent 25 years learning how to get out of the way of a good ingredient. One of 2025's best openings.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.poppyglenellen.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Glen Ellen</span><span class="tag">Classic</span>
+    <h3>Glen Ellen Star</h3>
+    <div class="meta">Open now • 13648 Arnold Drive • Wed–Sun</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed Mon and Tue.</div>
+    </div>
+    <p>Ari Weiswasser's original Glen Ellen room — the wood-fired table that put the Sonoma Valley back on the serious food map. Brick chicken with parsley and lemon, whole branzino, ember-roasted vegetables, and deceptively simple seasonal dishes. Much of the produce comes from a farm directly behind the restaurant.</p>
+    <ul>
+      <li>The brick chicken and tomato pie are the orders</li>
+      <li>Good companion to Stella for a two-night Sonoma Valley food loop</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Still the benchmark for the Sonoma Valley corridor after all these years.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.glenellenstar.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Sonoma</span><span class="tag newtag">2 Michelin Stars</span><span class="tag needtag">Big splurge</span>
+    <h3>Enclos</h3>
+    <div class="meta">Open now • 139 E. Napa St., Sonoma • Wed–Sat, 5:30 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$$ ($280 tasting menu)</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed Mon, Tue, and Sun.</div>
+    </div>
+    <p>Chef Brian Limoges (Quince, Atelier Crenn, Birdsong) opened Enclos inside a restored 1880 Victorian half a block from Sonoma Plaza in late 2024 and earned two Michelin stars and a Green Star in its first year — one of the most stunning debuts in California fine dining in recent memory. The 11-course tasting menu is grounded in Stone Edge Farm's organic gardens with nods to New England and Japan. Reservations open on Tock every two months and sell out in minutes.</p>
+    <ul>
+      <li>Single seating only — no rush to vacate, which is rare at this level</li>
+      <li>Set a Tock alert for the next reservation window opening</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Two Michelin stars in year one. The hottest reservation in Northern California. This belongs on your once-a-year list.</div>
+    <div class="button-row">
+      <a class="button" href="https://enclos-sonoma.com/" target="_blank" rel="noopener">Open restaurant</a>
+      <a class="button secondary" href="https://www.exploretock.com/enclos" target="_blank" rel="noopener">Open Tock reservations</a>
+    </div>
+  </article>
+
+  <!-- PETALUMA -->
+  <article class="card">
+    <span class="tag">Petaluma</span><span class="tag newtag">Opened 2025</span><span class="tag needtag">Need to go</span>
+    <h3>Bijou</h3>
+    <div class="meta">Opened June 2025 • 190 Kentucky St • Thu–Tue, 4–9 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open Mon, Thu–Tue. Closed Wednesdays only.</div>
+    </div>
+    <p>Chef Stéphane Saint Louis (Michelin-recognized Table Culture Provisions) opened this French bistro in the former Easy Rider space in June 2025. Steak frites with sauce au poivre, cod brandade croquettes, duck with orange sauce, and gâteau St. Honoré from pastry chef Sylvain Parsy. Serious food in a casual room. Open almost every night of the week including Mondays.</p>
+    <ul>
+      <li>Open Mondays — almost unique at this quality level in the county</li>
+      <li>Note: 5% staff service charge automatically added</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> One of the most compelling chef stories in Sonoma County right now. Petaluma has been waiting for a room like this.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.bijoupetaluma.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Petaluma</span><span class="tag">Michelin-listed</span>
+    <h3>Table Culture Provisions</h3>
+    <div class="meta">Open now • Wed–Sat, 5–9 PM • 7-course tasting menu</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$$ ($135 tasting menu)</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed. Wed–Sat only.</div>
+    </div>
+    <p>The Michelin-recognized 7-course tasting menu from chefs Stéphane Saint Louis and Steven Vargas in a small downtown Petaluma space. Hyper-seasonal California cuisine walking between comfort and haute cuisine. The menu changes constantly, the room feels like a dinner party, and this is one of the best value tasting menus in the county. Social Hour Wed–Thu 4–6 PM offers à la carte at approachable prices.</p>
+    <ul>
+      <li>Reservations strongly recommended — the dining room is tiny</li>
+      <li>Social Hour is the easier entry point on a Wednesday or Thursday</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Michelin-level cooking at neighborhood prices. Nothing else like it in the county.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.tcprovision.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Petaluma</span><span class="tag">Steak + seafood</span>
+    <h3>Seared</h3>
+    <div class="meta">Open now • 170 Petaluma Blvd N • Tue–Sun from 3:30 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>Petaluma's go-to for steak, seafood, barrel-aged cocktails, and a happy hour that locals treat as a standing appointment. Beeman Ranch beef, line-caught halibut, and a wine list leaning heavily on Sonoma County producers. The hanger steak with truffled parmesan frites is the order.</p>
+    <ul>
+      <li>Happy hour Tue–Sun — a genuine local institution</li>
+      <li>Stemple Creek grass-fed burger is one of the better bar burgers in the county</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Petaluma's version of a perfect steak night. Sonoma Magazine has called it that for years.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.petalumaseared.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Petaluma</span><span class="tag">Bakery + café</span>
+    <h3>Della Fattoria</h3>
+    <div class="meta">Open daily breakfast + lunch • Thu–Sat dinner</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open for breakfast and lunch. No Monday dinner.</div>
+    </div>
+    <p>The family-owned Petaluma bakery whose bread shows up on half the menus in this guide. Breakfast and lunch available daily. The rosemary boule and wood-fired breads are reasons to detour off the 101. This is where both Stéphane Saint Louis and the TCP team did their early training.</p>
+    <ul>
+      <li>A good Monday breakfast or lunch stop on a Petaluma day</li>
+      <li>The bread alone justifies the visit</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Eat the bread at the source. You'll understand why it ends up on every good menu in the county.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.dellfattoria.com/" target="_blank" rel="noopener">Open bakery</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Petaluma</span><span class="tag">Oyster bar</span>
+    <h3>The Shuckery</h3>
+    <div class="meta">Open now • Hotel Petaluma, downtown</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open. Bar opens at 4 PM most days.</div>
+    </div>
+    <p>Bohemian "Best Restaurant for Oysters" two years running, inside the historic Hotel Petaluma. Chef Matt Meyer and owner Jazmine Lalicker run an oyster-forward room with a wine list that won "Best in Sonoma County." Spring is peak season for Tomales Bay oysters — order widely. Bar seats 18 first-come if dinner fills.</p>
+    <ul>
+      <li>Spring is peak season for clean bay oysters — the best time to visit</li>
+      <li>Bar walk-in is a strong option when the dining room fills</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Two years running the best oyster room in the county. That doesn't happen by accident.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.theshuckery.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Petaluma</span><span class="tag">Brewery + taproom</span>
+    <h3>Lagunitas Brewing Company</h3>
+    <div class="meta">Open daily, noon on • taproom + food trucks Mon–Thu</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open noon–7 PM. Food trucks Mon–Thu, full kitchen Fri–Sun.</div>
+    </div>
+    <p>The flagship Lagunitas taproom in Petaluma — open-air seating, live music calendar, rotating one-off brews from the on-site Disorderly House brewhouse, and a food program that punches above taproom expectations. Line-caught fish, grass-fed beef, Rocky free-range chicken. Bring the dog. Spring is one of the best seasons to be in this outdoor space.</p>
+    <ul>
+      <li>Brewery tours available — book ahead</li>
+      <li>Jumbo Bavarian pretzel and smoked chicken wings are the food orders</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The most fun you can have on a Monday afternoon in Petaluma. Open daily and the beer is always good.</div>
+    <div class="button-row">
+      <a class="button" href="https://lagunitas.com/taproom/petaluma/" target="_blank" rel="noopener">Open taproom</a>
+    </div>
+  </article>
+
+  <!-- SANTA ROSA -->
+  <article class="card">
+    <span class="tag">Santa Rosa</span><span class="tag newtag">Opened 2025</span>
+    <h3>Rosso Pizzeria &amp; Wine Bar — Santa Rosa</h3>
+    <div class="meta">Opened fall 2025 • 53 Montgomery Drive</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>The beloved Sonoma Plaza original expanded to Santa Rosa in fall 2025. Same wood-fired pizza program — and a fried chicken with smashed potatoes and caramelized pancetta that is already among the best casual bites in the county. Good salads, a thoughtful wine list, and a price point that makes it an easy weeknight yes.</p>
+    <ul>
+      <li>Fried chicken with mashed potatoes and pancetta is the order on a first visit</li>
+      <li>Fungi limone pizza and the margherita alongside</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Santa Rosa finally has its own Rosso. The chicken alone is worth the drive.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.rossopizzeria.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Santa Rosa</span><span class="tag newtag">Newer pick</span>
+    <h3>Augie's French</h3>
+    <div class="meta">Open now • 4th Street, downtown Santa Rosa</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>Mark and Terri Stark's lively French bistro on 4th Street. Steak frites, mussels, classic bistro sauces, and a room built for date nights and small groups. The wine list tilts French and local, which is exactly right for a bistro in Wine Country.</p>
+    <ul>
+      <li>Good for downtown Santa Rosa energy at its most fun</li>
+      <li>The Stark team runs consistent operations — service holds up</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Classic bistro mood with fresh buzz and a kitchen that knows what it is.</div>
+    <div class="button-row">
+      <a class="button" href="https://augiesfrench.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Santa Rosa</span><span class="tag needtag">Need to go</span>
+    <h3>Bird &amp; The Bottle</h3>
+    <div class="meta">Open now • share plates + wood-fired grill</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>The Santa Rosa table for shareable plates, a busy bar, and wood-fired cooking. Spring means lighter preparations — grilled vegetables, quick-seared fish, and good acid in everything. Best with a group that wants to order widely and pass everything around the table.</p>
+    <ul>
+      <li>Good mix of comfort and surprise on the menu every visit</li>
+      <li>The bar stays lively through the week</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> A happy table almost every time. One of Santa Rosa's most reliable rooms.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.birdandthebottle.com/the-bird/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Santa Rosa</span><span class="tag newtag">Soft opening April 2026</span>
+    <h3>Parkside Eats</h3>
+    <div class="meta">Soft opening now • 4323 Montgomery Drive, Santa Rosa • Mexican-California</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Soft opening — verify current hours on Instagram.</div>
+    </div>
+    <p>Hayley Cutri and chef Efrain Balmes — formerly of Sonoma Eats in Agua Caliente — just opened Parkside Eats in the former Lepe's Taqueria space in Rincon Valley. Still in soft opening, but the menu is already drawing neighbors: poke nachos, fresh guacamole, excellent brioche burger, Baja fish tacos, and a low-abv hibiscus margarita that Sonoma Magazine's dining editor called out specifically. Mexican-influenced favorites meeting California-style comfort food from a team that knows how to run a neighborhood room.</p>
+    <ul>
+      <li>Still in soft opening — a good time to go before it fills up</li>
+      <li>Hibiscus margarita and the brioche burger are the early standouts</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Fresh kitchen, good sourcing, a team with a track record. The Rincon Valley neighborhood has been waiting for this since Lepe's closed.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.instagram.com/parksideeats/" target="_blank" rel="noopener">Open on Instagram</a>
+    </div>
+  </article>
+  <article class="card">
+    <span class="tag">Sebastopol</span><span class="tag needtag">Need to go</span>
+    <h3>Goldfinch</h3>
+    <div class="meta">Open now • wood-fire bistro at the Livery on Main</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>Modern American bistro cooking around an open wood fire in Sebastopol's Livery on Main. Chef Rodrigo Mendoza kept the exposed brick of the old K&amp;L Bistro and added an open kitchen that anchors the room. Seasonal, local, polished without being stiff. One of the strongest additions to the Sebastopol dining scene in years.</p>
+    <ul>
+      <li>Works for both lunch and dinner</li>
+      <li>Good pick for a Sebastopol weekday that doesn't feel like a compromise</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Cozy, fresh, and easy to recommend at any level of food enthusiasm.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.goldfinchsebastopol.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Sebastopol</span><span class="tag newtag">Newer pick</span>
+    <h3>Acre Pasta</h3>
+    <div class="meta">Open now • The Barlow, Sebastopol</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>House-made pasta every morning, honest prices, rotating menu that takes the produce seriously. Spaghetti with Sunday red sauce is $12. The lumache with porcini cream is the sleeper hit. Honest prices in a region where they are increasingly rare. Acre Pizza's Healdsburg location has now opened at 44 Mill St, Suite C — just off the downtown square next to Quail &amp; Condor's new bakery.</p>
+    <ul>
+      <li>Easy casual lunch or early dinner stop after The Barlow</li>
+      <li>Acre Pizza Healdsburg now open at 44 Mill St, Suite C — Detroit- and New York-style pies</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Good pasta at honest prices. That matters here.</div>
+    <div class="button-row">
+      <a class="button" href="https://acrepasta.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Sebastopol</span><span class="tag">Cocktails + hang</span>
+    <h3>Fern Bar</h3>
+    <div class="meta">Happy hour daily 3–5 PM • live music • The Barlow</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>Modern American food, zero-proof cocktails, spirits, and live music in a plant-filled Barlow room. The zero-proof program is one of the best in the county for non-drinkers in a mixed group — thoughtful, not remedial. Spring menus pull from Sonoma farms.</p>
+    <ul>
+      <li>Best if part of your group wants excellent non-alcoholic drinks</li>
+      <li>Easy to stretch a 3 PM arrival into a full dinner</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Fun room. Friendly menu. The best long hang in Sebastopol.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.fernbar.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Sebastopol</span><span class="tag">Comfort food</span>
+    <h3>Ramen Gaijin</h3>
+    <div class="meta">Tue–Sat • lunch, dinner, happy hour 2:30–4:30 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>A Sonoma County ramen shop and izakaya built around house-made noodles and a seasonal menu that takes local farms seriously. The broth tastes like someone spent two days on it. Spring brings lighter, brighter bowls alongside the deeper anchors.</p>
+    <ul>
+      <li>Happy hour 2:30–4:30 PM — a good deal on a cool spring afternoon</li>
+      <li>Izakaya small plates worth ordering alongside the bowl</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Smart food that still feels fun. One of Sebastopol's most consistent kitchens.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.ramengaijin.com/reserve" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Graton</span><span class="tag">West County anchor</span>
+    <h3>Underwood Bar and Bistro</h3>
+    <div class="meta">Open now • 9113 Graton Rd • Tue–Sun from 11:30 AM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>The longtime West County anchor in the tiny village of Graton — steak frites, flatbreads, a serious bar, and an easy stop on the way to or from the coast. The flat iron steak frites with mushroom-shallot butter and chipotle sauce is a dish that has earned its place on the permanent menu.</p>
+    <ul>
+      <li>Good stop on any Bodega Bay or Sebastopol day</li>
+      <li>The bar is a neighborhood institution with a wine list that tilts local</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Honest, consistent, and exactly what a West County bistro should be.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.underwoodgraton.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- WINDSOR -->
+  <article class="card">
+    <span class="tag">Windsor</span><span class="tag needtag">Worth visiting</span>
+    <h3>Grata Italian Eatery</h3>
+    <div class="meta">Open now • Windsor River Road</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>Chef-owner Eric Foster's Italian kitchen is one of the most underappreciated rooms in north Sonoma County. House-made gnudi, burrata with preserved lemon honey, caramelized pear and endive bruschetta. The pasta program is serious. Also watch for Foster's forthcoming casual saloon-style pub at the old Windsor Brewery — expected this spring or summer.</p>
+    <ul>
+      <li>Strong pick when Healdsburg feels too expensive or crowded</li>
+      <li>New Windsor Brewery pub from the same team still coming</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Windsor needs more tables like this. Support it while it's here.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.gratawindsor.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- FORESTVILLE / RUSSIAN RIVER -->
+  <article class="card">
+    <span class="tag">Forestville</span><span class="tag newtag">Post-fire 2025</span><span class="tag needtag">Under the radar</span>
+    <h3>BaSo Annex (Bazaar Sonoma)</h3>
+    <div class="meta">Open Thu–Sun, 5–9:30 PM • interim cafe</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$ (most dishes $9–$24)</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>After a devastating fire hit the original Bazaar Sonoma in fall 2025, chef Sean Quan and Jenny Phan opened an interim cafe with their best dishes — zhong dumplings with house chili crisp, Taiwan braised pork rice, mapo tofu, beef noodle soup, Shanghai soup dumplings. Prices are a genuine bargain at $9–$24. One of the most interesting kitchens in the county at the most honest price point in the county.</p>
+    <ul>
+      <li>Zhong dumplings with house chili crisp are required eating</li>
+      <li>Toothpick beef with peanuts and gai lan with garlic-sesame are the other orders</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Seriously good food at prices that feel like a different county. Show up for the food and stay for the story behind it.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.instagram.com/bazaarsonoma/" target="_blank" rel="noopener">Follow on Instagram</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Forestville</span><span class="tag newtag">Format change March 2026</span>
+    <h3>Farmhouse Inn Restaurant</h3>
+    <div class="meta">Open now • new chef, new à la carte format • Foley Entertainment Group ownership</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open. Verify current hours before going.</div>
+    </div>
+    <p>Breaking change this week: following its acquisition by Bill Foley's Foley Entertainment Group, the Farmhouse Inn has stepped away from the Michelin-starred tasting menu format that defined it under chefs Steve Litke and Craig Wilmer. New chef Julio Aguilera now runs an upscale à la carte menu — burrata with greens, Caesar salad, grilled broccolini with prosciutto, steak with pommes purée and lobster butter, roasted chicken, salmon. Still a beautiful property and a good Russian River Valley dinner. Just a different restaurant than it was.</p>
+    <ul>
+      <li>No longer a tasting menu experience — now upscale casual à la carte</li>
+      <li>The setting and the valley drive remain as good as ever</li>
+      <li>Verify current hours — new ownership often means schedule adjustments</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Still a beautiful room on a beautiful property in one of the county's best valleys. The format is more accessible now — not a lesser version, just a different one. Worth a visit to see where the new kitchen lands.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.farmhouseinn.com/restaurant/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Guerneville</span><span class="tag">Russian River anchor</span>
+    <h3>boon eat + drink</h3>
+    <div class="meta">Open now • 16248 Main St, Guerneville • Wed–Sun from 4 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed Mon and Tue.</div>
+    </div>
+    <p>Crista Luedtke's farm-to-table California bistro has anchored Guerneville's food scene since 2009. Primarily organic ingredients, a house garden, sustainable meats, and a menu that genuinely shifts with the season. Spring means the garden is waking up — asparagus, peas, and early lettuces start showing up on the menu around now.</p>
+    <ul>
+      <li>Spring menu reflects whatever is coming out of the garden right now</li>
+      <li>Good base camp for a Russian River Valley food and wine weekend</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The anchor of a good Guerneville evening. Honest, seasonal, and still the best room in town.</div>
+    <div class="button-row">
+      <a class="button" href="https://eatatboon.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- GEYSERVILLE -->
+  <article class="card">
+    <span class="tag">Geyserville</span><span class="tag needtag">Worth the drive</span>
+    <h3>Cyrus</h3>
+    <div class="meta">Dining journey + Kisetsu Ramen popup + Sunday Family Meal</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$ ramen / family meal • $$$$ dining journey</div>
+      <div class="fact closed"><span class="fact-label">Mondays</span>Closed.</div>
+    </div>
+    <p>Douglas Keane's multi-act dining experience — champagne and canapés, interactive kitchen chef's table, the main dining room, and a dessert room with a molten chocolate fountain. The Kisetsu ramen popup in the Bubbles Lounge and Sunday Family Meal (gochujang fried chicken) give you two much easier ways in without the full commitment.</p>
+    <ul>
+      <li>Kisetsu reservations release Sundays — set a reminder</li>
+      <li>Sunday Family Meal is the most fun $55 in Sonoma County right now</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Fancy, playful, very memorable, and like nothing else anywhere in the county.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.cyrusrestaurant.com/" target="_blank" rel="noopener">Open restaurant</a>
+      <a class="button secondary" href="https://www.cyrusrestaurant.com/bubbles-lounge" target="_blank" rel="noopener">Open Bubbles Lounge</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Geyserville</span><span class="tag needtag">Need to go</span>
+    <h3>Diavola</h3>
+    <div class="meta">Open now • salumi + wood-fire pizza + pasta</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>The loud, delicious Geyserville table for pizza, pasta, and house-cured meats. Chef Dino Bugica has been making salumi and working that wood oven for years without losing the plot. It is hard to order wrong here. Best stop after a day of tasting in Dry Creek or Alexander Valley.</p>
+    <ul>
+      <li>Good for groups that want to share widely and drink Zinfandel</li>
+      <li>The house salumi justify the drive to Geyserville on their own</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The cured meats alone earn the trip north. Everything else is a bonus.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.diavolapizzeria.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- SONOMA COAST -->
+  <article class="card">
+    <span class="tag">Bodega Bay</span><span class="tag">Michelin-rated</span>
+    <h3>Terrapin Creek Cafe</h3>
+    <div class="meta">Open now • 1580 Eastshore Rd • Mon, Thu–Sun from 4:30 PM</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open Mon 4:30–8:30 PM. Closed Tue–Wed.</div>
+    </div>
+    <p>A Michelin-recognized neighborhood restaurant in Bodega Bay with a kitchen that punches far above its coastal roadside setting. Pan-roasted Hokkaido scallops with sunchoke purée, charred octopus with roasted cauliflower, Dungeness crab cake, Mediterranean fish stew. One of the only Michelin-quality rooms in the county open on Mondays.</p>
+    <ul>
+      <li>Open Mondays — exceptional for this quality level</li>
+      <li>The intimate fireplace room is one of the best coastal dinner settings in California</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Michelin-recognized, open Mondays, on the coast. That combination is almost impossible to find in Northern California.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.terrapincreekcafe.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Valley Ford</span><span class="tag">Coastal roadhouse</span>
+    <h3>Rocker Oysterfeller's</h3>
+    <div class="meta">Open daily • 14415 Hwy 1, Valley Ford • 11 AM on</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open. Dollar Oyster Mondays all day.</div>
+    </div>
+    <p>Southern comfort cooking on Highway 1 celebrating the immediate area's ingredients — grassfed smashburgers, buttermilk fried chicken with Lagunitas ale and caraway gravy, wild Gulf shrimp étouffée, and Tomales Bay oysters raw or grilled. Dollar Oyster Mondays make this one of the great Monday food stops in the county. Live music Sundays.</p>
+    <ul>
+      <li>Dollar Oyster Mondays — the best reason to drive Highway 1 on a Monday</li>
+      <li>Grassfed smashburger is the casual food order</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Tomales Bay oysters for a dollar on Mondays, on Highway 1, with a cold beer. The coastal day that pays for itself.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.rockeroysterfellers.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <!-- POINT REYES / COAST -->
+  <article class="card">
+    <span class="tag">Inverness / Point Reyes</span><span class="tag">Special dinner</span>
+    <h3>Saltwater Oyster Depot</h3>
+    <div class="meta">Dinner Fri, Sat &amp; Mon 5–8 PM • Sunday lunch noon–4 PM • 12781 Sir Francis Drake Blvd</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open Mon dinner 5–8 PM. Closed Tue–Thu.</div>
+    </div>
+    <p>Reservation-only dinners in a small coastal room in Inverness, directly across from Tomales Bay. Tomales Bay oysters and locally sourced seafood, prepared with care and without pretension. Spring means the bay oysters are at their cleanest. Open Mondays for dinner — worth planning a coastal Monday around.</p>
+    <ul>
+      <li>Monday dinner is a strong coastal Monday anchor — open when most coastal spots aren't</li>
+      <li>Small room — book ahead even for Monday nights</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Tiny, coastal, and very easy to love. Open Mondays for dinner. One of the best small rooms in the entire county.</div>
+    <div class="button-row">
+      <a class="button" href="http://www.saltwateroysterdepot.com/" target="_blank" rel="noopener">Open restaurant</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Marshall</span><span class="tag">Bay + oysters</span>
+    <h3>Hog Island Oyster Boat Bar</h3>
+    <div class="meta">Fri–Mon, 11 AM–4 PM • Tomales Bay farm, Marshall</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>The outdoor oyster table right on the water in Marshall. Raw oysters, BBQ oysters, seafood specials, and the bay as your setting. Spring is one of the best times for this drive. Reservations required. Open Mondays.</p>
+    <ul>
+      <li>Book online — standby list fills quickly</li>
+      <li>Farm tours add a good second act</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> This is the oyster day. No better version of this experience exists in Northern California.</div>
+    <div class="button-row">
+      <a class="button" href="https://hogislandoysters.com/restaurants/the-boat/" target="_blank" rel="noopener">Open oyster bar</a>
+      <a class="button secondary" href="https://hogislandoysters.com/hog-hq/farm-tours/" target="_blank" rel="noopener">Open farm tours</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Marshall</span><span class="tag">Bay view + music</span>
+    <h3>Nick's Cove</h3>
+    <div class="meta">Open now • weekly live music • Tomales Bay</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>Sustainable coastal cooking from Marin and Sonoma farms in one of the best bay settings on the California coast. Live music through spring means the whole evening feels handled. Good for a solo lunch, a date dinner, or a group with a shared love of the coastline.</p>
+    <ul>
+      <li>Check the happenings calendar for live music dates</li>
+      <li>Open Mondays — strong coastal Monday option</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> The view does half the work. The kitchen does the other half.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.nickscove.com/restaurant/" target="_blank" rel="noopener">Open restaurant</a>
+      <a class="button secondary" href="https://www.nickscove.com/happenings" target="_blank" rel="noopener">Open happenings</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Point Reyes</span><span class="tag">Reservation only</span>
+    <h3>The Fork at Point Reyes Farmstead Cheese</h3>
+    <div class="meta">Reservation only • tastings, farm talks, and chef lunches</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$ tasting • $$ tasting + lunch</div>
+      <div class="fact special"><span class="fact-label">Mondays</span>Farm market open. Food experiences reservation-only.</div>
+    </div>
+    <p>Not a restaurant. A reservation-only food experience on one of the county's most beautiful working dairy farms. Spring is the best season for fresh chèvre and young cheeses. This is what farm-to-table actually feels like — an actual farm, with cows, a cheese cave, and a story you can eat.</p>
+    <ul>
+      <li>Good for a slow weekday outing or a deliberate food-focused day trip</li>
+      <li>Bay light in spring from this property is exceptional</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Deeply local. Very Point Reyes. Changes how you eat when you get home.</div>
+    <div class="button-row">
+      <a class="button" href="https://pointreyescheese.com/pages/tastings-at-the-farm" target="_blank" rel="noopener">Open tastings</a>
+      <a class="button secondary" href="https://pointreyescheese.com/pages/about-the-fork" target="_blank" rel="noopener">Open The Fork</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <span class="tag">Point Reyes Station</span><span class="tag">Community anchor</span>
+    <h3>Station House Cafe</h3>
+    <div class="meta">Newly renovated • music and happy hour • open daily</div>
+    <div class="fact-row">
+      <div class="fact"><span class="fact-label">Price</span>$</div>
+      <div class="fact open"><span class="fact-label">Mondays</span>Open.</div>
+    </div>
+    <p>The newly renovated Station House is the easy full-meal answer in Point Reyes Station when you want something local, seasonal, and relaxed. The renovation brought fresh energy without losing the longtime warmth. Live music and specials run through the spring calendar.</p>
+    <ul>
+      <li>Good lunch, dinner, or bar stop on a coastal day</li>
+      <li>Check the calendar for live music dates</li>
+    </ul>
+    <div class="why"><strong>Why go:</strong> Friendly, local, and easy to love. A place that actually belongs to its town.</div>
+    <div class="button-row">
+      <a class="button" href="https://stationhousecafe.com/" target="_blank" rel="noopener">Open restaurant</a>
+      <a class="button secondary" href="https://stationhousecafe.com/calendar/" target="_blank" rel="noopener">Open calendar</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- BEST FOOD DAYS -->
+<div class="simple-box">
+  <h3>Sonoma Chef's best spring food days right now</h3>
+  <p><strong>Healdsburg serious day:</strong> Acorn Cafe for breakfast on the plaza, then Valette or Bistro Lagniappe or Troubadour/Le Dîner for dinner (Troubadour is Thu–Sun and requires a prepaid Tock reservation — book it before you leave home). Monday means Baci is the only real downtown dinner answer — and it is a very good one. Any Thursday through Sunday evening, Juju's French-Moroccan pop-up at Acorn is worth adding to the plan.</p>
+  <p><strong>Healdsburg casual day:</strong> Quail &amp; Condor or Dutch Door Donuts for breakfast on the plaza, Little Saint for lunch, Barndiva or Folia for dinner. Stop at The Matheson rooftop bar in between.</p>
+  <p><strong>Sonoma Valley corridor day:</strong> Stella in Kenwood for dinner (open Mondays — use it), Poppy in Glen Ellen for a second night, Enclos in Sonoma if you can get a reservation. Those three rooms make a genuinely great two-night loop from Santa Rosa.</p>
+  <p><strong>Petaluma day:</strong> Della Fattoria for breakfast, The Shuckery or Bijou for dinner, Lagunitas any time in between. Add Table Culture Provisions if it's a Wednesday through Saturday and you want the tasting menu.</p>
+  <p><strong>Sebastopol + West County day:</strong> Wild Poppy or Acre Pasta for lunch, Goldfinch or Fern Bar for dinner. Add Underwood in Graton on the way out. Ramen Gaijin if someone needs a warm bowl. BaSo Annex in Forestville Thu–Sun on the drive home.</p>
+  <p><strong>Coast highway Monday:</strong> Rocker Oysterfeller's in Valley Ford for Dollar Oysters all day on Hwy 1, then Saltwater Oyster Depot in Inverness for dinner (open Mon 5–8 PM), or Terrapin Creek in Bodega Bay (also open Mondays at Michelin quality). That is a genuinely exceptional Monday along the coast.</p>
+  <p><strong>Point Reyes day:</strong> The Fork at Point Reyes Farmstead for a morning cheese experience, Hog Island Boat Bar for lunch, Saltwater Oyster Depot or Nick's Cove for dinner. One of the best day trips in California in April.</p>
+  <p><strong>Big festival weekend (May 14–17):</strong> The Healdsburg Wine &amp; Food Experience. Stay Thursday through Sunday. Book individual events now — they sell out weeks ahead.</p>
+  <p class="tiny">Spring means fog burns off by noon, asparagus is in the ground, strawberries are two weeks out, and chèvre is at its absolute best. The Sonoma Valley corridor and the coast are both at their most beautiful in April. Go somewhere this week.</p>
+</div>
+
+<!-- HOW CHOSEN -->
+<div class="simple-box">
+  <h3>How this list was chosen</h3>
+  <p>This is the most geographically complete edition of the Sonoma Chef roundup — covering all ten zones of the county from Cloverdale to Petaluma, Kenwood to the Sonoma Coast. Date range: April 13 through May 18, 2026. Updated April 13, 2026.</p>
+  <p><strong>Added this edition:</strong> Juju's French-Moroccan pop-up at Acorn Cafe (short list — chef Jason Pringle, Thu–Sun evenings on the plaza, opened March 2026). Acorn Cafe (city-by-city Healdsburg — plaza breakfast and brunch anchor, opened 2024, omitted until now). Troubadour / Le Dîner (city-by-city Healdsburg — Michelin-listed SingleThread alumni tasting menu in a 20-seat bakery, Thu–Sun dinner, also omitted until now).</p>
+  <p><strong>New this week (April 13):</strong> Cloverdale Supper Club opened April 11 — steaks, seafood, Sinatra-era atmosphere, first real dinner destination in Cloverdale (240 N. Cloverdale Blvd). Card added. Parkside Eats in soft opening at former Lepe's Taqueria space in Santa Rosa — card added. Passport to Dry Creek Valley updated with 2026 detail: Friday Twilight Welcome Party with Chef Kevin O'Connor live-fire cooking, ticket pricing ($57.95–$202.85), "Twice as Nice" 2-for-1 tasting extension Apr 6–June 1.</p>
+  <p><strong>Ongoing:</strong> Juju's reservation link: acornhealdsburg.com/popups. Farmhouse Inn operating as upscale casual à la carte. Starling Bar closed March 30. Girl &amp; The Fig Sonoma Plaza project TBD.</p>
+  <p><strong>Coming soon — not yet included:</strong> Bohemian Bistro (Occidental, spring 2026), Wild Poppy second location at The Barlow (early summer 2026), Grata pub at Windsor Brewery (spring/summer 2026), Girl &amp; The Fig Sonoma Plaza project (TBD), SMASH by Ari Weiswasser (Sonoma Plaza, summer 2026), Café Aquatica / Jenner Outpost (Jenner, spring 2026), Wonderland Pizza (Monte Rio, May 22 — Russian River live music and local beer/wine).</p>
+</div>
+
+<!-- MORE TO EXPLORE -->
+<div class="simple-box">
+  <h3>More to explore</h3>
+  <p>
+    <a href="https://www.sonomacounty.com/events/" target="_blank" rel="noopener">Sonoma County Tourism Events</a> •
+    <a href="https://www.exploretock.com/city/sonoma-county/" target="_blank" rel="noopener">Tock – Sonoma County</a> •
+    <a href="https://bohemian.com/" target="_blank" rel="noopener">The Bohemian</a> •
+    <a href="https://sf.eater.com/neighborhood/1641/sonoma" target="_blank" rel="noopener">Eater Sonoma</a> •
+    <a href="https://www.wineroad.com/events/" target="_blank" rel="noopener">Wine Road Events</a> •
+    <a href="https://www.farmtrails.org/events/" target="_blank" rel="noopener">Farm Trails Events</a> •
+    <a href="https://www.sonomamag.com/" target="_blank" rel="noopener">Sonoma Magazine</a> •
+    <a href="https://www.petalumanews.com/things-to-do/restaurants-food-drink/" target="_blank" rel="noopener">Petaluma Argus-Courier Food</a> •
+    <a href="https://www.sonomanews.com/" target="_blank" rel="noopener">Sonoma Index-Tribune</a>
+  </p>
+</div>
+
+<p class="footer">Prepared in the Sonoma Chef voice. Updated April 13, 2026 — covering April 13 to May 18, 2026. Always click through before you go — menus, ticketing, hours, Monday status, and reservation windows change without notice. If something looks good, book it today.</p>
+
+</div>
+</body>
+</html>

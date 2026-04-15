@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonoma Chef | The Locals List — Weeknight Deals, Happy Hours &amp; Prix Fixe</title>
+<style>
+  :root {
+    --bg:#f0f4ec;--paper:#fafdf7;--ink:#1e2a18;--muted:#5a6b52;
+    --olive:#6f7d3c;--wine:#7a2f3b;--gold:#c48a3a;--teal:#3a7a6a;
+    --line:#d8e4cf;--shadow:0 12px 30px rgba(30,42,24,.09);--radius:22px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);
+    background:radial-gradient(circle at top left,rgba(111,125,60,.10),transparent 30%),
+    radial-gradient(circle at bottom right,rgba(58,122,106,.08),transparent 28%),var(--bg);
+    line-height:1.58;}
+  .wrap{max-width:1200px;margin:0 auto;padding:32px 20px 56px;}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,rgba(58,122,106,.96),rgba(111,125,60,.93));
+    color:white;border-radius:28px;padding:34px 30px;box-shadow:var(--shadow);}
+  .eyebrow{display:inline-block;background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.25);border-radius:999px;
+    padding:8px 14px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+  h1{margin:0 0 10px;font-size:clamp(30px,4.4vw,52px);line-height:1.05;}
+  .hero p{font-size:19px;max-width:860px;margin:0;}
+  .hero-note{margin-top:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+    border-radius:18px;padding:14px 16px;font-size:15px;}
+
+  /* STRUCTURE */
+  .section-title{margin:34px 0 6px;font-size:28px;color:var(--ink);}
+  .section-sub{margin:0 0 18px;color:var(--muted);font-size:17px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;}
+
+  /* CARDS */
+  .card{background:var(--paper);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+  .card h3{margin:6px 0 8px;font-size:23px;line-height:1.15;}
+  .card p,.card li{font-size:16.6px;}
+  .meta{color:var(--muted);font-weight:700;font-size:14.5px;margin-bottom:10px;}
+
+  /* TAGS */
+  .tag{display:inline-block;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;
+    margin:0 6px 10px 0;}
+  .tag-deal{background:#e6f4e0;color:#2d5a27;border:1px solid #c2dfbc;}
+  .tag-prix{background:#fff4e0;color:#7a4d00;border:1px solid #f0d898;}
+  .tag-bar{background:#edf4fb;color:#1a4a6e;border:1px solid #c8ddf0;}
+  .tag-oyster{background:#e8f5f2;color:#1a5447;border:1px solid #b8ddd6;}
+  .tag-city{background:#f3f0fb;color:#4a3a7a;border:1px solid #d8d0f0;}
+  .tag-sun{background:#fdf3e6;color:#7a4800;border:1px solid #f0d8b0;}
+
+  /* DEAL BOX — the main pricing callout */
+  .deal-box{background:linear-gradient(135deg,rgba(111,125,60,.08),rgba(58,122,106,.07));
+    border:2px solid var(--olive);border-radius:16px;padding:14px 16px;margin:12px 0 14px;}
+  .deal-box strong{display:block;font-size:15px;color:var(--olive);letter-spacing:.04em;
+    text-transform:uppercase;margin-bottom:6px;}
+  .deal-box p{margin:0;font-size:15.5px;font-weight:700;color:var(--ink);}
+
+  /* DAYS BADGE ROW */
+  .days-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px;}
+  .day{padding:5px 11px;border-radius:999px;font-size:13px;font-weight:700;background:#e8f0e2;
+    color:#3a5a30;border:1px solid #c8dac0;}
+  .day.active{background:var(--olive);color:white;border-color:var(--olive);}
+
+  /* WHY BOX */
+  .why{background:#f5f8f0;border-left:5px solid var(--teal);border-radius:14px;
+    padding:12px 14px;margin:12px 0;}
+  .why strong{display:block;margin-bottom:5px;color:var(--teal);}
+
+  ul{padding-left:20px;margin:8px 0 12px;}
+  li{margin:5px 0;}
+  a{color:var(--wine);font-weight:700;text-decoration-thickness:2px;text-underline-offset:2px;}
+
+  .button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
+  .button{display:inline-block;background:var(--teal);color:white;text-decoration:none;
+    padding:10px 16px;border-radius:12px;font-size:14.5px;}
+  .button.alt{background:var(--olive);}
+
+  /* INFO BOX */
+  .info-box{background:var(--paper);border:1px solid var(--line);border-radius:22px;
+    padding:18px 22px;box-shadow:var(--shadow);margin-top:22px;}
+  .info-box h3{margin-top:0;font-size:22px;}
+  .info-box p{font-size:17px;}
+  .info-box p+p{margin-top:10px;}
+
+  /* ZONE HEADER */
+  .zone-head{background:linear-gradient(90deg,rgba(111,125,60,.12),transparent);
+    border-left:5px solid var(--olive);border-radius:0 12px 12px 0;
+    padding:10px 16px;margin:28px 0 16px;font-size:20px;font-weight:700;color:var(--ink);}
+
+  .footer{margin-top:30px;color:var(--muted);font-size:14px;}
+  .tiny{font-size:14px;color:var(--muted);margin:6px 0 0;}
+
+  @media(max-width:640px){
+    .hero{padding:22px 18px;}.hero p{font-size:17px;}
+    .card h3{font-size:21px;}.section-title{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Sonoma Chef • The Locals List • Updated April 13, 2026</div>
+  <h1>Weeknight Deals, Happy Hours &amp; Prix Fixe for People Who Actually Live Here</h1>
+  <p>Sunday through Thursday. Every week, year-round. Verified specials at real restaurants — for the people who live in this county, not the people who drive up from Marin on Saturdays.</p>
+  <div class="hero-note">This list is separate from the main Sonoma Chef roundup. No events. No tasting weekends. No $280 tasting menus. Just the standing deals that exist every week — happy hours, prix fixe dinners, Tuesday oyster nights, and the places that reward showing up on a Wednesday. Always click through to verify current hours and pricing before you go.</div>
+</section>
+
+<!-- HOW TO READ THIS LIST -->
+<div class="info-box" style="margin-top:22px;">
+  <h3>How to read this list</h3>
+  <p>Cards are organized by city zone. Each card shows the days the deal runs, what it costs, and what to order. The <strong style="color:var(--olive)">Deal</strong> box is the key number — what you'll actually spend for drinks and food at the deal price. A good weeknight for two people should land between $40 and $90 with this list as your guide.</p>
+  <p>Prices verified November 2025 through April 13, 2026 via Sonoma Magazine, Press Democrat, and Sonoma County Tourism. Always confirm before going — prices, hours, and special days do change without notice.</p>
+</div>
+
+<!-- ===================== HEALDSBURG ===================== -->
+<div class="zone-head">Healdsburg</div>
+<div class="grid">
+
+  <!-- The Matheson happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Healdsburg</span>
+    <h3>The Matheson — Roof 106</h3>
+    <div class="meta">Sun–Thu dinner from 4 PM • happy hour daily</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day">Fri</span><span class="day">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Wines + cocktails $9 • Wine wall 30% off • Wood-fired pizzetas under $10 • Wagyu burger $15 • Fries with green peppercorn aioli $6</p>
+    </div>
+    <p>The rooftop bar above Chef Dustin Valette's downtown Healdsburg kitchen. Open-air seating with fire pits, views over the plaza, and a wood-fired oven that turns out small plates and pizzas at bar prices. One of the best happy hour rooms in the county — it doesn't feel like a compromise, it feels like exactly the right place to be.</p>
+    <ul>
+      <li>The wine wall — dozens of impressive bottles dispensed by the taste or glass — runs 30% off at happy hour</li>
+      <li>Sunday through Thursday dinner ends at 9 PM; Friday and Saturday at 9:30 PM</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Tourists fill Healdsburg on weekends. Tuesday at Roof 106 with a glass from the wine wall and a pizzeta is one of the better weeknight habits in north Sonoma County.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.thematheson.com/" target="_blank" rel="noopener">Open The Matheson</a>
+    </div>
+  </article>
+
+  <!-- Spirit Bar at Hotel Healdsburg -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Healdsburg</span>
+    <h3>Spirit Bar — Hotel Healdsburg</h3>
+    <div class="meta">5:30–7 PM Sun–Thu • bar bites from Dry Creek Kitchen</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day">Fri</span><span class="day">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Cocktails $8.50–$10 • Local wines $9.50 • Bites from Dry Creek Kitchen kitchen (Wed–Sun) • Lobster corn dog $10 • Fries with béarnaise $6 • Burger $13</p>
+    </div>
+    <p>In-the-know Healdsburgers have been coming to the swanky hotel lobby for this standing Sunday-through-Thursday happy hour since it opened. Cocktails under $10, local wines under $10, and Charlie Palmer's kitchen next door sending out bar bites Wednesday through Sunday. The fire is on, the leather is deep, and nobody is in a hurry.</p>
+    <ul>
+      <li>One of the only Sunday–Thursday deals that starts at 5:30 PM — later than most</li>
+      <li>Bar bites from Dry Creek Kitchen available Wed–Sun only</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> The hotel lobby feels expensive. The tab doesn't. This is the Healdsburg Sunday treat that doesn't break a weeknight budget.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.hotelhealdsburg.com/hotel/amenities-services/" target="_blank" rel="noopener">Open Spirit Bar</a>
+    </div>
+  </article>
+
+  <!-- Lo & Behold happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Healdsburg</span>
+    <h3>Lo &amp; Behold Bar + Kitchen</h3>
+    <div class="meta">3–5 PM Thu–Mon • 214 Healdsburg Ave • closed Tue–Wed</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day">Tue</span><span class="day">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>3–5 PM Thu–Mon: happy hour on drinks + bar bites. Almost Famous chicken tenders ($14) are the signature order. Open until midnight Thu–Mon.</p>
+    </div>
+    <p>Voted Best Bar and Best Restaurant in Healdsburg. Global comfort food — house-made noodles with kimchi, duck confit with panang curry, beef brisket tacos — with a cocktail program grown from the owners' farm. The garden patio is one of the best outdoor rooms in Healdsburg. Closed Tuesdays and Wednesdays.</p>
+    <ul>
+      <li>Open Sundays and Mondays — genuinely useful in a town that goes dark early those nights</li>
+      <li>Kitchen open until 10 PM, bar until midnight Thu–Mon</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> No reservation, no ceremony. Show up Thursday at 3 PM, get a garden patio seat, and let the farm cocktails do the work.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.loandbeholdca.com/" target="_blank" rel="noopener">Open Lo &amp; Behold</a>
+    </div>
+  </article>
+
+  <!-- Parish Cafe weeknight -->
+  <article class="card">
+    <span class="tag tag-deal">Weeknight value</span><span class="tag tag-city">Healdsburg</span>
+    <h3>Parish Cafe</h3>
+    <div class="meta">60 Mill St, Healdsburg • casual Cajun every night</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Gumbo or jambalaya + double-brined fried chicken + beignets. Solid a la carte prices. No prix fixe — just honest Cajun food at honest prices in a town where honest prices are rare.</p>
+    </div>
+    <p>The Cajun room tucked into the Mill District of Healdsburg. Gumbo, fried chicken, beignets, and pecan pie in a setting that feels like it belongs to the town and not to Wine Country tourism. One of the only real budget dinner options in downtown Healdsburg proper. Parish Cafe is what you go to when Valette is out of reach and Baci is full.</p>
+    <ul>
+      <li>Double-brined fried chicken is the headliner — worth coming for on its own</li>
+      <li>The beignets are the proper Cajun finish, not an afterthought</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> The one Healdsburg dinner where the bill feels like the right size. Go on a Monday when everything else is closed.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.theparishcafe.com/" target="_blank" rel="noopener">Open Parish Cafe</a>
+    </div>
+  </article>
+
+  <!-- Costeaux bistro patio -->
+  <article class="card">
+    <span class="tag tag-deal">Weeknight value</span><span class="tag tag-city">Healdsburg</span>
+    <h3>Costeaux French Bakery — Bistro Patio</h3>
+    <div class="meta">Wed–Fri from 4 PM • 417 Healdsburg Ave</div>
+    <div class="days-row">
+      <span class="day">Sun</span><span class="day">Mon</span>
+      <span class="day">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Bistro menu on the patio from 4 PM Wed–Fri. Short Rib Hash is the order — meaty short ribs, onions, green peppers, and piles of potatoes. Bakery prices for bistro food.</p>
+    </div>
+    <p>The Healdsburg institution opens its patio for a casual bistro menu Wednesday through Friday afternoons. The Short Rib Hash has been a cult favorite for years. It is bakery food made serious, in a beautiful outdoor setting, without the downtown restaurant markups. The bread is the bread you already know.</p>
+    <ul>
+      <li>Order something to take home from the bakery while you're there</li>
+      <li>Best midweek outdoor dinner option in Healdsburg at this price point</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> The bakery has been there forever. The patio bistro is the locals' secret within that. Wednesday evening on the Costeaux patio is a very good weeknight habit.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.costeaux.com/" target="_blank" rel="noopener">Open Costeaux</a>
+    </div>
+  </article>
+
+  <!-- Troubadour Le Diner -->
+  <article class="card">
+    <span class="tag tag-prix">Prix fixe tasting menu</span><span class="tag tag-city">Healdsburg</span>
+    <h3>Troubadour / Le Dîner</h3>
+    <div class="meta">Thu–Sun dinner 5:30 PM • 381 Healdsburg Ave • prepaid Tock reservation required</div>
+    <div class="days-row">
+      <span class="day">Sun</span><span class="day">Mon</span>
+      <span class="day">Tue</span><span class="day">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>7-course prix fixe $125 pp prepaid (main room) • 11-course Chef's Table in a private study — price varies. A Michelin-listed tasting menu in a 20-seat bakery. Daytime: sourdough bakery and sandwiches, no reservation needed.</p>
+    </div>
+    <p>By day Troubadour is a sandwich counter and bakery from the Quail &amp; Condor team. By night Thursday through Sunday it becomes Le Dîner — a 20-seat French-California tasting menu from ex-SingleThread chef de cuisine Sean McGaughey and pastry chef Melissa Yanc, Michelin-listed, prepaid through Tock. Seven courses built around Sonoma farms; the private Chef's Table study has vintage cookbooks and a record player. $125 per person is the main room price — call it a bargain for this caliber of kitchen in this intimate a format.</p>
+    <ul>
+      <li>Daytime bakery (9 AM–3 PM daily) is a walk-in; grab a sandwich and the bread to take home</li>
+      <li>Dinner must be booked ahead on Tock — prepaid, no shows are the enemy of a 20-seat room</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> A SingleThread-trained chef cooking a $125 seven-course tasting menu four nights a week in a bakery. For locals who appreciate serious food at not-outrageous prices, this is the answer.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.troubadourhbg.com/lediner" target="_blank" rel="noopener">Open Le Dîner</a>
+      <a class="button alt" href="https://www.exploretock.com/troubador-bread--bistro-healdsburg" target="_blank" rel="noopener">Reserve on Tock</a>
+    </div>
+  </article>
+
+  <!-- Acorn Cafe daytime locals anchor -->
+  <article class="card">
+    <span class="tag tag-deal">Weekday breakfast + brunch</span><span class="tag tag-city">Healdsburg</span>
+    <h3>Acorn Cafe</h3>
+    <div class="meta">Daily 8 AM–3 PM • 124 Matheson St, Healdsburg Plaza</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>All-day breakfast and lunch daily, 8 AM–3 PM. Counter service, no reservation needed Mon–Wed. First come, first served. Tiramisu French toast, huevos rancheros, shakshuka, breakfast burger — all under $20. Rosé on tap in the afternoon.</p>
+    </div>
+    <p>Chef Beryl Adler's all-day breakfast and lunch cafe right on the Healdsburg Plaza filled a genuine void when it opened in 2024. Healdsburg finally has a real morning table. The tiramisu French toast with mascarpone and coffee ice cream is the signature. The shakshuka with eggplant, pistachio tapenade and Journeyman bacon is the savory call. Dog-friendly patio, open every day, no reservation needed Monday through Wednesday.</p>
+    <ul>
+      <li>Open Mondays — the best breakfast option on the Healdsburg Plaza any day of the week</li>
+      <li>Thu–Sun evenings the space becomes Juju's French-Moroccan pop-up from chef Jason Pringle</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Every Monday morning, it's one of the only quality breakfast options on the plaza. Order the tiramisu French toast, claim a patio seat, and let the week begin on your terms.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.acornhealdsburg.com/" target="_blank" rel="noopener">Open Acorn Cafe</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- ===================== KENWOOD / SONOMA VALLEY ===================== -->
+<div class="zone-head">Kenwood &amp; Sonoma Valley</div>
+<div class="grid">
+
+  <!-- Salt & Stone Kenwood -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Kenwood</span>
+    <h3>Salt &amp; Stone</h3>
+    <div class="meta">11 AM–5 PM Mon–Fri • 9900 Sonoma Hwy, Kenwood</div>
+    <div class="days-row">
+      <span class="day active">Mon</span><span class="day active">Tue</span>
+      <span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day">Fri (after 5)</span><span class="day">Sat</span><span class="day">Sun</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Wines by the glass + well cocktails $7 each • 11 AM–5 PM Monday through Friday — that's an all-day deal, not an after-work window</p>
+    </div>
+    <p>The neighborhood gathering place on Highway 12 in Kenwood — good burgers, a solid bar, a comfortable room, and a happy hour that runs all day Monday through Friday. The Shanghai Chicken salad and their burger are consistent orders. A good Sonoma Valley weekday lunch or early dinner stop without the Sonoma Plaza tourist premium.</p>
+    <ul>
+      <li>$7 cocktails all day weekdays — the longest happy hour window on this list</li>
+      <li>Good stop on the way back from wine tasting in the Kenwood AVA</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Highway 12 needs a reliable neighborhood bar. Salt &amp; Stone is it — and the all-day weekday pricing is a genuine anomaly in this part of the county.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.saltandstonerestaurant.com/" target="_blank" rel="noopener">Open Salt &amp; Stone</a>
+    </div>
+  </article>
+
+  <!-- Poppy prix fixe Wed–Fri -->
+  <article class="card">
+    <span class="tag tag-prix">Prix fixe</span><span class="tag tag-city">Glen Ellen</span>
+    <h3>Poppy — Wed–Fri Prix Fixe with Wine</h3>
+    <div class="meta">Wed–Fri 5–9 PM • 13690 Arnold Drive, Glen Ellen</div>
+    <div class="days-row">
+      <span class="day">Sun</span><span class="day">Mon</span>
+      <span class="day">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day">Sat (à la carte)</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Wed–Fri prix fixe dinner with wine included in the price. $$ per person. French countryside cooking — roast chicken, seared fish, seasonal vegetables — with the wine poured, not charged separately. One of the best price-to-quality ratios in the Sonoma Valley.</p>
+    </div>
+    <p>The Girl &amp; The Fig team (Sondra Bernstein and John Toulze) opened Poppy in the old Fig Café space in May 2025. The Wed–Fri prix fixe includes wine in the stated price — a genuine rarity in Wine Country at any level. Crispy poulet rôti, Coquilles Saint-Jacques with pastis, spring asparagus with local strawberries. French countryside cooking from a team that spent 25 years learning how to get out of the way of a good ingredient.</p>
+    <ul>
+      <li>Wine is included in the prix fixe price — not an add-on, not a pairing fee</li>
+      <li>The asparagus and Sonoma strawberry salad is spring on a plate right now</li>
+      <li>Saturday service is à la carte — the prix fixe deal is Wed–Fri only</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> A serious dinner with wine included at $$ prices in Glen Ellen. That does not happen often in the Sonoma Valley. Book a Wednesday or Thursday when it's quiet.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.poppyglenellen.com/" target="_blank" rel="noopener">Open Poppy</a>
+    </div>
+  </article>
+
+  <!-- Songbird Parlour prix fixe -->
+  <article class="card">
+    <span class="tag tag-prix">3-course prix fixe</span><span class="tag tag-city">Glen Ellen</span>
+    <h3>Songbird Parlour</h3>
+    <div class="meta">Glen Ellen • 3-course prix fixe with hyperlocal sourcing</div>
+    <div class="days-row">
+      <span class="day">Sun</span><span class="day">Mon</span>
+      <span class="day">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>3-course prix fixe. Choose from: beet and blue cheese salad or ricotta-lemon gnudi, then duck breast or vegetarian option (gnudi entrée), then chocolate cake with whipped coffee ganache. Vegetarian-friendly throughout.</p>
+    </div>
+    <p>Elegant but unstuffy three-course prix fixe in Glen Ellen built around hyperlocal Sonoma County ingredients. Duck confit with Journeyman guanciale and beluga lentil cassoulet. Ricotta and arugula gnudi with Oak Hill cherry tomatoes. The kind of room where you feel the care without the performance. Vegetarian option is genuinely good, not an afterthought.</p>
+    <ul>
+      <li>Oak Hill Farm sourcing is real and shows in the produce quality</li>
+      <li>The gnudi is one of the better pasta dishes in the Sonoma Valley</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Weeknight dining in Glen Ellen at this quality with a set price is a gift. The three-course format makes the bill predictable — the good kind of predictable.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.songbirdparlour.com/" target="_blank" rel="noopener">Open Songbird Parlour</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- ===================== SANTA ROSA ===================== -->
+<div class="zone-head">Santa Rosa</div>
+<div class="grid">
+
+  <!-- Stark's Steak happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Santa Rosa</span>
+    <h3>Stark's Steak &amp; Seafood</h3>
+    <div class="meta">3–6 PM Mon–Fri • 521 Adams St, Santa Rosa</div>
+    <div class="days-row">
+      <span class="day active">Mon</span><span class="day active">Tue</span>
+      <span class="day active">Wed</span><span class="day active">Thu</span><span class="day active">Fri</span>
+      <span class="day">Sat</span><span class="day">Sun</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Classic martini $6 • Old-fashioned / Moscow mule $9 • House wine $8 • Draft beer $6 • Potato skin fondue / tuna tartare tacos / calamari $7–8 • Quarter-pound burger with truffle aioli $10</p>
+    </div>
+    <p>The happy hour of happy hours in Santa Rosa, by widespread local consensus. Sonoma Magazine calls it exactly that. A classic martini for $6, serious steak-house bar food at bar prices, and a room that fills with actual locals by 4 PM. Arrive early or plan to stand. The potato skin fondue is the order the moment you sit down.</p>
+    <ul>
+      <li>Bar seating is gone by 4 PM — arrive at 3 if you want a stool</li>
+      <li>Monday through Friday only — this is a weekday deal</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> A $6 martini at a Sonoma County institution. The bar fills with regulars for a reason. Show up on a Tuesday and you'll understand immediately.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.starkssteakhouse.com/" target="_blank" rel="noopener">Open Stark's</a>
+    </div>
+  </article>
+
+  <!-- Bird & The Bottle -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Santa Rosa</span>
+    <h3>Bird &amp; The Bottle</h3>
+    <div class="meta">3–5 PM daily • bar, lounge + front patio • 4th Street, Santa Rosa</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Draft beer $3 • Wine + cocktails $6 (try the Shiso Pretty) • Tacos $6 each — pastrami, Korean chicken, or barbacoa beef • 7 days a week including Sundays and Mondays</p>
+    </div>
+    <p>One of the best daily happy hour deals in the county — $3 draft beer and $6 cocktails, seven days a week, including Sundays and Mondays. The taco selection is the food move. Korean chicken, barbacoa beef, and pastrami at $6 each. The bar, lounge, and front patio all participate. A reliable after-work stop on any day of the week.</p>
+    <ul>
+      <li>Seven days a week — one of very few that runs Sunday and Monday</li>
+      <li>Korean chicken taco is the order</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Sunday and Monday. Six-dollar cocktails. Three-dollar beer. That combination should be more famous than it is.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.birdandthebottle.com/the-bird/" target="_blank" rel="noopener">Open Bird &amp; The Bottle</a>
+    </div>
+  </article>
+
+  <!-- Augie's French happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Santa Rosa</span>
+    <h3>Augie's French</h3>
+    <div class="meta">Happy hour daily • 4th Street, Santa Rosa</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>French onion dip, pigs in a blanket (classy versions), deviled eggs with mustard (œufs mayonnaise), fries with aioli — all at happy hour pricing. Cocktails and wine at bar prices.</p>
+    </div>
+    <p>The Stark team's French bistro on 4th Street runs happy hour daily with a bar menu that commits to the bit. French onion dip, proper deviled eggs, pigs in a blanket done right, and frites with aioli. A good walk-in before or instead of dinner, in a room that stays lively through the week.</p>
+    <ul>
+      <li>Open Mondays — useful in downtown Santa Rosa</li>
+      <li>The bar menu is the move — skip the full dinner menu unless it's a special night</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Bistro bar snacks at bar prices on any night of the week, including Mondays. The frites alone make it worth stopping in.</div>
+    <div class="button-row">
+      <a class="button" href="https://augiesfrench.com/" target="_blank" rel="noopener">Open Augie's</a>
+    </div>
+  </article>
+
+  <!-- Belly Santa Rosa -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Santa Rosa</span>
+    <h3>Belly</h3>
+    <div class="meta">3–6 PM Mon–Fri + all day Sunday • Railroad Square, Santa Rosa</div>
+    <div class="days-row">
+      <span class="day active">Sun (all day)</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Artichoke fritters, peppered french fries, dynamite shrimp at happy hour prices. Specials on beer, wine, cocktails, pitchers. Martini Monday, Taco Tuesday, Wine Wednesday. All day Sunday — the best Sunday hangover move in Santa Rosa.</p>
+    </div>
+    <p>Railroad Square's most fun happy hour — eclectic shareables, a busy bar, and daily specials that give you a reason to show up on any night of the week. Martini Monday, Taco Tuesday, Wine Wednesday are standing deals. All day Sunday is the standout: come in at noon or at 5 PM, same deal.</p>
+    <ul>
+      <li>Sunday all-day happy hour is the most underrated deal in Santa Rosa</li>
+      <li>The themed weeknight specials add up over the week</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> All-day Sunday happy hour in a fun room that feels lived-in. The kind of place that becomes a weekly habit without trying.</div>
+    <div class="button-row">
+      <a class="button" href="https://bellyleftcoastkitchenandtaproom.com/" target="_blank" rel="noopener">Open Belly</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- ===================== PETALUMA ===================== -->
+<div class="zone-head">Petaluma</div>
+<div class="grid">
+
+  <!-- Seared happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Petaluma</span>
+    <h3>Seared</h3>
+    <div class="meta">3:30–6 PM Tue–Sun • 170 Petaluma Blvd N</div>
+    <div class="days-row">
+      <span class="day">Mon</span><span class="day active">Tue</span>
+      <span class="day active">Wed</span><span class="day active">Thu</span><span class="day active">Sun</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Filet mignon skewers • mac and cheese (add bacon) • deviled eggs with pork belly • kung pao prawns • prime rib dip sandwich — all $5.50–$9.75. Cocktails $8.50–$9. Past winner of Sonoma Magazine "Best Happy Hour."</p>
+    </div>
+    <p>Petaluma's standing best-bet happy hour — a past Sonoma Magazine winner and one of the best value-to-quality ratios in the county. The steakhouse bar menu at happy hour prices is a genuine deal: filet mignon skewers at $9.75, deviled eggs with pork belly, a prime rib dip for under $10. The cocktails are classics and they're done right.</p>
+    <ul>
+      <li>Arrive early on Thursday and Sunday — bar fills up fast</li>
+      <li>The prime rib dip is the bar food order on a cold evening</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Petaluma has a great food scene and this is the anchoring happy hour. Sonoma Magazine didn't call it the best by accident.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.petalumaseared.com/" target="_blank" rel="noopener">Open Seared</a>
+    </div>
+  </article>
+
+  <!-- Table Culture Provisions Social Hour -->
+  <article class="card">
+    <span class="tag tag-prix">Social hour prix fixe</span><span class="tag tag-city">Petaluma</span>
+    <h3>Table Culture Provisions — Social Hour</h3>
+    <div class="meta">Wed–Thu 4–6 PM • à la carte social hour at a Michelin-recognized table</div>
+    <div class="days-row">
+      <span class="day">Sun</span><span class="day">Mon</span>
+      <span class="day">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day">Fri</span><span class="day">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Social Hour Wed–Thu 4–6 PM: à la carte dishes including steak frites and pasta under $40. This is the $135 tasting-menu kitchen at walk-in bar prices for two hours a week.</p>
+    </div>
+    <p>Chef Stéphane Saint Louis and Steven Vargas run a Michelin-recognized 7-course tasting menu Wednesday through Saturday. The Social Hour on Wednesday and Thursday afternoons opens the kitchen for à la carte ordering at approachable prices. Steak frites. Seasonal pasta. Small plates. The same kitchen, two hours a week, without the commitment or the ticket price.</p>
+    <ul>
+      <li>This is the only way into this kitchen without booking the full tasting menu</li>
+      <li>Two hours only — 4 to 6 PM Wednesday and Thursday</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> A Michelin-recognized kitchen is doing steak frites at 4 PM on a Wednesday. That is the deal. Go before more people figure it out.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.tcprovision.com/" target="_blank" rel="noopener">Open Table Culture</a>
+    </div>
+  </article>
+
+  <!-- Kapu tiki happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Petaluma</span>
+    <h3>Kapu Bar</h3>
+    <div class="meta">All day Mon–Wed • 4–6 PM Thu–Sun • 132 Keller St, Petaluma</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon (all day)</span>
+      <span class="day active">Tue (all day)</span><span class="day active">Wed (all day)</span>
+      <span class="day active">Thu</span><span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Tiki cocktails at happy hour prices. All day Monday through Wednesday — that is an extraordinary deal for a serious cocktail program. Hawaiian-style food bites alongside.</p>
+    </div>
+    <p>Petaluma's tiki bar and cocktail room with one of the most generous happy hour windows in the county: all day Monday through Wednesday, plus 4–6 PM every other night. Hawaiian-style provisions — braised pipikaula, crispy pork belly — pair with classic and creative tiki drinks. The Mai Tai is the order of record.</p>
+    <ul>
+      <li>All-day Monday through Wednesday — easiest weeknight budget in Petaluma</li>
+      <li>The classic Mai Tai is non-negotiable on a first visit</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> All-day happy hour on the three slowest nights of the week. Tiki cocktails that are actually made correctly. Petaluma has a good bar scene and this is near the top of it.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.kapubar.com/" target="_blank" rel="noopener">Open Kapu</a>
+    </div>
+  </article>
+
+  <!-- Luma Bar -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Petaluma</span>
+    <h3>Luma Bar &amp; Eatery</h3>
+    <div class="meta">3–5 PM Wed–Sun • craft cocktails + non-alcoholic options</div>
+    <div class="days-row">
+      <span class="day">Mon</span><span class="day">Tue</span>
+      <span class="day active">Wed</span><span class="day active">Thu</span><span class="day active">Sun</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Craft cocktails and non-alcoholic cocktails at happy hour prices, 3–5 PM Wednesday through Sunday. The What Moon Songs (tequila añejo, Mexican corn whiskey, mezcal) is the standout.</p>
+    </div>
+    <p>Petaluma's craft cocktail room with a serious non-alcoholic program — the zero-proof drinks here are genuinely crafted, not an afterthought. A good option for a group with mixed drinking preferences. The happy hour runs Wednesday through Sunday including Sundays, which makes it useful for the locals' weekend wind-down.</p>
+    <ul>
+      <li>Best non-alcoholic cocktail program in Petaluma — not even close</li>
+      <li>Sunday happy hour is the standout day</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> If someone in your group doesn't drink, this is the bar where they will be equally happy. That is a genuinely rare thing.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.lumaeatery.com/" target="_blank" rel="noopener">Open Luma</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- ===================== SEBASTOPOL / WEST COUNTY ===================== -->
+<div class="zone-head">Sebastopol &amp; West County</div>
+<div class="grid">
+
+  <!-- Fern Bar happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Sebastopol</span>
+    <h3>Fern Bar</h3>
+    <div class="meta">3–5 PM daily • The Barlow, 6780 Depot St, Sebastopol</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Daily 3–5 PM: pigs in a blanket, fried chicken, smoked fish dip with fried saltines — $9–12. Cocktails at happy hour prices. Manhattan and Hemingway Daiquiri are the bar orders.</p>
+    </div>
+    <p>Daily happy hour in The Barlow with a food menu that takes itself seriously — fancy pigs in a blanket, proper fried chicken bites, smoked fish dip that justifies the fried saltines it comes with. The zero-proof cocktail program is one of the county's best for non-drinkers. An easy 3 PM arrival that can stretch comfortably into a full evening.</p>
+    <ul>
+      <li>Daily — including Sundays and Mondays</li>
+      <li>Best zero-proof bar menu in the Sebastopol area</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> The Barlow is a great afternoon destination and Fern Bar is the right room to anchor it. Daily happy hour means you never have to plan around a day of the week.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.fernbar.com/" target="_blank" rel="noopener">Open Fern Bar</a>
+    </div>
+  </article>
+
+  <!-- Ramen Gaijin -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Sebastopol</span>
+    <h3>Ramen Gaijin</h3>
+    <div class="meta">2:30–4:30 PM Tue–Sat • Sebastopol</div>
+    <div class="days-row">
+      <span class="day">Sun</span><span class="day">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Happy hour 2:30–4:30 PM Tue–Sat. Discounted drinks and small plates before the dinner rush. Order the izakaya bites alongside the bowl — that is the right combination.</p>
+    </div>
+    <p>House-made noodles, serious broth, and an izakaya menu built around local ingredients and Japanese technique. The happy hour window from 2:30 to 4:30 PM is the most useful early entry in Sebastopol — arrive early, get a seat, and let the broth warm up a cool spring afternoon. Spring menus bring lighter preparations alongside the deeper, longer-cooked anchors.</p>
+    <ul>
+      <li>2:30 PM start — the earliest weekday happy hour on the Sonoma County list</li>
+      <li>Izakaya small plates are required alongside the ramen</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> The bowl alone earns the trip to Sebastopol. The happy hour pricing makes it an easy midweek yes without the guilt.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.ramengaijin.com/reserve" target="_blank" rel="noopener">Open Ramen Gaijin</a>
+    </div>
+  </article>
+
+  <!-- Handline happy hour -->
+  <article class="card">
+    <span class="tag tag-bar">Happy hour</span><span class="tag tag-city">Sebastopol</span>
+    <h3>Handline</h3>
+    <div class="meta">Mon–Thu 4–5 PM • Fri–Sun 3–5 PM • 935 Gravenstein Hwy S</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day active">Mon</span>
+      <span class="day active">Tue</span><span class="day active">Wed</span><span class="day active">Thu</span>
+      <span class="day active">Fri</span><span class="day active">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Seasonal food specials and drink deals at the outdoor patio under the live oak tree. Smoked trout chowder, fish tacos, beef empanadas, kanpachi and mushroom tostaditos $6–9. Soft-serve ice cream. Kids welcome.</p>
+    </div>
+    <p>Sustainable seafood restaurant with a seasonal porch that is one of the best outdoor lunch and happy-hour spots in West County. A communal table under a giant live oak, soft-serve ice cream, and a seafood-forward happy hour menu priced for the neighborhood. Kids and dogs welcome. Spring at Handline is one of the better outdoor afternoons available in Sonoma County.</p>
+    <ul>
+      <li>Every day of the week — Mon–Thu from 4, Fri–Sun from 3</li>
+      <li>Family-friendly outdoor patio is genuinely excellent for locals with kids</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> Sustainable seafood, outdoor seating, kids welcome, and open every day of the week. That is a short list in Sonoma County.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.handline.com/" target="_blank" rel="noopener">Open Handline</a>
+    </div>
+  </article>
+
+  <!-- Community Market Garden Taproom -->
+  <article class="card">
+    <span class="tag tag-bar">Locals day</span><span class="tag tag-city">Sebastopol</span>
+    <h3>Community Market Garden Taproom</h3>
+    <div class="meta">4–6 PM Mon–Fri happy hour • Thu 4–8 PM locals day • 762 Sebastopol Ave</div>
+    <div class="days-row">
+      <span class="day active">Mon</span><span class="day active">Tue</span>
+      <span class="day active">Wed</span><span class="day active">Thu (locals day)</span><span class="day active">Fri</span>
+      <span class="day">Sat</span><span class="day">Sun</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>$1 off all pints and glasses of wine 4–6 PM Mon–Fri. Thursday locals day: $1 off everything 4–8 PM — four hours, not two. Ten taps: craft beer, ciders, wine, probiotic kvass and kombucha.</p>
+    </div>
+    <p>The Community Market grocery store's adjacent taproom — ten taps of craft beer, ciders, wine, and probiotic beverages. The Thursday locals day runs four hours (4–8 PM), not two. This is deeply Sebastopol: a neighborhood taproom inside a natural foods co-op where you can grab groceries and a pint in the same stop.</p>
+    <ul>
+      <li>Thursday locals day from 4–8 PM is the best single deal on this list by dollar-per-hour</li>
+      <li>Kvass and kombucha on tap for non-drinkers alongside the beer and wine</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> This is the definition of a locals spot. Tourists do not go here. Thursday evenings in this taproom feel like the actual Sebastopol, not a brochure version of it.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.cmnaturalfoods.com/garden-taproom/" target="_blank" rel="noopener">Open Garden Taproom</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- ===================== GEYSERVILLE ===================== -->
+<div class="zone-head">Geyserville</div>
+<div class="grid">
+
+  <!-- Cyrus Sunday Family Meal -->
+  <article class="card">
+    <span class="tag tag-prix">Sunday prix fixe</span><span class="tag tag-city">Geyserville</span>
+    <h3>Cyrus — Sunday Family Meal</h3>
+    <div class="meta">Every Sunday • Bubbles Lounge, Geyserville</div>
+    <div class="days-row">
+      <span class="day active">Sun</span><span class="day">Mon</span>
+      <span class="day">Tue</span><span class="day">Wed</span><span class="day">Thu</span>
+      <span class="day">Fri</span><span class="day">Sat</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>~$55 per person. Full Sunday family meal — gochujang fried chicken is the current centerpiece — in the Bubbles Lounge of one of Sonoma County's most ambitious restaurants. Reserve ahead.</p>
+    </div>
+    <p>Every Sunday, the Cyrus team opens the Bubbles Lounge for a casual family-style meal built around a central protein — the current version is gochujang fried chicken, which is as good as it sounds. Douglas Keane's kitchen at a price that doesn't require a special occasion. A very good Sunday use of $55 per person.</p>
+    <ul>
+      <li>Reserve ahead — this is not a walk-in situation</li>
+      <li>The Kisetsu Ramen popup in the Bubbles Lounge is a separate deal — reservations release Sundays</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> The most fun $55 in Sonoma County right now. A serious kitchen doing a warm, casual meal on the slowest night of the week.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.cyrusrestaurant.com/bubbles-lounge" target="_blank" rel="noopener">Open Bubbles Lounge</a>
+      <a class="button alt" href="https://www.cyrusrestaurant.com/" target="_blank" rel="noopener">Open Cyrus</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- ===================== SONOMA COAST / VALLEY FORD ===================== -->
+<div class="zone-head">Sonoma Coast &amp; Valley Ford</div>
+<div class="grid">
+
+  <!-- Rocker Oysterfeller's Dollar Oyster Monday -->
+  <article class="card">
+    <span class="tag tag-oyster">Dollar Oyster Monday</span><span class="tag tag-city">Valley Ford</span>
+    <h3>Rocker Oysterfeller's — Dollar Oyster Mondays</h3>
+    <div class="meta">All day Monday • 14415 Hwy 1, Valley Ford</div>
+    <div class="days-row">
+      <span class="day active">Mon (dollar oysters all day)</span><span class="day">Tue</span>
+      <span class="day">Wed</span><span class="day">Thu</span><span class="day">Fri</span>
+      <span class="day">Sat</span><span class="day active">Sun (live music)</span>
+    </div>
+    <div class="deal-box">
+      <strong>The deal</strong>
+      <p>Dollar oysters all day Monday. Tomales Bay oysters, raw or grilled, for $1 each. Happy hour Tue–Fri 3–5:30 PM with separate drink and food specials. Open daily from 11 AM.</p>
+    </div>
+    <p>The Highway 1 coastal roadhouse in Valley Ford runs Dollar Oyster Mondays all day — Tomales Bay oysters at $1 each, raw or grilled, with the Pacific visible through the windows and a cold beer in hand. The grassfed smashburger and buttermilk fried chicken are the food orders if you want more than oysters. Live music Sundays make the weekend double-header natural.</p>
+    <ul>
+      <li>Dollar oysters all day Monday — no time restriction, no minimum</li>
+      <li>The coastal drive on Highway 1 in spring is worth the trip on its own</li>
+      <li>Tuesday through Friday happy hour 3–5:30 PM adds a second weekly reason to go</li>
+    </ul>
+    <div class="why"><strong>Why it's a locals move:</strong> One dollar. Tomales Bay oyster. On Highway 1. On a Monday. This is the best single deal in Sonoma County for people who actually live near the coast.</div>
+    <div class="button-row">
+      <a class="button" href="https://www.rockeroysterfellers.com/" target="_blank" rel="noopener">Open Rocker's</a>
+    </div>
+  </article>
+
+</div>
+
+<!-- WEEKLY CHEAT SHEET -->
+<div class="info-box" style="margin-top:28px;">
+  <h3>The weekly cheat sheet — best deal by night</h3>
+  <p><strong>Sunday:</strong> Bird &amp; The Bottle (Santa Rosa, 3–5 PM, $3 beer / $6 cocktails) or Spirit Bar at Hotel Healdsburg (5:30–7 PM, $9.50 wine) or Cyrus Sunday Family Meal (Geyserville, ~$55, reserve ahead)</p>
+  <p><strong>Monday:</strong> Rocker Oysterfeller's dollar oysters all day (Valley Ford) — the clear winner for coastal locals. Fallback: Acorn Cafe breakfast on the Healdsburg Plaza (open daily 8 AM–3 PM) or Parish Cafe (Healdsburg dinner) or Belly all-day Sunday extended into Monday (Santa Rosa) or Lo &amp; Behold Bar + Kitchen (Healdsburg, 3–5 PM Thu–Mon)</p>
+  <p><strong>Tuesday:</strong> Stark's Steak &amp; Seafood (Santa Rosa, 3–6 PM, $6 martini) or Kapu all-day happy hour (Petaluma) or Ramen Gaijin (Sebastopol, 2:30–4:30 PM)</p>
+  <p><strong>Wednesday:</strong> Table Culture Provisions Social Hour (Petaluma, 4–6 PM — Michelin kitchen at bar prices) or Poppy prix fixe with wine included (Glen Ellen) or Kapu all-day (Petaluma) or Costeaux bistro patio (Healdsburg, from 4 PM)</p>
+  <p><strong>Thursday:</strong> Community Market Garden Taproom locals day (Sebastopol, 4–8 PM — four hours, $1 off everything) or Troubadour / Le Dîner (Healdsburg, 5:30 PM, 7-course Michelin-listed tasting menu $125 prepaid — the best $125 Thursday in the county) or Table Culture Provisions Social Hour (Petaluma, 4–6 PM) or Seared (Petaluma, 3:30–6 PM) or Poppy prix fixe with wine (Glen Ellen)</p>
+  <p class="tiny">All prices and hours verified November 2025–March 2026. Confirm before you go — restaurants change specials, hours, and days without notice. Always click through.</p>
+</div>
+
+<!-- HOW THIS LIST WORKS -->
+<div class="info-box">
+  <h3>How this list works</h3>
+  <p>This is the companion guide to the main Sonoma Chef restaurant roundup. The main list covers destinations, events, and restaurants worth booking — including splurges. This list covers the other five nights of the week: the standing happy hours, the weekly prix fixe menus, and the deals that exist because local restaurants know that their neighborhood customers are the ones who keep the lights on Sunday through Thursday.</p>
+  <p>Every deal on this list runs weekly unless noted. These are not Restaurant Week specials or limited-time promotions — they are part of each restaurant's regular operating schedule. The goal is a good dinner or a real drink at an honest price, in a room that feels like it belongs to the county.</p>
+  <p>Research: Sonoma Magazine, The Press Democrat, Sonoma County Tourism. Updated April 13, 2026.</p>
+</div>
+
+<!-- LINKS -->
+<div class="info-box">
+  <h3>More local resources</h3>
+  <p>
+    <a href="https://www.sonomamag.com/" target="_blank" rel="noopener">Sonoma Magazine</a> •
+    <a href="https://www.pressdemocrat.com/things-to-do/restaurants-food-drink/" target="_blank" rel="noopener">Press Democrat Food &amp; Drink</a> •
+    <a href="https://www.sonomacounty.com/articles/best-happy-hours/" target="_blank" rel="noopener">Sonoma County Tourism — Happy Hours</a> •
+    <a href="https://www.bohemian.com/" target="_blank" rel="noopener">The Bohemian</a> •
+    <a href="https://socorestaurantweek.org/" target="_blank" rel="noopener">Restaurant Week (annual, Feb–March)</a>
+  </p>
+</div>
+
+<p class="footer">Sonoma Chef Locals List. Updated April 13, 2026. These are standing weekly deals — not events, not one-offs. Always verify hours and pricing before you go. <strong>Note:</strong> Starling Bar in Sonoma (19380 Sonoma Hwy) closed permanently today, March 30, after 10 years. It was a good bar. If it's not on the restaurant's website, call ahead.</p>
+
+</div>
+</body>
+</html>
