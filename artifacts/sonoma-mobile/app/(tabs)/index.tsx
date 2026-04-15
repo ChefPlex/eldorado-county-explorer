@@ -24,6 +24,7 @@ import { useColors } from "@/hooks/useColors";
 import { useIsTablet } from "@/hooks/useIsTablet";
 import {
   useGetMarkers,
+  useGetMarkerStats,
   useCreateMarker,
   useDeleteMarker,
   getGetMarkersQueryKey,
@@ -364,6 +365,14 @@ const PIN_LEGEND = [
 
 function WelcomeSplashModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const colors = useColors();
+  const { data: stats } = useGetMarkerStats();
+
+  const total = stats?.total ?? "—";
+  const wineries = stats?.wineries ?? "—";
+  const restaurants = stats?.restaurants ?? "—";
+  const farmstands = stats?.farmstands ?? "—";
+  const producers = stats?.producers ?? "—";
+
   return (
     <Modal
       visible={visible}
@@ -386,7 +395,7 @@ function WelcomeSplashModal({ visible, onClose }: { visible: boolean; onClose: (
               Sonoma County
             </Text>
             <Text style={[styles.welcomeSubtitle, { color: colors.mutedForeground }]}>
-              161 personally curated spots — 53 wineries, 65 restaurants, 38 farm stands, and 5 artisan producers (creameries, cideries, spirits, and more) — verified by a professional chef who actually goes to all of them.
+              {total} personally curated spots — {wineries} wineries, {restaurants} restaurants, {farmstands} farm stands, and {producers} artisan producers (creameries, cideries, spirits, and more) — verified by a professional chef who actually goes to all of them.
             </Text>
           </View>
 

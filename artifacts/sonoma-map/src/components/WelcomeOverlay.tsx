@@ -1,5 +1,6 @@
 import { Wine, Utensils, Leaf, Store, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useGetMarkerStats } from "@workspace/api-client-react";
 
 interface WelcomeOverlayProps {
   open: boolean;
@@ -34,7 +35,15 @@ const PIN_TYPES = [
 ];
 
 export function WelcomeOverlay({ open, onClose }: WelcomeOverlayProps) {
+  const { data: stats } = useGetMarkerStats();
+
   if (!open) return null;
+
+  const total = stats?.total ?? "—";
+  const wineries = stats?.wineries ?? "—";
+  const restaurants = stats?.restaurants ?? "—";
+  const farmstands = stats?.farmstands ?? "—";
+  const producers = stats?.producers ?? "—";
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -54,7 +63,7 @@ export function WelcomeOverlay({ open, onClose }: WelcomeOverlayProps) {
             Sonoma County
           </h1>
           <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-            161 personally curated spots — 53 wineries, 65 restaurants, 38 farm stands, and 5 artisan producers (creameries, cideries, spirits, and more) — verified by a professional chef who actually goes to all of them.
+            {total} personally curated spots — {wineries} wineries, {restaurants} restaurants, {farmstands} farm stands, and {producers} artisan producers (creameries, cideries, spirits, and more) — verified by a professional chef who actually goes to all of them.
           </p>
         </div>
 
