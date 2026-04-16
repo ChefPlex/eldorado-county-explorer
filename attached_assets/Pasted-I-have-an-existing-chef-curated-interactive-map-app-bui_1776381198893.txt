@@ -1,0 +1,48 @@
+I have an existing chef-curated interactive map app built in this repo — currently configured for Sonoma County. I need you to re-localize it completely for El Dorado County, California — Sierra Nevada Gold Rush foothills wine and farm country. The tech stack, structure, and design stay identical. Here is everything you need to know:
+
+WHAT TO CHANGE
+
+    Replace all references to "Sonoma County" with "El Dorado County" throughout the app (UI, splash screen, AI persona, page titles, app name)
+    Replace "Sonoma Chef" AI assistant with "Foothills Chef" — same structure, Sierra foothills expertise
+    Clear out all existing seed data (the 161 Sonoma spots) — start with an empty database, or a small set of real El Dorado seed spots if you can verify them accurately
+    Update the mobile app name, bundle ID (suggest: com.chefplex.eldoradoexplorer), and splash screen copy
+    Update the map's default center coordinates and zoom to focus on El Dorado County (roughly 38.7296, -120.8039, zoom 10)
+
+GEOGRAPHY TO COVER
+
+El Dorado County runs from the Sacramento Valley foothills up into the Sierra Nevada. Priority areas:
+
+    Apple Hill (Camino/Placerville area) — 50+ farms, orchards, u-pick, cider houses, and farm bakeries, primarily open fall weekends (August through December). The single biggest draw in the county for food tourism
+    El Dorado AVA — Placerville/Somerset corridor, elevations 1,200–3,500 ft, where mountain Zinfandel, Barbera, and Sangiovese thrive
+    Fair Play AVA — high-elevation sub-appellation (2,400–2,800 ft), big diurnal swings, structured and age-worthy wines; home to some of the best Rhône varieties in California
+    Placerville — the county hub, Highway 50 corridor, historic Gold Rush town with an emerging dining scene
+    Georgetown / Coloma / Garden Valley — quieter back-road farming and winery country
+    El Dorado Hills / Cameron Park — suburban but with food destinations worth including
+
+AI CHEF PERSONA — KEY CHANGES
+
+Update the system prompt to reflect El Dorado's specific food culture:
+
+    Expertise: high-elevation Sierra foothills viticulture, Apple Hill orchard culture, Gold Rush heritage cooking, mountain foraging (porcini, chanterelles), Sierra Nevada trout, local honey and olive oil producers
+    Seasonal focus: apple and pear harvest (August–December) is the defining food season; spring brings wildflowers and early stone fruit; summer is farmers market season along the Highway 50 corridor
+    Wine focus: mountain Zinfandel, Barbera, Sangiovese, Tempranillo, Syrah, and Rhône blends from El Dorado and Fair Play AVAs — high-acid, terroir-driven, unlike valley-floor wines of the same varieties
+    Key wineries to know: Boeger (oldest in El Dorado, est. 1972), Lava Cap, Holly's Hill (Rhône specialists), Cedarville, Skinner, Miraflores, Fitzpatrick, Narrow Gate
+    Tone stays the same: Bourdain-grounded, Slow Food values, ingredient-forward, community-aware. Acknowledge the Gold Rush heritage and the working-farm character of Apple Hill — not wine-country gloss
+
+CATEGORIES — KEEP EXACTLY THE SAME
+
+    winery (wine red)
+    restaurant (amber)
+    farmstand (sage green #6f7d3c) — this will be heavily used for Apple Hill farms
+    producer (terracotta #c06a2d) — cider houses, honey, olive oil, charcuterie
+
+COORDINATE VERIFICATION — CRITICAL
+GPS accuracy is non-negotiable. Use the same three-step protocol in replit.md for every pin: OSM Nominatim → Photon cross-check → Census TIGER fallback. Apple Hill farms in particular can be tricky — many share road frontage on Carson Road and Larsen Drive, so verify carefully.
+
+DO NOT CHANGE
+
+    Tech stack (React/Vite/Leaflet, Express, PostgreSQL, Drizzle, Expo)
+    Design system, color palette, font choices
+    Category system and map pin colors
+    Dynamic splash screen count (pulls from /api/markers/stats — already wired)
+    Sidebar, filtering, bookmarking, and AI chat panel structure
