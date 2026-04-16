@@ -105,11 +105,11 @@ React client-side hooks for voice chat (`useVoiceRecorder`, `useVoiceStream`, `u
 
 ### `artifacts/sonoma-map` (`@workspace/sonoma-map`)
 
-React + Vite frontend. Leaflet.js interactive map of Sonoma County. Features:
+React + Vite frontend. Leaflet.js interactive map of El Dorado County. Features:
 - Custom winery/restaurant map markers with earthy terracotta/sage palette (Playfair Display + Plus Jakarta Sans)
 - Sidebar with stats, filtering, and spot list
 - Click-to-add markers with name, notes, category
-- **Sonoma Chef AI assistant** — floating chat panel powered by GPT, uses the full Sonoma Chef persona (culinary authority, Slow Food values, ingredient-forward, seasonal awareness). Embedded at bottom-right of the map.
+- **Foothills Chef AI assistant** — floating chat panel powered by GPT, uses the full Foothills Chef persona (Sierra foothills culinary authority, Apple Hill expertise, mountain viticulture, Slow Food values). Embedded at bottom-right of the map.
 
 ### `scripts` (`@workspace/scripts`)
 
@@ -117,7 +117,7 @@ Utility scripts package. Each script is a `.ts` file in `src/` with a correspond
 
 ---
 
-## Sonoma Explorer — Project Notes
+## El Dorado Explorer — Project Notes
 
 ### GPS Coordinate Verification Protocol
 
@@ -144,6 +144,8 @@ Utility scripts package. Each script is a `.ts` file in `src/` with a correspond
 
 **Never use address geocoding alone as the sole source.** Always cross-check at least two independent sources. Document the source used when adding a pin.
 
+**Apple Hill note:** Farms on Carson Road and Larsen Drive share close frontage — verify individual farm coordinates carefully. Many farms cluster within 0.001–0.003° of each other. Always use the specific farm address, not just "Camino, CA."
+
 ---
 
 ### Category System
@@ -157,7 +159,7 @@ Utility scripts package. Each script is a `.ts` file in `src/` with a correspond
 | `farmstand` | Sage green | `#6f7d3c` | Leaf |
 | `producer` | Terracotta | `#c06a2d` | Store |
 
-Producers = artisan makers (creameries, cideries, spirits, etc.) that don't fit winery/restaurant/farmstand.
+Producers = artisan makers (cider houses, honey, olive oil, charcuterie, craft beer) that don't fit winery/restaurant/farmstand. In El Dorado County, the `farmstand` category is heavily used for Apple Hill farms and orchards.
 
 ---
 
@@ -166,13 +168,15 @@ Producers = artisan makers (creameries, cideries, spirits, etc.) that don't fit 
 - All spot additions go into `artifacts/api-server/src/seed.ts` first, then run the seed script.
 - Production DB is read-only; production sync is triggered on deploy via `correctCoordinates()`.
 - Splash screen counts are **dynamic** — pulled live from `GET /api/markers/stats`. No need to update hardcoded numbers when spots are added.
-- Pins at the same property (e.g. Preston Farm & Winery winery + farmstand) must be offset by ~0.0003° so they don't stack.
+- Pins at the same property (e.g. a winery with a separate farmstand) must be offset by ~0.0003° so they don't stack.
+- El Dorado County geography: Apple Hill/Camino is roughly 38.71°N, 120.63°W. Placerville is ~38.73°N, 120.80°W. Fair Play/Somerset is ~38.59°N, 120.70°W.
 
 ---
 
 ### Mobile App
 
-- Bundle ID: `com.sonomachefapp.sonoma`
+- App name: `El Dorado Explorer`
+- Bundle ID: `com.chefplex.eldoradoexplorer`
 - GitHub: `ChefPlex/sonoma-explorer` (primary repo)
 - App Store version must always be higher than the last approved build. Current version tracked in `artifacts/sonoma-mobile/app.json`.
 - Build number is auto-incremented by EAS — do not hardcode it.

@@ -28,20 +28,20 @@ const FILTERS: { key: FilterType; label: string; icon: IoniconsName }[] = [
 ];
 
 // Regional latitude boundaries
-// North  ≥ 38.55:  Healdsburg, Alexander Valley, Geyserville, Dry Creek, Cloverdale
-// Central 38.35–38.55: Santa Rosa, Sebastopol, Russian River Valley, West County, Windsor, Glen Ellen
-// Southern < 38.35: Sonoma town, Petaluma, Carneros, Coast, Point Reyes
+// North  ≥ 38.75:  Georgetown, Coloma, Garden Valley, El Dorado Hills / Cameron Park corridor
+// Central 38.60–38.75: Placerville, Apple Hill / Camino, El Dorado AVA, Highway 50 corridor
+// Southern < 38.60: Fair Play AVA, Somerset, high-elevation sub-appellations
 const REGIONS = [
-  { key: "north", label: "North", fullLabel: "North Sonoma" },
-  { key: "central", label: "Central", fullLabel: "Central Sonoma" },
-  { key: "south", label: "Southern", fullLabel: "Southern Sonoma" },
+  { key: "north", label: "North", fullLabel: "North El Dorado" },
+  { key: "central", label: "Central", fullLabel: "Placerville & Apple Hill" },
+  { key: "south", label: "Fair Play", fullLabel: "Fair Play & Somerset" },
 ] as const;
 
 type RegionKey = typeof REGIONS[number]["key"];
 
 function getRegion(lat: number): RegionKey {
-  if (lat >= 38.55) return "north";
-  if (lat >= 38.35) return "central";
+  if (lat >= 38.75) return "north";
+  if (lat >= 38.60) return "central";
   return "south";
 }
 

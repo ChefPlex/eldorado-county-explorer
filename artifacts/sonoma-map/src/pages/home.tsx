@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MapComponent } from "@/components/Map";
 import { Sidebar } from "@/components/Sidebar";
-import { SonomaChef } from "@/components/SonomaChef";
+import { FoothillsChef } from "@/components/SonomaChef";
 import { WelcomeOverlay } from "@/components/WelcomeOverlay";
 import { MyList } from "@/components/MyList";
 import { useMyList } from "@/hooks/useMyList";
@@ -9,9 +9,9 @@ import { useMyList } from "@/hooks/useMyList";
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState<"all" | "winery" | "restaurant" | "farmstand" | "producer">("all");
 
-  const [showWelcome, setShowWelcome] = useState(() => !localStorage.getItem("sonoma-welcomed"));
+  const [showWelcome, setShowWelcome] = useState(() => !localStorage.getItem("eldorado-welcomed"));
   const handleCloseWelcome = () => {
-    localStorage.setItem("sonoma-welcomed", "1");
+    localStorage.setItem("eldorado-welcomed", "1");
     setShowWelcome(false);
   };
 
@@ -27,7 +27,7 @@ export default function Home() {
           onToggleSave={toggle}
           isSaved={isSaved}
         />
-        <SonomaChef />
+        <FoothillsChef />
 
         {/* Right-side controls — stacked above the Chef FAB */}
         <div className="fixed bottom-[72px] right-6 z-[999] flex flex-col items-end gap-2">
