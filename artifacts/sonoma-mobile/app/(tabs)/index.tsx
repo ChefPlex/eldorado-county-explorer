@@ -72,7 +72,7 @@ function getCategoryIcon(category: Category): IoniconsName {
 }
 
 // ── My List (AsyncStorage) ────────────────────────────────────────────────────
-const MY_LIST_KEY = "sonoma-my-list-mobile";
+const MY_LIST_KEY = "eldorado-my-list-mobile";
 
 interface SavedSpot {
   id: number;
@@ -338,7 +338,7 @@ function SpotDetailPanel({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
 }
 
 // ── Welcome splash modal ──────────────────────────────────────────────────────
-const WELCOME_KEY = "sonoma-welcome-seen-mobile";
+const WELCOME_KEY = "eldorado-welcome-seen-mobile";
 
 const PIN_LEGEND = [
   {
@@ -501,7 +501,7 @@ function AddSpotSheet({ coordinate, onClose, onSave, saving }: AddSpotSheetProps
         <Text style={[styles.fieldLabel, { color: colors.mutedForeground }]}>Name</Text>
         <TextInput
           style={[styles.textInput, { backgroundColor: colors.card, color: colors.foreground, borderColor: colors.border }]}
-          placeholder="e.g. Scribe Winery"
+          placeholder="e.g. Boeger Winery"
           placeholderTextColor={colors.mutedForeground}
           value={name}
           onChangeText={setName}

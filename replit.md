@@ -177,7 +177,7 @@ Producers = artisan makers (cider houses, honey, olive oil, charcuterie, craft b
 
 - App name: `El Dorado Explorer`
 - Bundle ID: `com.chefplex.eldoradoexplorer`
-- GitHub: `ChefPlex/sonoma-explorer` (primary repo)
+- GitHub: `ChefPlex/eldorado-explorer` (primary repo)
 - App Store version must always be higher than the last approved build. Current version tracked in `artifacts/sonoma-mobile/app.json`.
 - Build number is auto-incremented by EAS — do not hardcode it.
 

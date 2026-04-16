@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MapComponent } from "@/components/Map";
 import { Sidebar } from "@/components/Sidebar";
-import { FoothillsChef } from "@/components/SonomaChef";
+import { FoothillsChef } from "@/components/FoothillsChef";
 import { WelcomeOverlay } from "@/components/WelcomeOverlay";
 import { MyList } from "@/components/MyList";
 import { useMyList } from "@/hooks/useMyList";
