@@ -42,7 +42,7 @@ const CATEGORY_LABELS: Record<Category, string> = {
   winery: "Wineries",
   restaurant: "Dining",
   farmstand: "Farms",
-  artisan: "Makers",
+  artisan: "Artisans",
 };
 
 const CATEGORY_ICON_MAP: Record<Category, IoniconsName> = {
@@ -57,7 +57,7 @@ const MAP_FILTERS: { key: MapFilter; label: string; icon: IoniconsName }[] = [
   { key: "winery", label: "Wineries", icon: "wine-outline" },
   { key: "restaurant", label: "Dining", icon: "restaurant-outline" },
   { key: "farmstand", label: "Farms", icon: "leaf-outline" },
-  { key: "artisan", label: "Makers", icon: "storefront-outline" },
+  { key: "artisan", label: "Artisans", icon: "storefront-outline" },
 ];
 
 function getCategoryColor(category: Category, colors: ReturnType<typeof useColors>) {
@@ -365,7 +365,7 @@ const PIN_LEGEND = [
   },
   {
     category: "artisan" as Category,
-    label: "Artisan Producers",
+    label: "Artisans",
     description: "Makers of cider, spirits, cheese, and more",
   },
 ];

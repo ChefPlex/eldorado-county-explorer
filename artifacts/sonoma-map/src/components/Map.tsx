@@ -298,7 +298,7 @@ export function MapComponent({ activeFilter, onToggleSave, isSaved }: MapCompone
                           : "bg-background text-muted-foreground border-border hover:bg-muted"}`}
                     >
                       <Store className="w-4 h-4" />
-                      Producer
+                      Artisan
                     </button>
                   </div>
                 </div>

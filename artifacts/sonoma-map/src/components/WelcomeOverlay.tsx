@@ -28,7 +28,7 @@ const PIN_TYPES = [
   },
   {
     icon: Store,
-    label: "Artisan Producers",
+    label: "Artisans",
     description: "Makers of cider, spirits, cheese, and more",
     color: "bg-[#c06a2d]",
   },
