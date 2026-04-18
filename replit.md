@@ -157,9 +157,9 @@ Utility scripts package. Each script is a `.ts` file in `src/` with a correspond
 | `winery` | Wine red | Tailwind `primary` | Wine glass |
 | `restaurant` | Amber | Tailwind `secondary` | Utensils |
 | `farmstand` | Sage green | `#6f7d3c` | Leaf |
-| `producer` | Terracotta | `#c06a2d` | Store |
+| `artisan` | Terracotta | `#c06a2d` | Store |
 
-Producers = artisan makers (cider houses, honey, olive oil, charcuterie, craft beer) that don't fit winery/restaurant/farmstand. In El Dorado County, the `farmstand` category is heavily used for Apple Hill farms and orchards.
+Artisans = artisan makers (cider houses, honey, olive oil, distilleries, chocolates) that don't fit winery/restaurant/farmstand. In El Dorado County, the `farmstand` category is heavily used for Apple Hill farms and orchards.
 
 ---
 
