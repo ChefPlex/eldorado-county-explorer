@@ -78,6 +78,7 @@ interface SavedSpot {
   id: number;
   name: string;
   category: string;
+  city?: string | null;
 }
 
 function useMobileMyList() {
@@ -195,7 +196,7 @@ function SpotDetailModal({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
           </View>
           <View style={styles.sheetHeaderActions}>
             <TouchableOpacity
-              onPress={() => onToggleSave({ id: spot.id, name: spot.name, category: spot.category })}
+              onPress={() => onToggleSave({ id: spot.id, name: spot.name, category: spot.category, city: spot.city })}
               style={styles.closeBtn}
               testID="save-btn"
             >
@@ -211,6 +212,9 @@ function SpotDetailModal({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
         </View>
 
         <Text style={[styles.spotName, { color: colors.foreground }]}>{spot.name}</Text>
+        {spot.city ? (
+          <Text style={[styles.spotCity, { color: colors.mutedForeground }]}>{spot.city}</Text>
+        ) : null}
 
         {spot.note ? (
           <Text style={[styles.spotNote, { color: colors.mutedForeground }]}>{spot.note}</Text>
@@ -286,7 +290,7 @@ function SpotDetailPanel({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
         </View>
         <View style={styles.sheetHeaderActions}>
           <TouchableOpacity
-            onPress={() => onToggleSave({ id: spot.id, name: spot.name, category: spot.category })}
+            onPress={() => onToggleSave({ id: spot.id, name: spot.name, category: spot.category, city: spot.city })}
             style={styles.closeBtn}
             testID="save-btn"
           >
@@ -302,6 +306,9 @@ function SpotDetailPanel({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
       </View>
 
       <Text style={[styles.spotName, { color: colors.foreground }]}>{spot.name}</Text>
+      {spot.city ? (
+        <Text style={[styles.spotCity, { color: colors.mutedForeground }]}>{spot.city}</Text>
+      ) : null}
 
       {spot.note ? (
         <ScrollView style={styles.panelNoteScroll} showsVerticalScrollIndicator={false}>
@@ -1035,7 +1042,11 @@ export default function MapScreen() {
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text style={[styles.myListItemName, { color: colors.foreground }]}>{s.name}</Text>
-                      <Text style={[styles.myListItemCat, { color: catColor }]}>{catLabel}</Text>
+                      {s.city ? (
+                        <Text style={[styles.myListItemCat, { color: colors.mutedForeground }]}>{s.city}</Text>
+                      ) : (
+                        <Text style={[styles.myListItemCat, { color: catColor }]}>{catLabel}</Text>
+                      )}
                     </View>
                     <TouchableOpacity
                       onPress={() => removeFromList(s.id)}
@@ -1374,8 +1385,14 @@ const styles = StyleSheet.create({
   spotName: {
     fontSize: 22,
     fontFamily: "Inter_700Bold",
-    marginBottom: 10,
+    marginBottom: 4,
     lineHeight: 28,
+  },
+  spotCity: {
+    fontSize: 13,
+    fontFamily: "Inter_500Medium",
+    marginBottom: 10,
+    letterSpacing: 0.2,
   },
   spotNote: {
     fontSize: 15,
