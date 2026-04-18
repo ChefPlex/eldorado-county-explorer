@@ -33,7 +33,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import type { Marker as MarkerType } from "@workspace/api-client-react";
 
-type Category = "winery" | "restaurant" | "farmstand" | "producer";
+type Category = "winery" | "restaurant" | "farmstand" | "artisan";
 type MapFilter = "all" | Category;
 
 type IoniconsName = React.ComponentProps<typeof Ionicons>["name"];
@@ -42,14 +42,14 @@ const CATEGORY_LABELS: Record<Category, string> = {
   winery: "Wineries",
   restaurant: "Dining",
   farmstand: "Farms",
-  producer: "Makers",
+  artisan: "Makers",
 };
 
 const CATEGORY_ICON_MAP: Record<Category, IoniconsName> = {
   winery: "wine",
   restaurant: "restaurant",
   farmstand: "leaf",
-  producer: "storefront",
+  artisan: "storefront",
 };
 
 const MAP_FILTERS: { key: MapFilter; label: string; icon: IoniconsName }[] = [
@@ -57,13 +57,13 @@ const MAP_FILTERS: { key: MapFilter; label: string; icon: IoniconsName }[] = [
   { key: "winery", label: "Wineries", icon: "wine-outline" },
   { key: "restaurant", label: "Dining", icon: "restaurant-outline" },
   { key: "farmstand", label: "Farms", icon: "leaf-outline" },
-  { key: "producer", label: "Makers", icon: "storefront-outline" },
+  { key: "artisan", label: "Makers", icon: "storefront-outline" },
 ];
 
 function getCategoryColor(category: Category, colors: ReturnType<typeof useColors>) {
   if (category === "winery") return colors.wineRed;
   if (category === "restaurant") return colors.accent;
-  if (category === "producer") return colors.goldAccent;
+  if (category === "artisan") return colors.goldAccent;
   return colors.farmGreen;
 }
 
@@ -138,7 +138,7 @@ interface SpotSheetProps {
 }
 
 function buildShareMessage(spot: MarkerType) {
-  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "producer" ? "Producer" : "Farm Stand";
+  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "artisan" ? "Artisan" : "Farm Stand";
   const parts: string[] = [
     `${spot.name} — ${catLabel} in El Dorado County`,
     "",
@@ -155,7 +155,7 @@ function SpotDetailModal({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
 
   const catColor = getCategoryColor(spot.category as Category, colors);
   const catIcon = getCategoryIcon(spot.category as Category);
-  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "producer" ? "Producer" : "Farm";
+  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "artisan" ? "Artisan" : "Farm";
   const saved = isSaved(spot.id);
 
   const handleShare = async () => {
@@ -256,7 +256,7 @@ function SpotDetailPanel({ spot, onClose, onToggleSave, isSaved, onDelete, isDel
 
   const catColor = getCategoryColor(spot.category as Category, colors);
   const catIcon = getCategoryIcon(spot.category as Category);
-  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "producer" ? "Producer" : "Farm";
+  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "artisan" ? "Artisan" : "Farm";
   const saved = isSaved(spot.id);
 
   const handleShare = async () => {
@@ -364,7 +364,7 @@ const PIN_LEGEND = [
     description: "Farms, roadside stands, and markets behind the best tables",
   },
   {
-    category: "producer" as Category,
+    category: "artisan" as Category,
     label: "Artisan Producers",
     description: "Makers of cider, spirits, cheese, and more",
   },
@@ -378,7 +378,7 @@ function WelcomeSplashModal({ visible, onClose }: { visible: boolean; onClose: (
   const wineries = stats?.wineries ?? "—";
   const restaurants = stats?.restaurants ?? "—";
   const farmstands = stats?.farmstands ?? "—";
-  const producers = stats?.producers ?? "—";
+  const artisans = stats?.artisans ?? "—";
 
   return (
     <Modal
@@ -402,7 +402,7 @@ function WelcomeSplashModal({ visible, onClose }: { visible: boolean; onClose: (
               El Dorado County
             </Text>
             <Text style={[styles.welcomeSubtitle, { color: colors.mutedForeground }]}>
-              {total} personally curated spots — {wineries} wineries, {restaurants} restaurants, {farmstands} farm stands, and {producers} artisan producers (creameries, cideries, spirits, and more) — verified by a professional chef who actually goes to all of them.
+              {total} personally curated spots — {wineries} wineries, {restaurants} restaurants, {farmstands} farm stands, and {artisans} artisan makers (cideries, distilleries, olive oils, chocolates) — verified by a professional chef who actually goes to all of them.
             </Text>
           </View>
 
@@ -530,7 +530,7 @@ function AddSpotSheet({ coordinate, onClose, onSave, saving }: AddSpotSheetProps
 
         <Text style={[styles.fieldLabel, { color: colors.mutedForeground }]}>Category</Text>
         <View style={styles.categoryRow}>
-          {(["winery", "restaurant", "farmstand", "producer"] as Category[]).map((cat) => {
+          {(["winery", "restaurant", "farmstand", "artisan"] as Category[]).map((cat) => {
             const catColor = getCategoryColor(cat, colors);
             const selected = category === cat;
             return (
@@ -702,7 +702,7 @@ export default function MapScreen() {
     winery: markers.filter((m) => m.category === "winery").length,
     restaurant: markers.filter((m) => m.category === "restaurant").length,
     farmstand: markers.filter((m) => m.category === "farmstand").length,
-    producer: markers.filter((m) => m.category === "producer").length,
+    artisan: markers.filter((m) => m.category === "artisan").length,
   };
 
   const handleMarkerPress = useCallback((marker: MarkerType) => {
@@ -1031,7 +1031,7 @@ export default function MapScreen() {
               {[...myListSaved.values()].map((s) => {
                 const catColor = getCategoryColor(s.category as Category, colors);
                 const catIcon = getCategoryIcon(s.category as Category);
-                const catLabel = s.category === "winery" ? "Winery" : s.category === "restaurant" ? "Dining" : s.category === "producer" ? "Producer" : "Farm";
+                const catLabel = s.category === "winery" ? "Winery" : s.category === "restaurant" ? "Dining" : s.category === "artisan" ? "Artisan" : "Farm";
                 return (
                   <View
                     key={s.id}
