@@ -1,0 +1,26 @@
+Clear cuts — I'd pull these today
+
+WINERIES
+
+    Crystal Basin Cellars — The entire note is about being part of a collective. There's no story about Crystal Basin's wine, its terroir, or why to go there specifically. It earns its spot by being open daily. That's not enough.
+    E16 Winery — Note is three sentences, two of which are hours and a name explanation. No wine, no story, no angle.
+    Kehret Vineyards — "Worth tracking as the team hits its stride" is the exact sentence you'd write about something you're not ready to recommend yet. It's a hedge, not a recommendation.
+    Cantiga Winery — "Focused entirely on the Rhône palette — the kind of small-production winery that rewards the detour." That's a description of a category, not this specific winery. Nothing here tells you why Cantiga over the other Rhône producers in the AVA.
+    Château d'Estienne — The note is entirely about the views and the hours. No wine, no producer story, no reason to drive there versus the ten other tasting rooms on Fairplay Road.
+    Busby Cellars — "Special attention throughout the growing and winemaking process to craft elegant wines" — this is their website marketing copy pasted back in. We have zero editorial angle on this place.
+
+FARMSTANDS
+
+    El Dorado County Farmers Market — A farmers market isn't a place, it's a weekly event. Vendors change constantly, the map pin has no fixed location that means anything specific, and Saturday-morning-only doesn't fit how people use this guide.
+    Gold Hill Vineyard Farmstand — We already have Gold Hill Vineyard as a winery entry. The farmstand is at essentially the same address. This is a sub-feature of something already on the map. Merge the olive oil detail into the winery note and drop this.
+    South Fork Farm — "Available through weekly farmers markets and CSA subscription." This isn't a place you visit. You subscribe to it. There's no address to go to, no tasting room, no hours. It's a great farm, but it's not mappable.
+    Argyres Orchard — Open 16 days per year, two weekends only. A spot that's accessible for roughly 48 hours annually shouldn't be a permanent map entry.
+
+RESTAURANTS
+
+    Sienna Restaurant — "Ranked #1 of 52 restaurants in El Dorado Hills on TripAdvisor" is the lead, and it goes downhill from there. It's a competent suburban grill in a Town Center with no connection to the El Dorado farming or wine story whatsoever.
+    Milestone Restaurant & Cocktail Bar — Same problem. El Dorado Hills Town Center, generic farm-to-table claim we can't support, "patio overlooking the water" — what water? This is a strip mall restaurant.
+
+CATEGORY ERROR
+
+    Fenton Herriott Vineyards — This is listed under producer in the code but it's a winery. Its note even says "estate winery." It's currently sitting in the wrong section.
