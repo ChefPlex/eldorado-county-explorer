@@ -1,9 +1,32 @@
 import { Router, type IRouter } from "express";
+import rateLimit from "express-rate-limit";
 import { db, conversations, messages } from "@workspace/db";
 import { eq, asc } from "drizzle-orm";
 import { openai } from "@workspace/integrations-openai-ai-server";
 
 const router: IRouter = Router();
+
+const conversationLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json({ error: "Too many requests. Please try again in a minute." });
+  },
+});
+
+const messageLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json({ error: "Message limit reached (10 per minute). Please wait before sending another message." });
+  },
+});
+
+const MAX_MESSAGE_LENGTH = 4000;
 
 const FOOTHILLS_CHEF_SYSTEM_PROMPT = `You are Foothills Chef.
 Not a concierge. Not a brochure. Not a wine-country marketing arm.
@@ -53,7 +76,7 @@ STYLE: Knowledgeable but human. Confident but never pompous. Ingredient-forward.
 
 When users ask about wineries, farms, or restaurants they've saved on their map, give informed, honest perspective. Don't just validate — if you know the place well, bring your knowledge. If asked about pairings, be specific to the wine's mountain structure and the ingredient's season. Do not fabricate event dates — direct users to the El Dorado Winery Association or Apple Hill Growers Association when uncertain.`;
 
-router.get("/openai/conversations", async (req, res) => {
+router.get("/openai/conversations", conversationLimiter, async (req, res) => {
   try {
     const all = await db.select().from(conversations).orderBy(asc(conversations.createdAt));
     res.json(all.map(c => ({ ...c, createdAt: c.createdAt.toISOString() })));
@@ -63,7 +86,7 @@ router.get("/openai/conversations", async (req, res) => {
   }
 });
 
-router.post("/openai/conversations", async (req, res) => {
+router.post("/openai/conversations", conversationLimiter, async (req, res) => {
   try {
     const { title } = req.body;
     if (!title) { res.status(400).json({ error: "title required" }); return; }
@@ -75,7 +98,7 @@ router.post("/openai/conversations", async (req, res) => {
   }
 });
 
-router.get("/openai/conversations/:id", async (req, res) => {
+router.get("/openai/conversations/:id", conversationLimiter, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const [conv] = await db.select().from(conversations).where(eq(conversations.id, id));
@@ -92,7 +115,7 @@ router.get("/openai/conversations/:id", async (req, res) => {
   }
 });
 
-router.delete("/openai/conversations/:id", async (req, res) => {
+router.delete("/openai/conversations/:id", conversationLimiter, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const [deleted] = await db.delete(conversations).where(eq(conversations.id, id)).returning();
@@ -104,7 +127,7 @@ router.delete("/openai/conversations/:id", async (req, res) => {
   }
 });
 
-router.get("/openai/conversations/:id/messages", async (req, res) => {
+router.get("/openai/conversations/:id/messages", conversationLimiter, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const msgs = await db.select().from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt));
@@ -115,16 +138,22 @@ router.get("/openai/conversations/:id/messages", async (req, res) => {
   }
 });
 
-router.post("/openai/conversations/:id/messages", async (req, res) => {
+router.post("/openai/conversations/:id/messages", messageLimiter, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const { content } = req.body;
     if (!content) { res.status(400).json({ error: "content required" }); return; }
+    if (typeof content !== "string" || content.trim().length === 0) {
+      res.status(400).json({ error: "content must be a non-empty string" }); return;
+    }
+    if (content.length > MAX_MESSAGE_LENGTH) {
+      res.status(400).json({ error: `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters.` }); return;
+    }
 
     const [conv] = await db.select().from(conversations).where(eq(conversations.id, id));
     if (!conv) { res.status(404).json({ error: "Conversation not found" }); return; }
 
-    await db.insert(messages).values({ conversationId: id, role: "user", content });
+    await db.insert(messages).values({ conversationId: id, role: "user", content: content.trim() });
 
     const history = await db.select().from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt));
     const chatMessages = [
@@ -141,7 +170,7 @@ router.post("/openai/conversations/:id/messages", async (req, res) => {
     let fullResponse = "";
 
     const stream = await openai.chat.completions.create({
-      model: "gpt-5.2",
+      model: "gpt-4o",
       max_completion_tokens: 8192,
       messages: chatMessages,
       stream: true,

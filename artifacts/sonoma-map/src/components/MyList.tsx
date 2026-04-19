@@ -1,4 +1,4 @@
-import { Bookmark, X, Trash2, Wine, Utensils, Leaf } from "lucide-react";
+import { Bookmark, X, Trash2, Wine, Utensils, Leaf, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { SavedSpot } from "@/hooks/useMyList";
@@ -14,12 +14,14 @@ interface MyListProps {
 function CategoryIcon({ category }: { category: string }) {
   if (category === "winery") return <Wine className="w-3 h-3" />;
   if (category === "farmstand") return <Leaf className="w-3 h-3" />;
+  if (category === "artisan") return <Store className="w-3 h-3" />;
   return <Utensils className="w-3 h-3" />;
 }
 
 function categoryColor(category: string) {
   if (category === "winery") return "bg-primary text-white";
   if (category === "farmstand") return "bg-[#6f7d3c] text-white";
+  if (category === "artisan") return "bg-[#c06a2d] text-white";
   return "bg-secondary text-secondary-foreground";
 }
 
