@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import rateLimit from "express-rate-limit";
 import { db, conversations, messages } from "@workspace/db";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, desc } from "drizzle-orm";
 import { openai } from "@workspace/integrations-openai-ai-server";
 
 const router: IRouter = Router();
@@ -27,8 +27,18 @@ const messageLimiter = rateLimit({
 });
 
 const MAX_MESSAGE_LENGTH = 4000;
+const MAX_CONTEXT_MESSAGES = 40;
 
-const FOOTHILLS_CHEF_SYSTEM_PROMPT = `You are Foothills Chef.
+function parseId(raw: string): number | null {
+  const id = parseInt(raw, 10);
+  return isNaN(id) ? null : id;
+}
+
+function buildSystemPrompt(): string {
+  const now = new Date();
+  const dateLabel = now.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+  return `You are Foothills Chef.
 Not a concierge. Not a brochure. Not a wine-country marketing arm.
 You are a culinary authority embedded in El Dorado County's agricultural and restaurant ecosystem — granite-soil vineyards, Apple Hill orchards, cider houses, farm bakeries, mountain trout streams, local honey operations, and the working kitchens of Placerville and the Sierra foothills.
 
@@ -66,7 +76,7 @@ TONE PILLARS:
 - Ethical Clarity Without Sanctimony: Apple Hill is not agritourism theater — it is a real farming economy. Explain what makes a farm visit genuine vs. performative. Explain why foothill wines command respect. Sourcing affects flavor; say so without preaching.
 - Grounded Luxury: Luxury in El Dorado County is a bag of tree-ripened Gravenstein apples and a cold glass of farmhouse cider on a September afternoon. A tasting room with a view of nothing but granite ridges and vine rows. A Gold Rush-era storefront serving honest food. Price does not equal value. Flavor + integrity + intention = value.
 
-SEASONAL EL DORADO PRODUCE (today is roughly ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}):
+SEASONAL EL DORADO PRODUCE (today is ${dateLabel}):
 Spring (March-May): Early stone fruit, wildflowers, spring greens, asparagus, fava beans, morel mushrooms from the Sierra foothills, fresh chevre from foothill dairies. Wine tone: Rhône whites, Viognier, rosé, light Barbera.
 Summer (June-August): Cherries, peaches, plums, nectarines, farmers market season along Hwy 50, early apples (Gravensteins by late July), Sierra trout, summer squash, corn. Wine tone: Barbera, lighter Sangiovese, rosé, Grenache.
 Fall (August-December): APPLE HILL SEASON — the defining El Dorado food season. 50+ apple varieties, pears, Asian pears, u-pick, cider pressing, apple butter, farm bakeries, harvest festivals. Wine grapes harvesting at elevation. Porcini and chanterelle forage season. Wine tone: Mountain Zinfandel, Barbera, Syrah, Tempranillo, Rhône blends.
@@ -75,6 +85,7 @@ Winter (December-February): Citrus, stored apples and pears, olive oil (local ha
 STYLE: Knowledgeable but human. Confident but never pompous. Ingredient-forward. Terroir-driven and mountain-specific. Community-aware. Clear and practical. Sensory, not flowery. Opinionated but fair. Speak like someone who knows which Apple Hill farm has the best Fuji, can tell a Fair Play Syrah from an El Dorado Zinfandel by structure alone, and has driven Highway 50 in fog and sunshine both.
 
 When users ask about wineries, farms, or restaurants they've saved on their map, give informed, honest perspective. Don't just validate — if you know the place well, bring your knowledge. If asked about pairings, be specific to the wine's mountain structure and the ingredient's season. Do not fabricate event dates — direct users to the El Dorado Winery Association or Apple Hill Growers Association when uncertain.`;
+}
 
 router.get("/openai/conversations", conversationLimiter, async (req, res) => {
   try {
@@ -100,7 +111,8 @@ router.post("/openai/conversations", conversationLimiter, async (req, res) => {
 
 router.get("/openai/conversations/:id", conversationLimiter, async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseId(req.params.id);
+    if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
     const [conv] = await db.select().from(conversations).where(eq(conversations.id, id));
     if (!conv) { res.status(404).json({ error: "Not found" }); return; }
     const msgs = await db.select().from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt));
@@ -117,7 +129,8 @@ router.get("/openai/conversations/:id", conversationLimiter, async (req, res) =>
 
 router.delete("/openai/conversations/:id", conversationLimiter, async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseId(req.params.id);
+    if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
     const [deleted] = await db.delete(conversations).where(eq(conversations.id, id)).returning();
     if (!deleted) { res.status(404).json({ error: "Not found" }); return; }
     res.status(204).end();
@@ -129,7 +142,8 @@ router.delete("/openai/conversations/:id", conversationLimiter, async (req, res)
 
 router.get("/openai/conversations/:id/messages", conversationLimiter, async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseId(req.params.id);
+    if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
     const msgs = await db.select().from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt));
     res.json(msgs.map(m => ({ ...m, createdAt: m.createdAt.toISOString() })));
   } catch (err) {
@@ -140,7 +154,9 @@ router.get("/openai/conversations/:id/messages", conversationLimiter, async (req
 
 router.post("/openai/conversations/:id/messages", messageLimiter, async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseId(req.params.id);
+    if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
+
     const { content } = req.body;
     if (!content) { res.status(400).json({ error: "content required" }); return; }
     if (typeof content !== "string" || content.trim().length === 0) {
@@ -155,10 +171,17 @@ router.post("/openai/conversations/:id/messages", messageLimiter, async (req, re
 
     await db.insert(messages).values({ conversationId: id, role: "user", content: content.trim() });
 
-    const history = await db.select().from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt));
+    const allHistory = await db
+      .select()
+      .from(messages)
+      .where(eq(messages.conversationId, id))
+      .orderBy(desc(messages.createdAt))
+      .limit(MAX_CONTEXT_MESSAGES);
+    const recentHistory = allHistory.reverse();
+
     const chatMessages = [
-      { role: "system" as const, content: FOOTHILLS_CHEF_SYSTEM_PROMPT },
-      ...history.map(m => ({ role: m.role as "user" | "assistant", content: m.content })),
+      { role: "system" as const, content: buildSystemPrompt() },
+      ...recentHistory.map(m => ({ role: m.role as "user" | "assistant", content: m.content })),
     ];
 
     res.setHeader("Content-Type", "text/event-stream");
@@ -167,31 +190,56 @@ router.post("/openai/conversations/:id/messages", messageLimiter, async (req, re
     res.setHeader("X-Accel-Buffering", "no");
     res.flushHeaders();
 
+    const abortController = new AbortController();
+    req.on("close", () => abortController.abort());
+
     let fullResponse = "";
+    let aborted = false;
 
-    const stream = await openai.chat.completions.create({
-      model: "gpt-4o",
-      max_completion_tokens: 8192,
-      messages: chatMessages,
-      stream: true,
-    });
+    try {
+      const stream = await openai.chat.completions.create(
+        {
+          model: "gpt-4o",
+          max_completion_tokens: 8192,
+          messages: chatMessages,
+          stream: true,
+        },
+        { signal: abortController.signal }
+      );
 
-    for await (const chunk of stream) {
-      const text = chunk.choices[0]?.delta?.content;
-      if (text) {
-        fullResponse += text;
-        res.write(`data: ${JSON.stringify({ content: text })}\n\n`);
+      for await (const chunk of stream) {
+        const text = chunk.choices[0]?.delta?.content;
+        if (text) {
+          fullResponse += text;
+          res.write(`data: ${JSON.stringify({ content: text })}\n\n`);
+        }
+      }
+    } catch (streamErr: unknown) {
+      if (
+        streamErr instanceof Error &&
+        (streamErr.name === "AbortError" || streamErr.message.includes("aborted"))
+      ) {
+        aborted = true;
+        req.log.info({ conversationId: id }, "Client disconnected — stream aborted");
+      } else {
+        throw streamErr;
       }
     }
 
-    await db.insert(messages).values({ conversationId: id, role: "assistant", content: fullResponse });
+    if (!aborted && fullResponse.length > 0) {
+      await db.insert(messages).values({ conversationId: id, role: "assistant", content: fullResponse });
+      res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+    }
 
-    res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
     res.end();
   } catch (err) {
     req.log.error({ err }, "Failed to send message");
-    res.write(`data: ${JSON.stringify({ error: "Failed to generate response" })}\n\n`);
-    res.end();
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Failed to generate response" });
+    } else {
+      res.write(`data: ${JSON.stringify({ error: "Failed to generate response" })}\n\n`);
+      res.end();
+    }
   }
 });
 
