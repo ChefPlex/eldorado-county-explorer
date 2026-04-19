@@ -39,10 +39,10 @@ type MapFilter = "all" | Category;
 type IoniconsName = React.ComponentProps<typeof Ionicons>["name"];
 
 const CATEGORY_LABELS: Record<Category, string> = {
-  winery: "Wineries",
+  winery: "Winery",
   restaurant: "Dining",
-  farmstand: "Farms",
-  artisan: "Artisans",
+  farmstand: "Farm",
+  artisan: "Artisan",
 };
 
 const CATEGORY_ICON_MAP: Record<Category, IoniconsName> = {
@@ -54,10 +54,10 @@ const CATEGORY_ICON_MAP: Record<Category, IoniconsName> = {
 
 const MAP_FILTERS: { key: MapFilter; label: string; icon: IoniconsName }[] = [
   { key: "all", label: "All", icon: "map-outline" },
-  { key: "winery", label: "Wineries", icon: "wine-outline" },
+  { key: "winery", label: "Winery", icon: "wine-outline" },
   { key: "restaurant", label: "Dining", icon: "restaurant-outline" },
-  { key: "farmstand", label: "Farms", icon: "leaf-outline" },
-  { key: "artisan", label: "Artisans", icon: "storefront-outline" },
+  { key: "farmstand", label: "Farm", icon: "leaf-outline" },
+  { key: "artisan", label: "Artisan", icon: "storefront-outline" },
 ];
 
 function getCategoryColor(category: Category, colors: ReturnType<typeof useColors>) {
@@ -138,7 +138,7 @@ interface SpotSheetProps {
 }
 
 function buildShareMessage(spot: MarkerType) {
-  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "artisan" ? "Artisan" : "Farm Stand";
+  const catLabel = spot.category === "winery" ? "Winery" : spot.category === "restaurant" ? "Dining" : spot.category === "artisan" ? "Artisan" : "Farm";
   const parts: string[] = [
     `${spot.name} — ${catLabel} in El Dorado County`,
     "",
@@ -350,22 +350,22 @@ const WELCOME_KEY = "eldorado-welcome-seen-mobile";
 const PIN_LEGEND = [
   {
     category: "winery" as Category,
-    label: "Wineries",
+    label: "Winery",
     description: "Curated estates and tasting rooms",
   },
   {
     category: "restaurant" as Category,
-    label: "Restaurants & Bars",
+    label: "Dining",
     description: "Chef-vetted tables worth the drive",
   },
   {
     category: "farmstand" as Category,
-    label: "Farm Stands & Markets",
+    label: "Farm",
     description: "Farms, roadside stands, and markets behind the best tables",
   },
   {
     category: "artisan" as Category,
-    label: "Artisans",
+    label: "Artisan",
     description: "Makers of cider, spirits, cheese, and more",
   },
 ];

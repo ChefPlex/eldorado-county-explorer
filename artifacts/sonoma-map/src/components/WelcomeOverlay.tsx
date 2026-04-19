@@ -10,25 +10,25 @@ interface WelcomeOverlayProps {
 const PIN_TYPES = [
   {
     icon: Wine,
-    label: "Wineries",
+    label: "Winery",
     description: "Curated estates and tasting rooms",
     color: "bg-primary",
   },
   {
     icon: Utensils,
-    label: "Restaurants & Bars",
+    label: "Dining",
     description: "Chef-vetted tables worth the drive",
     color: "bg-secondary",
   },
   {
     icon: Leaf,
-    label: "Farm Stands & Markets",
+    label: "Farm",
     description: "Farms, roadside stands, and markets behind the best tables",
     color: "bg-[#6f7d3c]",
   },
   {
     icon: Store,
-    label: "Artisans",
+    label: "Artisan",
     description: "Makers of cider, spirits, cheese, and more",
     color: "bg-[#c06a2d]",
   },

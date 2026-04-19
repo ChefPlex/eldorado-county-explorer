@@ -70,7 +70,7 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
             <span className="text-xl font-serif font-medium leading-none mb-1 text-foreground">
               {statsLoading ? "-" : (stats?.wineries || 0)}
             </span>
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Wineries</span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Winery</span>
           </button>
         </div>
 
@@ -104,7 +104,7 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
             <span className="text-xl font-serif font-medium leading-none mb-1 text-foreground">
               {statsLoading ? "-" : farmstands}
             </span>
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Farms</span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Farm</span>
           </button>
 
           <button 
@@ -120,7 +120,7 @@ export function Sidebar({ activeFilter, setActiveFilter }: SidebarProps) {
             <span className="text-xl font-serif font-medium leading-none mb-1 text-foreground">
               {statsLoading ? "-" : artisans}
             </span>
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Artisans</span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Artisan</span>
           </button>
         </div>
       </div>
