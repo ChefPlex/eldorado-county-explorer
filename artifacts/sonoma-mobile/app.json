@@ -5,7 +5,7 @@
     "version": "2.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
-    "scheme": "sonoma-mobile",
+    "scheme": "eldorado-explorer",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -14,6 +14,8 @@
       "backgroundColor": "#6B2D3E"
     },
     "ios": {
+      "bundleIdentifier": "com.chefplex.eldoradoexplorer",
+      "buildNumber": "1",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Used to show your location on the El Dorado County map and find nearby spots."
@@ -27,12 +29,7 @@
       "favicon": "./assets/images/icon.png"
     },
     "plugins": [
-      [
-        "expo-router",
-        {
-          "origin": "https://replit.com/"
-        }
-      ],
+      "expo-router",
       "expo-font",
       "expo-web-browser",
       [
