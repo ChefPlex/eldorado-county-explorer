@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "El Dorado Explorer",
-    "slug": "sonoma-mobile",
+    "slug": "eldorado-explorer",
     "version": "2.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
