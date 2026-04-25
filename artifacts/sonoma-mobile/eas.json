@@ -7,21 +7,25 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "credentialsSource": "remote",
       "ios": {
         "simulator": false
       }
     },
     "preview": {
       "distribution": "internal",
+      "credentialsSource": "remote",
       "ios": {
         "simulator": false
       }
     },
     "production": {
       "distribution": "store",
+      "credentialsSource": "remote",
       "autoIncrement": true,
       "ios": {
-        "simulator": false
+        "simulator": false,
+        "appleTeamId": "P5WHRMCS5Q"
       }
     }
   },
