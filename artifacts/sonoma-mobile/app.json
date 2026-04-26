@@ -15,10 +15,10 @@
     },
     "ios": {
       "bundleIdentifier": "com.chefplex.eldoradoexplorer",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Used to show your location on the El Dorado County map and find nearby spots."
+        "NSLocationWhenInUseUsageDescription": "El Dorado Explorer uses your location to center the map on your current position and show wineries, farms, and restaurants near you — for example, finding the closest Apple Hill farm stand or Fair Play winery. Your location is only accessed while the app is open and is never stored or shared."
       }
     },
     "android": {
@@ -35,7 +35,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Used to show your location on the El Dorado County map and find nearby spots."
+          "locationWhenInUsePermission": "El Dorado Explorer uses your location to center the map on your current position and show wineries, farms, and restaurants near you — for example, finding the closest Apple Hill farm stand or Fair Play winery. Your location is only accessed while the app is open and is never stored or shared."
         }
       ]
     ],
