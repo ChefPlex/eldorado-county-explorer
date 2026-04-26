@@ -2,7 +2,7 @@
   "expo": {
     "name": "El Dorado Explorer",
     "slug": "eldorado-explorer",
-    "version": "2.0.0",
+    "version": "2.5.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "eldorado-explorer",
