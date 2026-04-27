@@ -9,6 +9,7 @@ const REMOVED_FROM_SEED: string[] = [
   "Cascada",                  // permanently closed (March 2025)
   "Smith Flat House",         // dining room closed Jan 31 2026; events-only venue
   "diVittorio Winery",        // permanently closed 2025
+  "Sloan Winters Mountain Orchard", // no web presence; operating status unconfirmed
   "Jodar Vineyards & Winery", // permanently closed
   "Latcham Vineyards",        // permanently closed
   "Fitzpatrick Winery & Lodge", // permanently closed
@@ -74,7 +75,7 @@ const SEED_DATA = [
   { name: "American River Cherry Co.", city: "Placerville", note: "Natural-grown (not certified organic) fruit farm on Dias Drive north of Placerville — cherries, blackberries, blueberries, boysenberries, figs, lavender, raspberries, persimmons, and honey from farm hives. U-pick and already-picked. Cherry season in May–June is one of the foothills' great seasonal pleasures. A quieter, more intimate experience than the Apple Hill crowds. Picnic area on site.", category: "farmstand", lat: 38.7390, lng: -120.7815, website: "https://www.americanrivercherryco.com" },
   { name: "24 Carrot Farm", city: "Placerville", note: "CERTIFIED ORGANIC for all crops — apples, pumpkins, and honey from farm hives on Jacquier Road in the Apple Hill area. Chemical-free operation, formerly Willow Pond Farm. A conscientious choice when you want to buy produce from a farm operating with serious agricultural values. Daily 10am–5pm, seasonal.", category: "farmstand", lat: 38.7200, lng: -120.6343, website: "https://www.24carrotfarms.com" },
   { name: "Larsen Apple Barn", city: "Camino", note: "Founded in the 1860s — the oldest continuously family-owned and operated farm in Apple Hill. On Larsen Drive, the heart of the Apple Hill corridor. Apples harvested from trees that have produced fruit for over 150 years. Open seasonally Labor Day through late November, Mon–Fri and Sunday 9am–5pm. The historical weight of this farm is real: the family has been working this land longer than the Gold Rush is from today.", category: "farmstand", lat: 38.7524, lng: -120.6809, website: "https://www.larsenapplebarn.com" },
-  { name: "Sloan Winters Mountain Orchard", city: "Camino", note: "CCOF-certified organic orchard on Snows Road in the Apple Hill area — apples, seasonal produce, and garden crops grown without synthetic inputs. Small operation, Fri–Sun 10am–5pm from August through November. The certification matters: this is one of the few Apple Hill farms operating to full organic standards. Worth seeking out if buying certified is a priority.", category: "farmstand", lat: 38.7040, lng: -120.5820, website: "https://edc-farmtrails.org" },
+
   { name: "Goldbud Farms", city: "Placerville", note: "One of the few farms in the Apple Hill corridor focused on stone fruit: mountain-grown peaches, nectarines, plums, pluots, and apples, alongside wine grapes on the same property. On Carson Road, open daily 10am–5pm from mid-July through October. The peaches harvested at peak maturity at this elevation have more intensity than valley-floor stone fruit — a genuine seasonal reason to come early in the Apple Hill season before the fall apple crowds arrive.", category: "farmstand", lat: 38.7122, lng: -120.6420, website: "https://goldbudfarms.com" },
 
   // ── ARTISANS ──────────────────────────────────────────────────────────────
