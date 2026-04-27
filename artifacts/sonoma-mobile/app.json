@@ -2,7 +2,7 @@
   "expo": {
     "name": "El Dorado Explorer",
     "slug": "eldorado-explorer",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "eldorado-explorer",
@@ -15,7 +15,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.chefplex.eldoradoexplorer",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "El Dorado Explorer uses your location to center the map on your current position and show wineries, farms, and restaurants near you — for example, finding the closest Apple Hill farm stand or Fair Play winery. Your location is only accessed while the app is open and is never stored or shared."
