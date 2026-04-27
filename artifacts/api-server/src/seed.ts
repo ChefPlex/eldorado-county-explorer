@@ -8,6 +8,7 @@ const REMOVED_FROM_SEED: string[] = [
   "The Farm Table",           // permanently closed (Jan 2026)
   "Cascada",                  // permanently closed (March 2025)
   "Smith Flat House",         // dining room closed Jan 31 2026; events-only venue
+  "diVittorio Winery",        // permanently closed 2025
   "Jodar Vineyards & Winery", // permanently closed
   "Latcham Vineyards",        // permanently closed
   "Fitzpatrick Winery & Lodge", // permanently closed
