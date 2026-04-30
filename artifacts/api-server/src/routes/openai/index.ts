@@ -8,7 +8,7 @@ const router: IRouter = Router();
 
 const conversationLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 60,
+  max: 30,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (_req, res) => {
@@ -18,11 +18,11 @@ const conversationLimiter = rateLimit({
 
 const messageLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 8,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (_req, res) => {
-    res.status(429).json({ error: "Message limit reached (10 per minute). Please wait before sending another message." });
+    res.status(429).json({ error: "Message limit reached (8 per minute). Please wait before sending another message." });
   },
 });
 
