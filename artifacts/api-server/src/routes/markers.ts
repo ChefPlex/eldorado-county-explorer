@@ -1,10 +1,21 @@
 import { Router, type IRouter } from "express";
+import rateLimit from "express-rate-limit";
 import { db, markersTable, insertMarkerSchema } from "@workspace/db";
 import { eq, count, sql } from "drizzle-orm";
 
 const router: IRouter = Router();
 
-router.get("/markers/stats", async (req, res) => {
+const markersLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json({ error: "Too many requests. Please try again in a minute." });
+  },
+});
+
+router.get("/markers/stats", markersLimiter, async (req, res) => {
   try {
     const rows = await db
       .select({ category: markersTable.category, count: count() })
@@ -24,7 +35,7 @@ router.get("/markers/stats", async (req, res) => {
   }
 });
 
-router.get("/markers", async (req, res) => {
+router.get("/markers", markersLimiter, async (req, res) => {
   try {
     const markers = await db.select().from(markersTable).orderBy(markersTable.createdAt);
     res.json(markers.map((m) => ({ ...m, createdAt: m.createdAt.toISOString() })));
@@ -34,7 +45,7 @@ router.get("/markers", async (req, res) => {
   }
 });
 
-router.post("/markers", async (req, res) => {
+router.post("/markers", markersLimiter, async (req, res) => {
   try {
     const input = insertMarkerSchema.safeParse(req.body);
     if (!input.success) {
@@ -49,7 +60,7 @@ router.post("/markers", async (req, res) => {
   }
 });
 
-router.get("/markers/:id", async (req, res) => {
+router.get("/markers/:id", markersLimiter, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -68,7 +79,7 @@ router.get("/markers/:id", async (req, res) => {
   }
 });
 
-router.put("/markers/:id", async (req, res) => {
+router.put("/markers/:id", markersLimiter, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -96,7 +107,7 @@ router.put("/markers/:id", async (req, res) => {
   }
 });
 
-router.delete("/markers/:id", async (req, res) => {
+router.delete("/markers/:id", markersLimiter, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
