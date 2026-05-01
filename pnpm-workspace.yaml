@@ -52,7 +52,7 @@ catalog:
   '@vitejs/plugin-react': ^5.0.4
   class-variance-authority: ^0.7.1
   clsx: ^2.1.1
-  drizzle-orm: ^0.45.1
+  drizzle-orm: ^0.45.2
   framer-motion: ^12.23.24
   lucide-react: ^0.545.0
   # Must be this exact version because expo requires it
@@ -62,7 +62,7 @@ catalog:
   tailwind-merge: ^3.3.1
   tailwindcss: ^4.1.14
   tsx: ^4.21.0
-  vite: ^7.3.0
+  vite: ^7.3.2
   zod: ^3.25.76
 
 autoInstallPeers: false
@@ -74,6 +74,33 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 overrides:
+  # ============================================================================
+  # SECURITY: Override transitive dependency versions to fix known vulnerabilities
+  # ============================================================================
+  # path-to-regexp: DoS via sequential optional groups (GHSA-j3q9-mxjg-w52f, GHSA-27v5-c462-wpq7)
+  path-to-regexp: ">=8.4.2"
+  # lodash: Code injection via _.template imports key (GHSA-r5fr-rjxr-66jc, GHSA-f23m-r3pf-42rh)
+  lodash: ">=4.18.1"
+  # @xmldom/xmldom: multiple CVEs (GHSA-2v35-w6hq-6mfw, GHSA-f6ww-3ggp-fr8h, GHSA-j759-j44w-7fr8, GHSA-x6wf-f3px-wcqx)
+  # Patched in 0.8.13; upper bound <0.9.0 avoids the breaking 0.9.x API changes that break expo prebuild
+  "@xmldom/xmldom": ">=0.8.13 <0.9.0"
+  # brace-expansion: ReDoS (GHSA-f886-m6hf-6m8v)
+  # Global ^1.1.11 (→ 1.1.14); avoids >=2.1.0 which broke EAS fingerprint computation
+  "brace-expansion": "^1.1.11"
+  # yaml: prototype pollution (GHSA-48c2-rrv3-qjmp); patched in 2.8.3
+  yaml: ">=2.8.3"
+  # postcss: multiple CVEs (GHSA-qx2v-qp2m-jg93); patched in 8.5.12
+  postcss: ">=8.5.12"
+  # picomatch: ReDoS via extglob quantifiers (GHSA-c2c7-rcm5-vvqj, GHSA-3v7f-55p6-f55p)
+  # 4.x chain (vite/tinyglobby): pinned to exact patched version
+  picomatch: "4.0.4"
+  # 2.x chains: targeted overrides stay in 2.x range
+  "micromatch>picomatch": "2.3.2"
+  "jest-util>picomatch": "2.3.2"
+  # uuid: GHSA-w5hq-g745-h8pq; only >=14.0.0 is patched across all ranges
+  uuid: ">=14.0.0"
+  # ============================================================================
+
   # replit uses linux-x64 only, we can exclude all other platforms
   "esbuild>@esbuild/darwin-arm64": "-"
   "esbuild>@esbuild/darwin-x64": "-"
