@@ -1,9 +1,27 @@
-import { Router, type IRouter } from "express";
+import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import { db, markersTable, insertMarkerSchema } from "@workspace/db";
 import { eq, count, sql } from "drizzle-orm";
 
 const router: IRouter = Router();
+
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
+
+function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  if (!ADMIN_TOKEN) {
+    res.status(503).json({ error: "Admin authentication not configured on this server" });
+    return;
+  }
+  const tokenHeader = req.headers["x-admin-token"];
+  const provided: string | undefined =
+    (Array.isArray(tokenHeader) ? tokenHeader[0] : tokenHeader) ??
+    (req.headers["authorization"] as string | undefined)?.replace(/^Bearer\s+/i, "");
+  if (!provided || provided !== ADMIN_TOKEN) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  next();
+}
 
 const markersLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -45,7 +63,7 @@ router.get("/markers", markersLimiter, async (req, res) => {
   }
 });
 
-router.post("/markers", markersLimiter, async (req, res) => {
+router.post("/markers", markersLimiter, requireAdmin, async (req, res) => {
   try {
     const input = insertMarkerSchema.safeParse(req.body);
     if (!input.success) {
@@ -79,7 +97,7 @@ router.get("/markers/:id", markersLimiter, async (req, res) => {
   }
 });
 
-router.put("/markers/:id", markersLimiter, async (req, res) => {
+router.put("/markers/:id", markersLimiter, requireAdmin, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -107,7 +125,7 @@ router.put("/markers/:id", markersLimiter, async (req, res) => {
   }
 });
 
-router.delete("/markers/:id", markersLimiter, async (req, res) => {
+router.delete("/markers/:id", markersLimiter, requireAdmin, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
