@@ -1,10 +1,24 @@
-import { Router, type IRouter } from "express";
+import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import { db, conversations, messages } from "@workspace/db";
 import { eq, asc, desc } from "drizzle-orm";
 import { openai } from "@workspace/integrations-openai-ai-server";
 
 const router: IRouter = Router();
+
+// Sentinel UUID used for all requests that omit X-Session-ID.
+// Using a fixed value (rather than a per-request random one) ensures that
+// "create conversation" and the subsequent "send message" call share the
+// same session ID — preventing the ownership mismatch that produced
+// "Something went wrong" errors on old App Store binaries.
+const SENTINEL_SESSION_ID = "00000000-0000-0000-0000-000000000000";
+
+function requireSession(req: Request, _res: Response, next: NextFunction) {
+  const raw = req.headers["x-session-id"];
+  const sessionId = (Array.isArray(raw) ? raw[0] : raw) || SENTINEL_SESSION_ID;
+  (req as any).sessionId = sessionId;
+  next();
+}
 
 const conversationLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -87,7 +101,7 @@ STYLE: Knowledgeable but human. Confident but never pompous. Ingredient-forward.
 When users ask about wineries, farms, or restaurants they've saved on their map, give informed, honest perspective. Don't just validate — if you know the place well, bring your knowledge. If asked about pairings, be specific to the wine's mountain structure and the ingredient's season. Do not fabricate event dates — direct users to the El Dorado Winery Association or Apple Hill Growers Association when uncertain.`;
 }
 
-router.get("/openai/conversations", conversationLimiter, async (req, res) => {
+router.get("/openai/conversations", conversationLimiter, requireSession, async (req, res) => {
   try {
     const all = await db.select().from(conversations).orderBy(asc(conversations.createdAt));
     res.json(all.map(c => ({ ...c, createdAt: c.createdAt.toISOString() })));
@@ -97,7 +111,7 @@ router.get("/openai/conversations", conversationLimiter, async (req, res) => {
   }
 });
 
-router.post("/openai/conversations", conversationLimiter, async (req, res) => {
+router.post("/openai/conversations", conversationLimiter, requireSession, async (req, res) => {
   try {
     const { title } = req.body;
     if (!title) { res.status(400).json({ error: "title required" }); return; }
@@ -109,7 +123,7 @@ router.post("/openai/conversations", conversationLimiter, async (req, res) => {
   }
 });
 
-router.get("/openai/conversations/:id", conversationLimiter, async (req, res) => {
+router.get("/openai/conversations/:id", conversationLimiter, requireSession, async (req, res) => {
   try {
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
@@ -127,7 +141,7 @@ router.get("/openai/conversations/:id", conversationLimiter, async (req, res) =>
   }
 });
 
-router.delete("/openai/conversations/:id", conversationLimiter, async (req, res) => {
+router.delete("/openai/conversations/:id", conversationLimiter, requireSession, async (req, res) => {
   try {
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
@@ -140,7 +154,7 @@ router.delete("/openai/conversations/:id", conversationLimiter, async (req, res)
   }
 });
 
-router.get("/openai/conversations/:id/messages", conversationLimiter, async (req, res) => {
+router.get("/openai/conversations/:id/messages", conversationLimiter, requireSession, async (req, res) => {
   try {
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
@@ -152,7 +166,7 @@ router.get("/openai/conversations/:id/messages", conversationLimiter, async (req
   }
 });
 
-router.post("/openai/conversations/:id/messages", messageLimiter, async (req, res) => {
+router.post("/openai/conversations/:id/messages", messageLimiter, requireSession, async (req, res) => {
   try {
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
