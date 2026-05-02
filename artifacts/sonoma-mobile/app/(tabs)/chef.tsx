@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { fetch } from "expo/fetch";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColors } from "@/hooks/useColors";
 import { useIsTablet } from "@/hooks/useIsTablet";
 import { getApiUrl } from "@/lib/api";
@@ -31,6 +32,37 @@ function generateId(): string {
   return `msg-${Date.now()}-${messageCounter}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
+function generateUUID(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  }
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
+  });
+}
+
+const SESSION_KEY = "@chef_session_id";
+async function getOrCreateSessionId(): Promise<string> {
+  try {
+    const existing = await AsyncStorage.getItem(SESSION_KEY);
+    if (existing) return existing;
+    const id = generateUUID();
+    await AsyncStorage.setItem(SESSION_KEY, id);
+    return id;
+  } catch {
+    return generateUUID();
+  }
+}
+
 const PROMPTS = [
   "What's happening at Apple Hill right now?",
   "Pair a wine with Sierra foothills trout",
@@ -38,10 +70,13 @@ const PROMPTS = [
   "What makes mountain Zinfandel different from valley Zin?",
 ];
 
-async function createConversation(apiUrl: string): Promise<number> {
+async function createConversation(apiUrl: string, sessionId: string): Promise<number> {
   const res = await fetch(`${apiUrl}api/openai/conversations`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "X-Session-ID": sessionId,
+    },
     body: JSON.stringify({ title: "Foothills Chef Mobile" }),
   });
   if (!res.ok) throw new Error("Failed to create conversation");
@@ -53,6 +88,7 @@ async function streamMessage(
   apiUrl: string,
   conversationId: number,
   content: string,
+  sessionId: string,
   onChunk: (chunk: string) => void
 ): Promise<void> {
   const res = await fetch(
@@ -62,6 +98,7 @@ async function streamMessage(
       headers: {
         "Content-Type": "application/json",
         Accept: "text/event-stream",
+        "X-Session-ID": sessionId,
       },
       body: JSON.stringify({ content }),
     }
@@ -155,9 +192,9 @@ export default function ChefScreen() {
 
   const apiUrl = getApiUrl().replace(/\/?$/, "/");
 
-  const ensureConversation = useCallback(async (): Promise<number> => {
+  const ensureConversation = useCallback(async (sessionId: string): Promise<number> => {
     if (conversationId) return conversationId;
-    const id = await createConversation(apiUrl);
+    const id = await createConversation(apiUrl, sessionId);
     setConversationId(id);
     return id;
   }, [conversationId, apiUrl]);
@@ -179,8 +216,9 @@ export default function ChefScreen() {
       let firstChunk = true;
 
       try {
-        const id = await ensureConversation();
-        await streamMessage(apiUrl, id, trimmed, (chunk) => {
+        const sessionId = await getOrCreateSessionId();
+        const id = await ensureConversation(sessionId);
+        await streamMessage(apiUrl, id, trimmed, sessionId, (chunk) => {
           if (firstChunk) {
             setShowTyping(false);
             setMessages((prev) => [
