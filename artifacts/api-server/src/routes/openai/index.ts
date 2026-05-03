@@ -11,15 +11,13 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 function requireSession(req: Request, res: Response, next: NextFunction) {
   const raw = req.headers["x-session-id"];
   const sessionId = (Array.isArray(raw) ? raw[0] : raw)?.trim() ?? "";
-  if (!sessionId) {
-    res.status(401).json({ error: "X-Session-ID header is required" });
-    return;
-  }
-  if (!UUID_RE.test(sessionId)) {
+  if (sessionId && !UUID_RE.test(sessionId)) {
     res.status(400).json({ error: "X-Session-ID must be a valid UUID" });
     return;
   }
-  req.sessionId = sessionId;
+  // If header is absent, generate a server-side UUID so legacy clients
+  // (e.g. TestFlight builds predating X-Session-ID support) still work.
+  req.sessionId = sessionId || crypto.randomUUID();
   next();
 }
 
