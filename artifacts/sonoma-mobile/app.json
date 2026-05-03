@@ -14,7 +14,7 @@
       "backgroundColor": "#6B2D3E"
     },
     "ios": {
-      "bundleIdentifier": "com.chefplex.eldoradoexplorer",
+      "bundleIdentifier": "app.replit.eldoradoexplorer",
       "buildNumber": "3",
       "supportsTablet": true,
       "infoPlist": {
