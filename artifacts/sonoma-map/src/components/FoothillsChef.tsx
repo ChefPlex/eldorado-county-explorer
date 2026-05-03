@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChefHat, X, Send, Loader2, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const CHEF_TOOLTIP_KEY = "foothills-chef-tooltip-seen";
+const CHEF_SESSION_KEY = "foothills-chef-session-id";
 
 interface Message {
   role: "user" | "assistant";
@@ -15,10 +15,26 @@ interface Message {
 const BASE_URL = import.meta.env.BASE_URL ?? "/";
 const API_BASE = `${BASE_URL}api`.replace(/\/+/g, "/").replace(/\/$/, "");
 
+function getOrCreateSessionId(): string {
+  let id = localStorage.getItem(CHEF_SESSION_KEY);
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem(CHEF_SESSION_KEY, id);
+  }
+  return id;
+}
+
+function sessionHeaders(): Record<string, string> {
+  return {
+    "Content-Type": "application/json",
+    "X-Session-ID": getOrCreateSessionId(),
+  };
+}
+
 async function createConversation(): Promise<number> {
   const res = await fetch(`${API_BASE}/openai/conversations`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: sessionHeaders(),
     body: JSON.stringify({ title: "Foothills Chef Chat" }),
   });
   if (!res.ok) throw new Error("Failed to create conversation");
@@ -34,7 +50,7 @@ async function* streamMessage(
     `${API_BASE}/openai/conversations/${conversationId}/messages`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: sessionHeaders(),
       body: JSON.stringify({ content }),
     }
   );
@@ -181,7 +197,6 @@ export function FoothillsChef() {
           <p className="text-xs text-muted-foreground leading-relaxed">
             An AI that knows every winery, farm, and table on this map. Ask it anything.
           </p>
-          {/* Arrow pointing down */}
           <div className="absolute -bottom-[7px] right-6 w-3 h-3 bg-card border-r border-b border-border rotate-45" />
         </div>
       )}
