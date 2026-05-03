@@ -125,6 +125,14 @@ paths:
       operationId: listOpenaiConversations
       tags: [openai]
       summary: List all conversations
+      parameters:
+        - name: X-Session-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Client session identifier. Only conversations belonging to this session are returned.
       responses:
         "200":
           description: List of conversations
@@ -138,6 +146,14 @@ paths:
       operationId: createOpenaiConversation
       tags: [openai]
       summary: Create a new conversation
+      parameters:
+        - name: X-Session-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Client session identifier. The conversation is owned by this session.
       requestBody:
         required: true
         content:
@@ -162,6 +178,13 @@ paths:
           required: true
           schema:
             type: integer
+        - name: X-Session-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Client session identifier. Returns 404 if the conversation does not belong to this session.
       responses:
         "200":
           description: Conversation with messages
@@ -185,6 +208,13 @@ paths:
           required: true
           schema:
             type: integer
+        - name: X-Session-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Client session identifier. Returns 404 if the conversation does not belong to this session.
       responses:
         "204":
           description: Deleted
@@ -205,6 +235,13 @@ paths:
           required: true
           schema:
             type: integer
+        - name: X-Session-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Client session identifier. Returns 404 if the conversation does not belong to this session.
       responses:
         "200":
           description: List of messages
@@ -224,6 +261,13 @@ paths:
           required: true
           schema:
             type: integer
+        - name: X-Session-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Client session identifier. Returns 404 if the conversation does not belong to this session.
       requestBody:
         required: true
         content:
