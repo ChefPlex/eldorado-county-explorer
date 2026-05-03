@@ -75,7 +75,9 @@ export const UpdateMarkerParams = zod.object({
 export const UpdateMarkerBody = zod.object({
   name: zod.string().optional(),
   note: zod.string().optional(),
-  category: zod.enum(["winery", "restaurant", "farmstand", "artisan"]).optional(),
+  category: zod
+    .enum(["winery", "restaurant", "farmstand", "artisan"])
+    .optional(),
   website: zod.string().nullish(),
   city: zod.string().nullish(),
 });
@@ -102,6 +104,15 @@ export const DeleteMarkerParams = zod.object({
 /**
  * @summary List all conversations
  */
+export const ListOpenaiConversationsHeader = zod.object({
+  "X-Session-ID": zod
+    .string()
+    .uuid()
+    .describe(
+      "Client session identifier. Only conversations belonging to this session are returned.",
+    ),
+});
+
 export const ListOpenaiConversationsResponseItem = zod.object({
   id: zod.number(),
   title: zod.string(),
@@ -114,6 +125,15 @@ export const ListOpenaiConversationsResponse = zod.array(
 /**
  * @summary Create a new conversation
  */
+export const CreateOpenaiConversationHeader = zod.object({
+  "X-Session-ID": zod
+    .string()
+    .uuid()
+    .describe(
+      "Client session identifier. The conversation is owned by this session.",
+    ),
+});
+
 export const CreateOpenaiConversationBody = zod.object({
   title: zod.string(),
 });
@@ -123,6 +143,15 @@ export const CreateOpenaiConversationBody = zod.object({
  */
 export const GetOpenaiConversationParams = zod.object({
   id: zod.coerce.number(),
+});
+
+export const GetOpenaiConversationHeader = zod.object({
+  "X-Session-ID": zod
+    .string()
+    .uuid()
+    .describe(
+      "Client session identifier. Returns 404 if the conversation does not belong to this session.",
+    ),
 });
 
 export const GetOpenaiConversationResponse = zod.object({
@@ -147,11 +176,29 @@ export const DeleteOpenaiConversationParams = zod.object({
   id: zod.coerce.number(),
 });
 
+export const DeleteOpenaiConversationHeader = zod.object({
+  "X-Session-ID": zod
+    .string()
+    .uuid()
+    .describe(
+      "Client session identifier. Returns 404 if the conversation does not belong to this session.",
+    ),
+});
+
 /**
  * @summary List messages in a conversation
  */
 export const ListOpenaiMessagesParams = zod.object({
   id: zod.coerce.number(),
+});
+
+export const ListOpenaiMessagesHeader = zod.object({
+  "X-Session-ID": zod
+    .string()
+    .uuid()
+    .describe(
+      "Client session identifier. Returns 404 if the conversation does not belong to this session.",
+    ),
 });
 
 export const ListOpenaiMessagesResponseItem = zod.object({
@@ -170,6 +217,15 @@ export const ListOpenaiMessagesResponse = zod.array(
  */
 export const SendOpenaiMessageParams = zod.object({
   id: zod.coerce.number(),
+});
+
+export const SendOpenaiMessageHeader = zod.object({
+  "X-Session-ID": zod
+    .string()
+    .uuid()
+    .describe(
+      "Client session identifier. Returns 404 if the conversation does not belong to this session.",
+    ),
 });
 
 export const SendOpenaiMessageBody = zod.object({
