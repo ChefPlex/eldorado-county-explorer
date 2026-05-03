@@ -1,22 +1,25 @@
 import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import { db, conversations, messages } from "@workspace/db";
-import { eq, asc, desc } from "drizzle-orm";
+import { eq, asc, desc, and } from "drizzle-orm";
 import { openai } from "@workspace/integrations-openai-ai-server";
 
 const router: IRouter = Router();
 
-// Sentinel UUID used for all requests that omit X-Session-ID.
-// Using a fixed value (rather than a per-request random one) ensures that
-// "create conversation" and the subsequent "send message" call share the
-// same session ID — preventing the ownership mismatch that produced
-// "Something went wrong" errors on old App Store binaries.
-const SENTINEL_SESSION_ID = "00000000-0000-0000-0000-000000000000";
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-function requireSession(req: Request, _res: Response, next: NextFunction) {
+function requireSession(req: Request, res: Response, next: NextFunction) {
   const raw = req.headers["x-session-id"];
-  const sessionId = (Array.isArray(raw) ? raw[0] : raw) || SENTINEL_SESSION_ID;
-  (req as any).sessionId = sessionId;
+  const sessionId = (Array.isArray(raw) ? raw[0] : raw)?.trim() ?? "";
+  if (!sessionId) {
+    res.status(401).json({ error: "X-Session-ID header is required" });
+    return;
+  }
+  if (!UUID_RE.test(sessionId)) {
+    res.status(400).json({ error: "X-Session-ID must be a valid UUID" });
+    return;
+  }
+  req.sessionId = sessionId;
   next();
 }
 
@@ -103,7 +106,10 @@ When users ask about wineries, farms, or restaurants they've saved on their map,
 
 router.get("/openai/conversations", conversationLimiter, requireSession, async (req, res) => {
   try {
-    const all = await db.select().from(conversations).orderBy(asc(conversations.createdAt));
+    const { sessionId } = req;
+    const all = await db.select().from(conversations)
+      .where(eq(conversations.sessionId, sessionId))
+      .orderBy(asc(conversations.createdAt));
     res.json(all.map(c => ({ ...c, createdAt: c.createdAt.toISOString() })));
   } catch (err) {
     req.log.error({ err }, "Failed to list conversations");
@@ -113,9 +119,10 @@ router.get("/openai/conversations", conversationLimiter, requireSession, async (
 
 router.post("/openai/conversations", conversationLimiter, requireSession, async (req, res) => {
   try {
+    const { sessionId } = req;
     const { title } = req.body;
     if (!title) { res.status(400).json({ error: "title required" }); return; }
-    const [conv] = await db.insert(conversations).values({ title }).returning();
+    const [conv] = await db.insert(conversations).values({ sessionId, title }).returning();
     res.status(201).json({ ...conv, createdAt: conv.createdAt.toISOString() });
   } catch (err) {
     req.log.error({ err }, "Failed to create conversation");
@@ -125,9 +132,11 @@ router.post("/openai/conversations", conversationLimiter, requireSession, async 
 
 router.get("/openai/conversations/:id", conversationLimiter, requireSession, async (req, res) => {
   try {
+    const { sessionId } = req;
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
-    const [conv] = await db.select().from(conversations).where(eq(conversations.id, id));
+    const [conv] = await db.select().from(conversations)
+      .where(and(eq(conversations.id, id), eq(conversations.sessionId, sessionId)));
     if (!conv) { res.status(404).json({ error: "Not found" }); return; }
     const msgs = await db.select().from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt));
     res.json({
@@ -143,9 +152,12 @@ router.get("/openai/conversations/:id", conversationLimiter, requireSession, asy
 
 router.delete("/openai/conversations/:id", conversationLimiter, requireSession, async (req, res) => {
   try {
+    const { sessionId } = req;
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
-    const [deleted] = await db.delete(conversations).where(eq(conversations.id, id)).returning();
+    const [deleted] = await db.delete(conversations)
+      .where(and(eq(conversations.id, id), eq(conversations.sessionId, sessionId)))
+      .returning();
     if (!deleted) { res.status(404).json({ error: "Not found" }); return; }
     res.status(204).end();
   } catch (err) {
@@ -156,8 +168,12 @@ router.delete("/openai/conversations/:id", conversationLimiter, requireSession, 
 
 router.get("/openai/conversations/:id/messages", conversationLimiter, requireSession, async (req, res) => {
   try {
+    const { sessionId } = req;
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
+    const [conv] = await db.select().from(conversations)
+      .where(and(eq(conversations.id, id), eq(conversations.sessionId, sessionId)));
+    if (!conv) { res.status(404).json({ error: "Not found" }); return; }
     const msgs = await db.select().from(messages).where(eq(messages.conversationId, id)).orderBy(asc(messages.createdAt));
     res.json(msgs.map(m => ({ ...m, createdAt: m.createdAt.toISOString() })));
   } catch (err) {
@@ -168,6 +184,7 @@ router.get("/openai/conversations/:id/messages", conversationLimiter, requireSes
 
 router.post("/openai/conversations/:id/messages", messageLimiter, requireSession, async (req, res) => {
   try {
+    const { sessionId } = req;
     const id = parseId(req.params.id);
     if (id === null) { res.status(400).json({ error: "Invalid conversation ID" }); return; }
 
@@ -180,7 +197,8 @@ router.post("/openai/conversations/:id/messages", messageLimiter, requireSession
       res.status(400).json({ error: `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters.` }); return;
     }
 
-    const [conv] = await db.select().from(conversations).where(eq(conversations.id, id));
+    const [conv] = await db.select().from(conversations)
+      .where(and(eq(conversations.id, id), eq(conversations.sessionId, sessionId)));
     if (!conv) { res.status(404).json({ error: "Conversation not found" }); return; }
 
     await db.insert(messages).values({ conversationId: id, role: "user", content: content.trim() });
